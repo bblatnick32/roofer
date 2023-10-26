@@ -5,8 +5,9 @@ export type AuthSession = {
   session: {
     user: {
       id: string;
-      name?: string;
       email?: string;
+      orgs?: string[];
+      activeOrgId?: string;
     };
   } | null;
 };
@@ -19,8 +20,9 @@ export const getUserAuth = async () => {
       session: {
         user: {
           id: userId,
-          name: `${sessionClaims?.firstName} ${sessionClaims?.lastName}`,
-          email: sessionClaims?.email,
+          email: sessionClaims?.primaryEmail,
+          orgs: sessionClaims?.userOrgs,
+          activeOrgId: sessionClaims?.activeOrgId,
         },
       },
     } as AuthSession;

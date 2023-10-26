@@ -17,6 +17,7 @@ export default function SignOutBtn() {
     }
   };
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <button onClick={handleSignOut} className="w-full text-left">
       Sign out
     </button>

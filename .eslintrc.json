@@ -1,3 +1,13 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": ["eslint-plugin-node", "@typescript-eslint"],
+  "extends": [
+    "async",
+    "async/node",
+    "async/typescript",
+    "next/core-web-vitals"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  }
 }
