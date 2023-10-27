@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
-// import Navbar from "@/components/Navbar";
+import Navbar from "@/app/components/Navbar";
 import TrpcProvider from "@/lib/trpc/Provider";
 import { cn } from "@/lib/utils";
 
@@ -28,23 +28,21 @@ export default function RootLayout({
           inter.className
         )}
       >
-        {/* <ThemeProvider
+        <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
-        > */}
-        <ClerkProvider>
-          <TrpcProvider>
-            <main className="max-w-3xl mx-auto md:p-0 p-6">
-              {/* <Navbar /> */}
+        >
+          <ClerkProvider>
+            <TrpcProvider>
+              <Navbar />
               {children}
-            </main>
-          </TrpcProvider>
-        </ClerkProvider>
+            </TrpcProvider>
+          </ClerkProvider>
 
-        <Toaster />
-        {/* </ThemeProvider> */}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
