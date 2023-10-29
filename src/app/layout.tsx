@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/components/Navbar";
 import TrpcProvider from "@/lib/trpc/Provider";
 import { cn } from "@/lib/utils";
 

@@ -6,7 +6,9 @@ export type AuthSession = {
     user: {
       id: string;
       email?: string;
-      orgs?: string[];
+      orgs?: {
+        [key: string]: string;
+      };
       activeOrgId?: string;
     };
   } | null;
@@ -31,7 +33,10 @@ export const getUserAuth = async () => {
   }
 };
 
-export const checkAuth = async () => {
-  const { userId } = auth();
-  if (!userId) redirect("/sign-in");
+export const checkAuth = async (origin: string) => {
+  const { session } = await getUserAuth();
+  const { user } = session ?? {};
+
+  if (!user || !user.activeOrgId || !user.id)
+    redirect(`/auth-callback?origin=${origin}`);
 };
