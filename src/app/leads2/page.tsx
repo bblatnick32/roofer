@@ -1,7 +1,7 @@
 import { checkAuth } from "@/lib/auth/utils";
 
 const Page = async () => {
-  await checkAuth("projects");
+  await checkAuth("leads");
 
   return <div />;
 };

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { users } from "./users";
 import { getOrgs } from "@/lib/api/orgs/queries";
 import { relations } from "drizzle-orm";
+import { leads } from "./leads";
 
 export const orgs = mysqlTable("orgs", {
   id: varchar("id", { length: 256 }).primaryKey(), // matches clerk org id
@@ -20,6 +21,9 @@ export const orgs = mysqlTable("orgs", {
 // relations
 export const orgsRelations = relations(orgs, ({ many }) => ({
   users: many(users),
+  leads: many(leads),
+  // opportunities: many(opportunities),
+  // projects: many(projects),
 }));
 
 // Schema for orgs - used to validate API requests
