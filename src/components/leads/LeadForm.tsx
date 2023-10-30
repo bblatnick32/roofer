@@ -2,8 +2,18 @@
 "use client";
 
 import {
+  CLOSED,
+  CONTACTED,
+  CONVERTED,
+  DISQUALIFIED,
+  ENGAGED,
+  FOLLOW_UP,
   Lead,
+  LeadStatuses,
+  NEW,
   NewLeadParams,
+  OPEN,
+  QUALIFIED,
   UpdateLeadParams,
   insertLeadParams,
 } from "@/lib/db/schema/leads";
@@ -24,6 +34,13 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../ui/select";
 
 const LeadForm = ({
   lead,
@@ -50,6 +67,7 @@ const LeadForm = ({
       email: "",
       phone: "",
       address: "",
+      status: NEW,
     },
   });
 
@@ -90,6 +108,22 @@ const LeadForm = ({
   const onErrors = (errors: any) => {
     console.log(errors);
   };
+
+  // status
+  const statusLabelLookup = {
+    [NEW]: "New",
+    [OPEN]: "Open",
+    [QUALIFIED]: "Qualified",
+    [CONTACTED]: "Contacted",
+    [FOLLOW_UP]: "Follow Up",
+    [ENGAGED]: "Engaged",
+    [CONVERTED]: "Converted",
+    [CLOSED]: "Closed",
+    [DISQUALIFIED]: "Disqualified",
+  };
+
+  const StatusEnum = z.enum(LeadStatuses);
+  type StatusEnum = z.infer<typeof StatusEnum>;
 
   return (
     <Form {...form}>
@@ -162,6 +196,36 @@ const LeadForm = ({
               <FormControl>
                 <Input {...field} value={field.value ?? ""} />
               </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Status</FormLabel>
+              <Select
+                defaultValue={field.value}
+                onValueChange={(value) =>
+                  field.onChange(StatusEnum.parse(value))
+                }
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {StatusEnum.options.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {statusLabelLookup[status]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               <FormMessage />
             </FormItem>

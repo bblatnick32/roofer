@@ -12,6 +12,28 @@ import { getLeads } from "@/lib/api/leads/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 
+export const NEW = "new";
+export const OPEN = "open";
+export const QUALIFIED = "qualified";
+export const CONTACTED = "contacted";
+export const FOLLOW_UP = "follow_up";
+export const ENGAGED = "engaged";
+export const CONVERTED = "converted";
+export const CLOSED = "closed";
+export const DISQUALIFIED = "disqualified";
+
+export const LeadStatuses = [
+  NEW,
+  OPEN,
+  QUALIFIED,
+  CONTACTED,
+  FOLLOW_UP,
+  ENGAGED,
+  CONVERTED,
+  CLOSED,
+  DISQUALIFIED,
+] as const;
+
 export const leads = mysqlTable("leads", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
@@ -21,19 +43,7 @@ export const leads = mysqlTable("leads", {
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
-  status: mysqlEnum("status", [
-    "new",
-    "open",
-    "qualified",
-    "contacted",
-    "follow_up",
-    "engaged",
-    "converted",
-    "closed",
-    "disqualified",
-  ])
-    .notNull()
-    .default("new"),
+  status: mysqlEnum("status", LeadStatuses).notNull().default("new"),
   orgId: varchar("org_id", { length: 256 }).notNull(),
 });
 
@@ -55,10 +65,12 @@ export const insertLeadParams = createSelectSchema(leads, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
-  status: true,
 });
 
-export const updateLeadSchema = createSelectSchema(leads);
+export const updateLeadSchema = createSelectSchema(leads, {}).omit({
+  createdAt: true,
+  updatedAt: true,
+});
 
 export const updateLeadParams = createSelectSchema(leads, {}).omit({
   orgId: true,

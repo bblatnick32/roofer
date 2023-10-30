@@ -45,8 +45,8 @@ export default function LeadModal({
             New Lead
           </Button>
         ) : (
-          <Button variant={editing ? "ghost" : "outline"} size="sm">
-            {editing ? "Edit" : "+ Add Lead"}
+          <Button variant={editing ? "ghost" : "default"} size="sm">
+            {editing ? "Edit" : "New Lead"}
           </Button>
         )}
       </DialogTrigger>

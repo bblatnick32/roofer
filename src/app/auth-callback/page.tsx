@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useOrganizationList, useOrganization } from "@clerk/nextjs";
+import { useOrganizationList } from "@clerk/nextjs";
 import { trpc } from "@/lib/trpc/client";
 
 const Page = () => {
@@ -13,7 +13,7 @@ const Page = () => {
 
   const { setActive } = useOrganizationList();
 
-  trpc.authCallback.useQuery(undefined, {
+  trpc.auth.authCallback.useQuery(undefined, {
     onSuccess: ({ success, activeOrgId, orgId }) => {
       if (success) {
         // if no active organization is set, set it to the orgId (there should only be one)
