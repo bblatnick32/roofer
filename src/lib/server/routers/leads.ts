@@ -1,5 +1,5 @@
 import { getLeadById, getLeads } from "@/lib/api/leads/queries";
-import { publicProcedure, router } from "../trpc";
+import { privateProcedure, router } from "../trpc";
 import {
   leadIdSchema,
   insertLeadParams,
@@ -8,23 +8,23 @@ import {
 import { createLead, deleteLead, updateLead } from "@/lib/api/leads/mutations";
 
 export const leadsRouter = router({
-  getLeads: publicProcedure.query(async () => {
+  getLeads: privateProcedure.query(async () => {
     return getLeads();
   }),
-  getLeadById: publicProcedure.input(leadIdSchema).query(async ({ input }) => {
+  getLeadById: privateProcedure.input(leadIdSchema).query(async ({ input }) => {
     return getLeadById(input.id);
   }),
-  createLead: publicProcedure
+  createLead: privateProcedure
     .input(insertLeadParams)
     .mutation(async ({ input }) => {
       return createLead(input);
     }),
-  updateLead: publicProcedure
+  updateLead: privateProcedure
     .input(updateLeadParams)
     .mutation(async ({ input }) => {
       return updateLead(input.id, input);
     }),
-  deleteLead: publicProcedure
+  deleteLead: privateProcedure
     .input(leadIdSchema)
     .mutation(async ({ input }) => {
       return deleteLead(input.id);

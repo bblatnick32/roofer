@@ -60,7 +60,9 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
 // Schema for leads - used to validate API requests
 export const insertLeadSchema = createInsertSchema(leads);
 
-export const insertLeadParams = createSelectSchema(leads, {}).omit({
+export const insertLeadParams = createSelectSchema(leads, {
+  name: z.string().nonempty("Name cannot be empty."),
+}).omit({
   id: true,
   orgId: true,
   createdAt: true,
@@ -72,7 +74,9 @@ export const updateLeadSchema = createSelectSchema(leads, {}).omit({
   updatedAt: true,
 });
 
-export const updateLeadParams = createSelectSchema(leads, {}).omit({
+export const updateLeadParams = createSelectSchema(leads, {
+  name: z.string().nonempty("Name cannot be empty."),
+}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,

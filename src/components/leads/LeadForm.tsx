@@ -106,7 +106,7 @@ const LeadForm = ({
   };
 
   const onErrors = (errors: any) => {
-    console.log(errors);
+    console.error(errors);
   };
 
   // status
@@ -134,14 +134,13 @@ const LeadForm = ({
         <FormField
           control={form.control}
           name="name"
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
-
-              <FormMessage />
+              {error && <FormMessage>{error.message}</FormMessage>}
             </FormItem>
           )}
         />
