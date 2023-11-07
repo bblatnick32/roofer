@@ -1,32 +1,41 @@
-import { getOpportunitieById, getOpportunities } from "@/lib/api/opportunities/queries";
-import { publicProcedure, router } from "../trpc";
 import {
-  opportunitieIdSchema,
-  insertOpportunitieParams,
-  updateOpportunitieParams,
+  getOpportunities,
+  getOpportunityById,
+} from "@/lib/api/opportunities/queries";
+import { privateProcedure, router } from "../trpc";
+import {
+  insertOpportunityParams,
+  opportunityIdSchema,
+  updateOpportunityParams,
 } from "@/lib/db/schema/opportunities";
-import { createOpportunitie, deleteOpportunitie, updateOpportunitie } from "@/lib/api/opportunities/mutations";
+import {
+  createOpportunity,
+  updateOpportunity,
+  deleteOpportunity,
+} from "@/lib/api/opportunities/mutations";
 
 export const opportunitiesRouter = router({
-  getOpportunities: publicProcedure.query(async () => {
+  getOpportunities: privateProcedure.query(async () => {
     return getOpportunities();
   }),
-  getOpportunitieById: publicProcedure.input(opportunitieIdSchema).query(async ({ input }) => {
-    return getOpportunitieById(input.id);
-  }),
-  createOpportunitie: publicProcedure
-    .input(insertOpportunitieParams)
-    .mutation(async ({ input }) => {
-      return createOpportunitie(input);
+  getOpportunityById: privateProcedure
+    .input(opportunityIdSchema)
+    .query(async ({ input }) => {
+      return getOpportunityById(input.id);
     }),
-  updateOpportunitie: publicProcedure
-    .input(updateOpportunitieParams)
+  createOpportunity: privateProcedure
+    .input(insertOpportunityParams)
     .mutation(async ({ input }) => {
-      return updateOpportunitie(input.id, input);
+      return createOpportunity(input);
     }),
-  deleteOpportunitie: publicProcedure
-    .input(opportunitieIdSchema)
+  updateOpportunity: privateProcedure
+    .input(updateOpportunityParams)
     .mutation(async ({ input }) => {
-      return deleteOpportunitie(input.id);
+      return updateOpportunity(input.id, input);
+    }),
+  deleteOpportunity: privateProcedure
+    .input(opportunityIdSchema)
+    .mutation(async ({ input }) => {
+      return deleteOpportunity(input.id);
     }),
 });

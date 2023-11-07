@@ -9,23 +9,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import OpportunitieForm from "./OpportunitieForm";
-import { Opportunitie } from "@/lib/db/schema/opportunities";
+import OpportunityForm from "./OpportunityForm";
+import { Opportunity } from "@/lib/db/schema/opportunities";
 
-export default function OpportunitieModal({ 
-  opportunitie,
+export default function OpportunityModal({
+  opportunity,
   emptyState,
-}: { 
-  opportunitie?: Opportunitie;
+}: {
+  opportunity?: Opportunity;
   emptyState?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  const editing = !!opportunitie?.id;
+  const editing = !!opportunity?.id;
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-      { emptyState ? (
+        {emptyState ? (
           <Button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -42,22 +42,20 @@ export default function OpportunitieModal({
               <path d="M5 12h14" />
               <path d="M12 5v14" />
             </svg>
-            New Opportunitie
+            New Opportunity
           </Button>
         ) : (
-        <Button
-          variant={editing ? "ghost" : "outline"}
-          size={editing ? "sm" : "icon"}
-        >
-          {editing ? "Edit" : "+"}
-        </Button> )}
+          <Button variant={editing ? "ghost" : "default"} size="sm">
+            {editing ? "Edit" : "New Opportunity"}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{ editing ? "Edit" : "Create" } Opportunitie</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Opportunity</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <OpportunitieForm closeModal={closeModal} opportunitie={opportunitie} />
+          <OpportunityForm closeModal={closeModal} opportunity={opportunity} />
         </div>
       </DialogContent>
     </Dialog>

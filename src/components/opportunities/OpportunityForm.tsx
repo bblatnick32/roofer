@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 "use client";
 
-import { Opportunitie, NewOpportunitieParams, insertOpportunitieParams } from "@/lib/db/schema/opportunities";
+import {
+  Opportunity,
+  NewOpportunityParams,
+  insertOpportunityParams,
+  UpdateOpportunityParams,
+} from "@/lib/db/schema/opportunities";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -15,7 +21,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc/client";
 import { Button } from "../ui/button";
-import { z } from "zod";import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { z } from "zod";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
@@ -23,75 +34,93 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
-const OpportunitieForm = ({
-  opportunitie,
+const OpportunityForm = ({
+  opportunity,
   closeModal,
 }: {
-  opportunitie?: Opportunitie;
+  opportunity?: Opportunity;
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
-  
-  const editing = !!opportunitie?.id;
+
+  const editing = !!opportunity?.id;
 
   const router = useRouter();
   const utils = trpc.useContext();
 
-  const form = useForm<z.infer<typeof insertOpportunitieParams>>({
+  const form = useForm<z.infer<typeof insertOpportunityParams>>({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
-    resolver: zodResolver(insertOpportunitieParams),
-    defaultValues: opportunitie ?? {
-      value: 0,
-     name: "",
-     closeDate: ""
-    },
+    resolver: zodResolver(insertOpportunityParams),
+    defaultValues: opportunity
+      ? {
+          ...opportunity,
+          closeDate: opportunity.closeDate?.toISOString() ?? "",
+        }
+      : {
+          value: 0,
+          name: "",
+          closeDate: "",
+        },
   });
 
-  const onSuccess = (action: "create" | "update" | "delete") => {
-    utils.opportunities.getOpportunities.invalidate();
+  const onSuccess = async (action: "create" | "update" | "delete") => {
+    await utils.opportunities.getOpportunities.invalidate();
     router.refresh();
-    closeModal();toast({
-      title: 'Success',
-      description: `Opportunitie ${action}d!`,
+    closeModal();
+    toast({
+      title: "Success",
+      description: `Opportunity ${action}d!`,
       variant: "default",
     });
   };
 
-  const { mutate: createOpportunitie, isLoading: isCreating } =
-    trpc.opportunities.createOpportunitie.useMutation({
-      onSuccess: () => onSuccess("create"),
+  const { mutate: createOpportunity, isLoading: isCreating } =
+    trpc.opportunities.createOpportunity.useMutation({
+      onSuccess: async () => onSuccess("create"),
     });
 
-  const { mutate: updateOpportunitie, isLoading: isUpdating } =
-    trpc.opportunities.updateOpportunitie.useMutation({
-      onSuccess: () => onSuccess("update"),
+  const { mutate: updateOpportunity, isLoading: isUpdating } =
+    trpc.opportunities.updateOpportunity.useMutation({
+      onSuccess: async () => onSuccess("update"),
     });
 
-  const { mutate: deleteOpportunitie, isLoading: isDeleting } =
-    trpc.opportunities.deleteOpportunitie.useMutation({
-      onSuccess: () => onSuccess("delete"),
+  const { mutate: deleteOpportunity, isLoading: isDeleting } =
+    trpc.opportunities.deleteOpportunity.useMutation({
+      onSuccess: async () => onSuccess("delete"),
     });
 
-  const handleSubmit = (values: NewOpportunitieParams) => {
+  const onSubmit = (values: NewOpportunityParams | UpdateOpportunityParams) => {
     if (editing) {
-      updateOpportunitie({ ...values, id: opportunitie.id });
+      updateOpportunity({
+        ...(values as UpdateOpportunityParams),
+        id: opportunity.id,
+      });
     } else {
-      createOpportunitie(values);
+      createOpportunity(values as NewOpportunityParams);
     }
   };
+
+  const onErrors = (errors: any) => {
+    console.log(errors);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onErrors)}
+        className={"space-y-8"}
+      >
         <FormField
           control={form.control}
-          name="value"
-          render={({ field }) => (<FormItem>
-              <FormLabel>Value</FormLabel>
-                <FormControl>
-            <Input {...field} />
-          </FormControl>
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
 
               <FormMessage />
             </FormItem>
@@ -99,12 +128,13 @@ const OpportunitieForm = ({
         />
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (<FormItem>
-              <FormLabel>Name</FormLabel>
-                <FormControl>
-            <Input {...field} />
-          </FormControl>
+          name="value"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Value</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ""} />
+              </FormControl>
 
               <FormMessage />
             </FormItem>
@@ -113,9 +143,10 @@ const OpportunitieForm = ({
         <FormField
           control={form.control}
           name="closeDate"
-          render={({ field }) => (<FormItem>
+          render={({ field }) => (
+            <FormItem>
               <FormLabel>Close Date</FormLabel>
-                <br />
+              <br />
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -138,7 +169,7 @@ const OpportunitieForm = ({
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={new Date(field.value)}
+                    selected={new Date(field.value || Date.now())}
                     onSelect={field.onChange}
                     disabled={(date) =>
                       date > new Date() || date < new Date("1900-01-01")
@@ -165,7 +196,7 @@ const OpportunitieForm = ({
           <Button
             type="button"
             variant={"destructive"}
-            onClick={() => deleteOpportunitie({ id: opportunitie.id })}
+            onClick={() => deleteOpportunity({ id: opportunity.id })}
           >
             Delet{isDeleting ? "ing..." : "e"}
           </Button>
@@ -175,4 +206,4 @@ const OpportunitieForm = ({
   );
 };
 
-export default OpportunitieForm;
+export default OpportunityForm;

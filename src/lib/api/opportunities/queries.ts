@@ -1,18 +1,32 @@
 import { db } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 import { getUserAuth } from "@/lib/auth/utils";
-import { type OpportunitieId, opportunitieIdSchema, opportunities } from "@/lib/db/schema/opportunities";
+import {
+  type OpportunityId,
+  opportunityIdSchema,
+  opportunities,
+} from "@/lib/db/schema/opportunities";
 
 export const getOpportunities = async () => {
   const { session } = await getUserAuth();
-  const o = await db.select().from(opportunities).where(eq(opportunities.userId, session?.user.id!));
+  const o = await db
+    .select()
+    .from(opportunities)
+    .where(eq(opportunities.orgId, session?.user.activeOrgId!));
   return { opportunities: o };
 };
 
-export const getOpportunitieById = async (id: OpportunitieId) => {
+export const getOpportunityById = async (id: OpportunityId) => {
   const { session } = await getUserAuth();
-  const { id: opportunitieId } = opportunitieIdSchema.parse({ id });
-  const [o] = await db.select().from(opportunities).where(and(eq(opportunities.id, opportunitieId), eq(opportunities.userId, session?.user.id!)));
-  return { opportunitie: o };
+  const { id: opportunityId } = opportunityIdSchema.parse({ id });
+  const [o] = await db
+    .select()
+    .from(opportunities)
+    .where(
+      and(
+        eq(opportunities.id, opportunityId),
+        eq(opportunities.orgId, session?.user.activeOrgId!)
+      )
+    );
+  return { opportunity: o };
 };
-

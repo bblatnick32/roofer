@@ -1,22 +1,25 @@
 import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
-import { 
-  OpportunitieId, 
-  NewOpportunitieParams,
-  UpdateOpportunitieParams, 
-  updateOpportunitieSchema,
-  insertOpportunitieSchema, 
+import {
+  OpportunityId,
+  NewOpportunityParams,
+  UpdateOpportunityParams,
+  updateOpportunitySchema,
+  insertOpportunitySchema,
   opportunities,
-  opportunitieIdSchema 
+  opportunityIdSchema,
 } from "@/lib/db/schema/opportunities";
 import { getUserAuth } from "@/lib/auth/utils";
 
-export const createOpportunitie = async (opportunitie: NewOpportunitieParams) => {
+export const createOpportunity = async (opportunity: NewOpportunityParams) => {
   const { session } = await getUserAuth();
-  const newOpportunitie = insertOpportunitieSchema.parse({ ...opportunitie, userId: session?.user.id! });
+  const newOpportunity = insertOpportunitySchema.parse({
+    ...opportunity,
+    userId: session?.user.id!,
+  });
   try {
-    await db.insert(opportunities).values(newOpportunitie)
-    return { success: true }
+    await db.insert(opportunities).values(newOpportunity);
+    return { success: true };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);
@@ -24,16 +27,29 @@ export const createOpportunitie = async (opportunitie: NewOpportunitieParams) =>
   }
 };
 
-export const updateOpportunitie = async (id: OpportunitieId, opportunitie: UpdateOpportunitieParams) => {
+export const updateOpportunity = async (
+  id: OpportunityId,
+  opportunity: UpdateOpportunityParams
+) => {
   const { session } = await getUserAuth();
-  const { id: opportunitieId } = opportunitieIdSchema.parse({ id });
-  const newOpportunitie = updateOpportunitieSchema.parse({ ...opportunitie, userId: session?.user.id! });
+  const { id: opportunityId } = opportunityIdSchema.parse({ id });
+  const newOpportunity = updateOpportunitySchema.parse({
+    ...opportunity,
+    userId: session?.user.id!,
+  });
   try {
     await db
-     .update(opportunities)
-     .set(newOpportunitie)
-     .where(and(eq(opportunities.id, opportunitieId!), eq(opportunities.userId, session?.user.id!)))
-    return {success: true}
+      .update(opportunities)
+      .set(newOpportunity)
+      .where(
+        and(
+          and(
+            eq(opportunities.id, opportunityId!),
+            eq(opportunities.orgId, session?.user.activeOrgId!)
+          )
+        )
+      );
+    return { success: true };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);
@@ -41,16 +57,22 @@ export const updateOpportunitie = async (id: OpportunitieId, opportunitie: Updat
   }
 };
 
-export const deleteOpportunitie = async (id: OpportunitieId) => {
+export const deleteOpportunity = async (id: OpportunityId) => {
   const { session } = await getUserAuth();
-  const { id: opportunitieId } = opportunitieIdSchema.parse({ id });
+  const { id: opportunityId } = opportunityIdSchema.parse({ id });
   try {
-    await db.delete(opportunities).where(and(eq(opportunities.id, opportunitieId!), eq(opportunities.userId, session?.user.id!)))
-    return {success: true}
+    await db
+      .delete(opportunities)
+      .where(
+        and(
+          eq(opportunities.id, opportunityId!),
+          eq(opportunities.orgId, session?.user.activeOrgId!)
+        )
+      );
+    return { success: true };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);
     return { error: message };
   }
 };
-
