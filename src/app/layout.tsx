@@ -38,8 +38,7 @@ export default function RootLayout({
         >
           <ClerkProvider>
             <TrpcProvider>
-              <Navbar />
-              {children}
+              <Navbar>{children}</Navbar>
             </TrpcProvider>
           </ClerkProvider>
 

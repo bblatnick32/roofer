@@ -11,6 +11,7 @@ import { z } from "zod";
 import { getLeads } from "@/lib/api/leads/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
+import { opportunities } from "./opportunities";
 
 export const NEW = "new";
 export const OPEN = "open";
@@ -43,7 +44,7 @@ export const leads = mysqlTable("leads", {
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
-  status: mysqlEnum("status", LeadStatuses).notNull().default("new"),
+  status: mysqlEnum("status", LeadStatuses).notNull().default(NEW),
   orgId: varchar("org_id", { length: 256 }).notNull(),
 });
 
@@ -53,7 +54,7 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
     fields: [leads.orgId],
     references: [orgs.id],
   }),
-  // opportunities: many(opportunities),
+  opportunities: many(opportunities),
   // projects: many(projects),
 }));
 
