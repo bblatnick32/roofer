@@ -2,18 +2,18 @@
 "use client";
 
 import {
-  CLOSED,
-  CONTACTED,
-  CONVERTED,
-  DISQUALIFIED,
-  ENGAGED,
-  FOLLOW_UP,
+  LEAD_CLOSED,
+  LEAD_CONTACTED,
+  LEAD_CONVERTED,
+  LEAD_DISQUALIFIED,
+  LEAD_ENGAGED,
+  LEAD_FOLLOW_UP,
+  LEAD_NEW,
+  LEAD_OPEN,
+  LEAD_QUALIFIED,
   Lead,
   LeadStatuses,
-  NEW,
   NewLeadParams,
-  OPEN,
-  QUALIFIED,
   UpdateLeadParams,
   insertLeadParams,
 } from "@/lib/db/schema/leads";
@@ -67,7 +67,7 @@ const LeadForm = ({
       email: "",
       phone: "",
       address: "",
-      status: NEW,
+      status: LEAD_NEW,
     },
   });
 
@@ -111,15 +111,15 @@ const LeadForm = ({
 
   // status
   const statusLabelLookup = {
-    [NEW]: "New",
-    [OPEN]: "Open",
-    [QUALIFIED]: "Qualified",
-    [CONTACTED]: "Contacted",
-    [FOLLOW_UP]: "Follow Up",
-    [ENGAGED]: "Engaged",
-    [CONVERTED]: "Converted",
-    [CLOSED]: "Closed",
-    [DISQUALIFIED]: "Disqualified",
+    [LEAD_NEW]: "New",
+    [LEAD_OPEN]: "Open",
+    [LEAD_QUALIFIED]: "Qualified",
+    [LEAD_CONTACTED]: "Contacted",
+    [LEAD_FOLLOW_UP]: "Follow Up",
+    [LEAD_ENGAGED]: "Engaged",
+    [LEAD_CONVERTED]: "Converted",
+    [LEAD_CLOSED]: "Closed",
+    [LEAD_DISQUALIFIED]: "Disqualified",
   };
 
   const StatusEnum = z.enum(LeadStatuses);

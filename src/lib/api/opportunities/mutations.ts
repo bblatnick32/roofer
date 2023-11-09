@@ -15,7 +15,7 @@ export const createOpportunity = async (opportunity: NewOpportunityParams) => {
   const { session } = await getUserAuth();
   const newOpportunity = insertOpportunitySchema.parse({
     ...opportunity,
-    userId: session?.user.id!,
+    orgId: session?.user.activeOrgId!,
   });
   try {
     await db.insert(opportunities).values(newOpportunity);
@@ -35,7 +35,7 @@ export const updateOpportunity = async (
   const { id: opportunityId } = opportunityIdSchema.parse({ id });
   const newOpportunity = updateOpportunitySchema.parse({
     ...opportunity,
-    userId: session?.user.id!,
+    orgId: session?.user.activeOrgId!,
   });
   try {
     await db

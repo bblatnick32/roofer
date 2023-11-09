@@ -13,26 +13,26 @@ import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 
-export const NEW = "new";
-export const OPEN = "open";
-export const QUALIFIED = "qualified";
-export const CONTACTED = "contacted";
-export const FOLLOW_UP = "follow_up";
-export const ENGAGED = "engaged";
-export const CONVERTED = "converted";
-export const CLOSED = "closed";
-export const DISQUALIFIED = "disqualified";
+export const LEAD_NEW = "new";
+export const LEAD_OPEN = "open";
+export const LEAD_QUALIFIED = "qualified";
+export const LEAD_CONTACTED = "contacted";
+export const LEAD_FOLLOW_UP = "follow_up";
+export const LEAD_ENGAGED = "engaged";
+export const LEAD_CONVERTED = "converted";
+export const LEAD_CLOSED = "closed";
+export const LEAD_DISQUALIFIED = "disqualified";
 
 export const LeadStatuses = [
-  NEW,
-  OPEN,
-  QUALIFIED,
-  CONTACTED,
-  FOLLOW_UP,
-  ENGAGED,
-  CONVERTED,
-  CLOSED,
-  DISQUALIFIED,
+  LEAD_NEW,
+  LEAD_OPEN,
+  LEAD_QUALIFIED,
+  LEAD_CONTACTED,
+  LEAD_FOLLOW_UP,
+  LEAD_ENGAGED,
+  LEAD_CONVERTED,
+  LEAD_CLOSED,
+  LEAD_DISQUALIFIED,
 ] as const;
 
 export const leads = mysqlTable("leads", {
@@ -44,7 +44,7 @@ export const leads = mysqlTable("leads", {
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
-  status: mysqlEnum("status", LeadStatuses).notNull().default(NEW),
+  status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
   orgId: varchar("org_id", { length: 256 }).notNull(),
 });
 

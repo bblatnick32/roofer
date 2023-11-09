@@ -6,6 +6,16 @@ import {
   NewOpportunityParams,
   insertOpportunityParams,
   UpdateOpportunityParams,
+  OPP_CLOSED_WON,
+  OPP_INSPECTION_COMPLETED,
+  OPP_INSPECTION_SCHEDULED,
+  OPP_LOST,
+  OPP_NEGOTIATING,
+  OPP_OPEN,
+  OPP_PRESENTED,
+  OPP_QUOTED,
+  OPP_WON,
+  OppStatuses,
 } from "@/lib/db/schema/opportunities";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,12 +43,22 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../ui/select";
+import { Lead } from "@/lib/db/schema/leads";
 
 const OpportunityForm = ({
   opportunity,
+  leads,
   closeModal,
 }: {
   opportunity?: Opportunity;
+  leads: Lead[];
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
@@ -56,12 +76,13 @@ const OpportunityForm = ({
     defaultValues: opportunity
       ? {
           ...opportunity,
-          closeDate: opportunity.closeDate?.toISOString() ?? "",
+          closeDate: opportunity.closeDate?.toISOString() ?? null,
         }
       : {
           value: 0,
           name: "",
-          closeDate: "",
+          status: OPP_OPEN,
+          closeDate: null,
         },
   });
 
@@ -105,6 +126,22 @@ const OpportunityForm = ({
   const onErrors = (errors: any) => {
     console.log(errors);
   };
+
+  // status
+  const statusLabelLookup = {
+    [OPP_OPEN]: "Open",
+    [OPP_INSPECTION_SCHEDULED]: "Inspection Scheduled",
+    [OPP_INSPECTION_COMPLETED]: "Inspection Completed",
+    [OPP_QUOTED]: "Quoted",
+    [OPP_PRESENTED]: "Presented",
+    [OPP_NEGOTIATING]: "Negotiating",
+    [OPP_WON]: "Won",
+    [OPP_LOST]: "Lost",
+    [OPP_CLOSED_WON]: "Closed Won",
+  };
+
+  const StatusEnum = z.enum(OppStatuses);
+  type StatusEnum = z.infer<typeof StatusEnum>;
 
   return (
     <Form {...form}>
@@ -178,6 +215,64 @@ const OpportunityForm = ({
                   />
                 </PopoverContent>
               </Popover>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Status</FormLabel>
+              <Select
+                defaultValue={field.value}
+                onValueChange={(value) =>
+                  field.onChange(StatusEnum.parse(value))
+                }
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {StatusEnum.options.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {statusLabelLookup[status]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="leadId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Lead</FormLabel>
+              <Select
+                onValueChange={(value) => field.onChange(parseInt(value))}
+                defaultValue={field.value ? field.value.toString() : ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {leads.map((lead) => (
+                    <SelectItem key={lead.id} value={lead.id.toString()}>
+                      {lead.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               <FormMessage />
             </FormItem>

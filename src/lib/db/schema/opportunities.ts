@@ -16,26 +16,26 @@ import { relations } from "drizzle-orm";
 import { leads } from "./leads";
 import { orgs } from "./orgs";
 
-export const OPEN = "open";
-export const INSPECTION_SCHEDULED = "inspection_scheduled";
-export const INSPECTION_COMPLETED = "inspection_completed";
-export const QUOTED = "quoted";
-export const PRESENTED = "presented";
-export const NEGOTIATING = "negotiating";
-export const WON = "won";
-export const LOST = "lost";
-export const CLOSED_WON = "closed_won";
+export const OPP_OPEN = "open";
+export const OPP_INSPECTION_SCHEDULED = "inspection_scheduled";
+export const OPP_INSPECTION_COMPLETED = "inspection_completed";
+export const OPP_QUOTED = "quoted";
+export const OPP_PRESENTED = "presented";
+export const OPP_NEGOTIATING = "negotiating";
+export const OPP_WON = "won";
+export const OPP_LOST = "lost";
+export const OPP_CLOSED_WON = "closed_won";
 
 export const OppStatuses = [
-  OPEN,
-  INSPECTION_SCHEDULED,
-  INSPECTION_COMPLETED,
-  QUOTED,
-  PRESENTED,
-  NEGOTIATING,
-  WON,
-  LOST,
-  CLOSED_WON,
+  OPP_OPEN,
+  OPP_INSPECTION_SCHEDULED,
+  OPP_INSPECTION_COMPLETED,
+  OPP_QUOTED,
+  OPP_PRESENTED,
+  OPP_NEGOTIATING,
+  OPP_WON,
+  OPP_LOST,
+  OPP_CLOSED_WON,
 ] as const;
 
 export const opportunities = mysqlTable("opportunities", {
@@ -46,7 +46,7 @@ export const opportunities = mysqlTable("opportunities", {
   leadId: bigint("lead_id", { mode: "number" }).notNull(),
   value: int("value"),
   closeDate: date("close_date"),
-  status: mysqlEnum("status", OppStatuses).notNull().default(OPEN),
+  status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
   orgId: varchar("org_id", { length: 256 }).notNull(),
 });
 
