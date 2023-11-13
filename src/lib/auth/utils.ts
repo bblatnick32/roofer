@@ -33,10 +33,13 @@ export const getUserAuth = async () => {
   }
 };
 
-export const checkAuth = async (origin: string) => {
+export const checkAuth = async (origin?: string) => {
   const { session } = await getUserAuth();
   const { user } = session ?? {};
 
-  if (!user || !user.activeOrgId || !user.id)
-    redirect(`/auth-callback?origin=${origin}`);
+  if (user && user.activeOrgId && user.id) return user;
+
+  if (origin) return redirect(`/auth-callback?origin=${origin}`);
+
+  throw new Error("Unauthorized");
 };

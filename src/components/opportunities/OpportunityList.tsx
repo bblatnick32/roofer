@@ -3,6 +3,8 @@ import { CompleteOpportunity } from "@/lib/db/schema/opportunities";
 import { trpc } from "@/lib/trpc/client";
 import OpportunityModal from "./OpportunityModal";
 import { CompleteLead } from "@/lib/db/schema/leads";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function OpportunityList({
   opportunities,
@@ -45,7 +47,12 @@ const Opportunity = ({
       <div className="w-full">
         <div>{opportunity.name}</div>
       </div>
-      <OpportunityModal opportunity={opportunity} leads={leads} />
+      {/* <OpportunityModal opportunity={opportunity} leads={leads} /> */}
+      <Link href={`/opportunities/${opportunity.id}`}>
+        <Button variant="ghost" size="sm">
+          Edit
+        </Button>
+      </Link>
     </li>
   );
 };

@@ -6,6 +6,9 @@ import { getOrgs } from "@/lib/api/orgs/queries";
 import { relations } from "drizzle-orm";
 import { leads } from "./leads";
 import { opportunities } from "./opportunities";
+import { photos } from "./photos";
+import { workItems } from "./workItems";
+import { repairTemplates } from "./repairTemplates";
 
 export const orgs = mysqlTable("orgs", {
   id: varchar("id", { length: 256 }).primaryKey(), // matches clerk org id
@@ -24,6 +27,10 @@ export const orgsRelations = relations(orgs, ({ many }) => ({
   users: many(users),
   leads: many(leads),
   opportunities: many(opportunities),
+  photos: many(photos),
+  workItems: many(workItems),
+  repairTemplates: many(repairTemplates),
+  issueTemplates: many(repairTemplates),
   // projects: many(projects),
 }));
 

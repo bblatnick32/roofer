@@ -11,7 +11,7 @@ import { PropsWithChildren } from "react";
 const Navbar = async ({ children }: PropsWithChildren) => {
   const { session } = await getUserAuth();
 
-  if (session)
+  if (session?.user?.id)
     return (
       <div className="flex">
         <LeftNavBar />

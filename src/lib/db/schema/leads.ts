@@ -38,8 +38,8 @@ export const LeadStatuses = [
 export const leads = mysqlTable("leads", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   company: varchar("company", { length: 256 }),
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),

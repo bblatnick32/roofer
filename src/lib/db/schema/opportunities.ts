@@ -15,6 +15,8 @@ import { getOpportunities } from "@/lib/api/opportunities/queries";
 import { relations } from "drizzle-orm";
 import { leads } from "./leads";
 import { orgs } from "./orgs";
+import { photos } from "./photos";
+import { workItems } from "./workItems";
 
 export const OPP_OPEN = "open";
 export const OPP_INSPECTION_SCHEDULED = "inspection_scheduled";
@@ -41,8 +43,8 @@ export const OppStatuses = [
 export const opportunities = mysqlTable("opportunities", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   leadId: bigint("lead_id", { mode: "number" }).notNull(),
   value: int("value"),
   closeDate: date("close_date"),
@@ -51,16 +53,21 @@ export const opportunities = mysqlTable("opportunities", {
 });
 
 // relations
-export const opportunitiesRelations = relations(opportunities, ({ one }) => ({
-  org: one(orgs, {
-    fields: [opportunities.orgId],
-    references: [orgs.id],
-  }),
-  lead: one(leads, {
-    fields: [opportunities.leadId],
-    references: [leads.id],
-  }),
-}));
+export const opportunitiesRelations = relations(
+  opportunities,
+  ({ one, many }) => ({
+    org: one(orgs, {
+      fields: [opportunities.orgId],
+      references: [orgs.id],
+    }),
+    lead: one(leads, {
+      fields: [opportunities.leadId],
+      references: [leads.id],
+    }),
+    photos: many(photos),
+    workItems: many(workItems),
+  })
+);
 
 // Schema for opportunities - used to validate API requests
 export const insertOpportunitySchema = createInsertSchema(opportunities);

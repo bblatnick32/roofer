@@ -124,7 +124,7 @@ const OpportunityForm = ({
   };
 
   const onErrors = (errors: any) => {
-    console.log(errors);
+    console.error(errors);
   };
 
   // status
