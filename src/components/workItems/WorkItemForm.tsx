@@ -26,9 +26,13 @@ import { useToast } from "@/components/ui/use-toast";
 
 const WorkItemForm = ({
   workItem,
+  opportunityId,
+  photoId,
   closeModal,
 }: {
   workItem?: WorkItem;
+  opportunityId: number;
+  photoId: number | null;
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
@@ -43,11 +47,26 @@ const WorkItemForm = ({
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
     resolver: zodResolver(insertWorkItemParams),
+    values: {
+      status: "open",
+      oppId: opportunityId,
+      issueTemplateId: null,
+      repairTemplateId: null,
+      photoId: photoId,
+      conditionText: null,
+      deficiencyText: null,
+      additionalDetails: null,
+      severity: null,
+    },
+    resetOptions: {
+      keepDirtyValues: true, // user-interacted input will be retained
+      keepErrors: true, // input errors will be retained with value update
+    },
     defaultValues: workItem ?? {
-      oppId: 0,
-      issueTemplateId: 0,
-      repairTemplateId: 0,
-      photoId: 0,
+      oppId: opportunityId,
+      issueTemplateId: null,
+      repairTemplateId: null,
+      photoId: photoId,
       //  location: "",
       additionalDetails: "",
       //  costEstimate: 0
@@ -92,20 +111,6 @@ const WorkItemForm = ({
       <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
         <FormField
           control={form.control}
-          name="oppId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Opp Id</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="issueTemplateId"
           render={({ field }) => (
             <FormItem>
@@ -124,20 +129,6 @@ const WorkItemForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Repair Template Id</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="photoId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Photo Id</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value ?? ""} />
               </FormControl>

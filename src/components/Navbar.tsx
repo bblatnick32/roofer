@@ -4,7 +4,6 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { getUserAuth } from "@/lib/auth/utils";
-import AppNav from "./AppNav";
 import { LeftNavBar } from "./left-nav-bar";
 import { PropsWithChildren } from "react";
 
@@ -28,7 +27,6 @@ const Navbar = async ({ children }: PropsWithChildren) => {
               <Link href="/" className="flex z-40 font-bold text-primary">
                 <span>skyline.</span>
               </Link>
-              <AppNav />
             </div>
 
             {/* todo: add mobile navbar */}
