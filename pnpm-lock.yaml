@@ -46,7 +46,7 @@ dependencies:
     version: 1.1.5(@types/react-dom@18.2.14)(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0)
   '@t3-oss/env-nextjs':
     specifier: ^0.7.1
-    version: 0.7.1(typescript@5.2.2)(zod@3.21.4)
+    version: 0.7.1(typescript@5.2.2)(zod@3.22.4)
   '@tailwindcss/typography':
     specifier: ^0.5.10
     version: 0.5.10(tailwindcss@3.3.5)
@@ -85,7 +85,7 @@ dependencies:
     version: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.2)
   drizzle-zod:
     specifier: ^0.5.1
-    version: 0.5.1(drizzle-orm@0.29.0)(zod@3.21.4)
+    version: 0.5.1(drizzle-orm@0.29.0)(zod@3.22.4)
   lucide-react:
     specifier: ^0.292.0
     version: 0.292.0(react@18.2.0)
@@ -126,8 +126,8 @@ dependencies:
     specifier: ^5.7.4
     version: 5.7.4
   zod:
-    specifier: 3.21.4
-    version: 3.21.4
+    specifier: 3.22.4
+    version: 3.22.4
 
 devDependencies:
   '@total-typescript/ts-reset':
@@ -1790,7 +1790,7 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@t3-oss/env-core@0.7.1(typescript@5.2.2)(zod@3.21.4):
+  /@t3-oss/env-core@0.7.1(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-3+SQt39OlmSaRLqYVFv8uRm1BpFepM5TIiMytRqO9cjH+wB77o6BIJdeyM5h5U4qLBMEzOJWCY4MBaU/rLwbYw==}
     peerDependencies:
       typescript: '>=4.7.2'
@@ -1800,10 +1800,10 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
-  /@t3-oss/env-nextjs@0.7.1(typescript@5.2.2)(zod@3.21.4):
+  /@t3-oss/env-nextjs@0.7.1(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-tQDbNLGCOvKGi+JoGuJ/CJInJI7/kLWJqtgGppAKS7ZFLdVOqZYR/uRjxlXOWPnxmUKF8VswOAsq7fXUpNZDhA==}
     peerDependencies:
       typescript: '>=4.7.2'
@@ -1812,9 +1812,9 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@t3-oss/env-core': 0.7.1(typescript@5.2.2)(zod@3.21.4)
+      '@t3-oss/env-core': 0.7.1(typescript@5.2.2)(zod@3.22.4)
       typescript: 5.2.2
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
   /@tailwindcss/typography@0.5.10(tailwindcss@3.3.5):
@@ -2808,7 +2808,7 @@ packages:
       json-diff: 0.9.0
       minimatch: 7.4.6
       wrangler: 3.15.0
-      zod: 3.21.4
+      zod: 3.22.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -2881,14 +2881,14 @@ packages:
       mysql2: 3.6.2
     dev: false
 
-  /drizzle-zod@0.5.1(drizzle-orm@0.29.0)(zod@3.21.4):
+  /drizzle-zod@0.5.1(drizzle-orm@0.29.0)(zod@3.22.4):
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
       drizzle-orm: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.2)
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
   /electron-to-chromium@1.4.567:
@@ -4223,7 +4223,7 @@ packages:
       workerd: 1.20231025.0
       ws: 8.14.2
       youch: 3.3.3
-      zod: 3.21.4
+      zod: 3.22.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -5592,5 +5592,5 @@ packages:
       stacktracey: 2.1.8
     dev: true
 
-  /zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
