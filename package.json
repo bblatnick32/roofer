@@ -71,7 +71,7 @@
     "drizzle-kit": "^0.20.0",
     "eslint": "^8.52.0",
     "eslint-config-async": "^2.0.2",
-    "eslint-config-next": "14.0.2",
+    "eslint-config-next": "14.0.3",
     "eslint-plugin-node": "^11.1.0",
     "mysql2": "^3.6.2",
     "postcss": "^8",
