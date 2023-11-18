@@ -9,6 +9,8 @@ import { getWorkItemsByOpportunityId } from "@/lib/api/workItems/queries";
 import UploadButton from "./UploadWorkItemButton";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
+import OpportunityModal from "@/components/opportunities/OpportunityModal";
+import { getLeads } from "@/lib/api/leads/queries";
 
 export default async function OpportunityDetails({
   opportunity,
@@ -18,16 +20,17 @@ export default async function OpportunityDetails({
   const { workItems } = await getWorkItemsByOpportunityId(opportunity.id);
   const { issueTemplates } = await getIssueTemplates();
   const { repairTemplates } = await getRepairTemplates();
+  const { leads } = await getLeads();
 
   return (
     <div className="w-full min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-4">
-        Opportunity: {opportunity.name}
-      </h1>
+      <div className="flex flex-row items-center justify-between mb-4">
+        <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
+        <OpportunityModal opportunity={opportunity} leads={leads} />
+      </div>
       <Tabs className="w-full" defaultValue="workItems">
         <TabsList className="flex gap-4 border-b pb-2">
           <TabsTrigger value="workItems">Work Items</TabsTrigger>
-          <TabsTrigger value="inspection">Inspection</TabsTrigger>
         </TabsList>
         <TabsContent value="workItems">
           <div className="flex justify-between">
@@ -39,13 +42,6 @@ export default async function OpportunityDetails({
             />
           </div>
           <WorkItemList workItems={workItems} opportunityId={opportunity.id} />
-        </TabsContent>
-        <TabsContent value="inspection">
-          <div className="mt-6">
-            <p className="text-lg">
-              Inspection results and feedback will be displayed here.
-            </p>
-          </div>
         </TabsContent>
       </Tabs>
     </div>

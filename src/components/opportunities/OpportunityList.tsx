@@ -43,16 +43,13 @@ const Opportunity = ({
   leads: CompleteLead[];
 }) => {
   return (
-    <li className="flex justify-between my-2">
-      <div className="w-full">
-        <div>{opportunity.name}</div>
-      </div>
-      {/* <OpportunityModal opportunity={opportunity} leads={leads} /> */}
-      <Link href={`/opportunities/${opportunity.id}`}>
-        <Button variant="ghost" size="sm">
-          Edit
+    <li className="flex justify-between my-2 w-full">
+      <Link href={`/opportunities/${opportunity.id}`} className="w-full">
+        <Button variant="ghost" size="sm" className="w-full justify-start">
+          {opportunity.name}
         </Button>
       </Link>
+      {/* <OpportunityModal opportunity={opportunity} leads={leads} /> */}
     </li>
   );
 };
