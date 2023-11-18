@@ -7,10 +7,8 @@ import {
   workItems,
   workItemOpportunityIdSchema,
 } from "@/lib/db/schema/workItems";
-import {
-  OpportunityId,
-  opportunityIdSchema,
-} from "@/lib/db/schema/opportunities";
+import { OpportunityId } from "@/lib/db/schema/opportunities";
+import { issueTemplates } from "@/lib/db/schema/issueTemplates";
 
 export const getWorkItems = async () => {
   const { session } = await getUserAuth();
@@ -40,8 +38,13 @@ export const getWorkItemsByOpportunityId = async (oppId: OpportunityId) => {
   const { session } = await getUserAuth();
   const { oppId: opportunityId } = workItemOpportunityIdSchema.parse({ oppId });
   const p = await db
-    .select()
+    .select({
+      id: workItems.id,
+      name: issueTemplates.name,
+      createdAt: workItems.createdAt,
+    })
     .from(workItems)
+    .leftJoin(issueTemplates, eq(workItems.issueTemplateId, issueTemplates.id))
     .where(
       and(
         eq(workItems.oppId, opportunityId),

@@ -23,16 +23,29 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
+import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const WorkItemForm = ({
   workItem,
   opportunityId,
   photoId,
+  issueTemplates,
+  repairTemplates,
   closeModal,
 }: {
   workItem?: WorkItem;
   opportunityId: number;
   photoId: number | null;
+  issueTemplates: CompleteIssueTemplate[];
+  repairTemplates: CompleteRepairTemplate[];
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
@@ -40,7 +53,7 @@ const WorkItemForm = ({
   const editing = !!workItem?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertWorkItemParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -59,22 +72,20 @@ const WorkItemForm = ({
       severity: null,
     },
     resetOptions: {
-      keepDirtyValues: true, // user-interacted input will be retained
-      keepErrors: true, // input errors will be retained with value update
+      keepDirtyValues: true,
+      keepErrors: true,
     },
     defaultValues: workItem ?? {
       oppId: opportunityId,
       issueTemplateId: null,
       repairTemplateId: null,
       photoId: photoId,
-      //  location: "",
       additionalDetails: "",
-      //  costEstimate: 0
     },
   });
 
   const onSuccess = async (action: "create" | "update" | "delete") => {
-    await utils.workItems.getWorkItems.invalidate();
+    await utils.workItems.getWorkItemsByOpportunityId.invalidate();
     router.refresh();
     closeModal();
     toast({
@@ -106,18 +117,45 @@ const WorkItemForm = ({
       createWorkItem(values);
     }
   };
+
+  const onErrors = (errors: any) => {
+    console.error(errors);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        className={"space-y-8"}
+      >
         <FormField
           control={form.control}
           name="issueTemplateId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Issue Template Id</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
+              <FormLabel>Issue</FormLabel>
+              <Select
+                defaultValue={
+                  field.value !== null ? field.value.toString() : undefined
+                }
+                onValueChange={field.onChange}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {issueTemplates.map((template) => (
+                    <SelectItem
+                      key={template.id}
+                      value={template.id.toString()}
+                    >
+                      {template.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               <FormMessage />
             </FormItem>
@@ -128,10 +166,29 @@ const WorkItemForm = ({
           name="repairTemplateId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Repair Template Id</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
+              <FormLabel>Repair</FormLabel>
+              <Select
+                defaultValue={
+                  field.value !== null ? field.value.toString() : undefined
+                }
+                onValueChange={field.onChange}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {repairTemplates.map((template) => (
+                    <SelectItem
+                      key={template.id}
+                      value={template.id.toString()}
+                    >
+                      {template.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               <FormMessage />
             </FormItem>
@@ -142,7 +199,7 @@ const WorkItemForm = ({
           name="additionalDetails"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details</FormLabel>
+              <FormLabel>Additional Details</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value ?? ""} />
               </FormControl>

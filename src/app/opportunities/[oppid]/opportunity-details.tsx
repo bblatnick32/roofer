@@ -7,6 +7,8 @@ import { Opportunity } from "@/lib/db/schema/opportunities";
 import WorkItemList from "./work-item-list";
 import { getWorkItemsByOpportunityId } from "@/lib/api/workItems/queries";
 import UploadButton from "./UploadWorkItemButton";
+import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
+import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 
 export default async function OpportunityDetails({
   opportunity,
@@ -14,6 +16,8 @@ export default async function OpportunityDetails({
   opportunity: Opportunity;
 }) {
   const { workItems } = await getWorkItemsByOpportunityId(opportunity.id);
+  const { issueTemplates } = await getIssueTemplates();
+  const { repairTemplates } = await getRepairTemplates();
 
   return (
     <div className="w-full min-h-screen p-6">
@@ -28,7 +32,11 @@ export default async function OpportunityDetails({
         <TabsContent value="workItems">
           <div className="flex justify-between">
             <h1 className="font-semibold text-2xl my-2">Work Items</h1>
-            <UploadButton opportunityId={opportunity.id} />
+            <UploadButton
+              opportunityId={opportunity.id}
+              issueTemplates={issueTemplates}
+              repairTemplates={repairTemplates}
+            />
           </div>
           <WorkItemList workItems={workItems} opportunityId={opportunity.id} />
         </TabsContent>

@@ -15,14 +15,16 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "@/components/ui/use-toast";
 import { trpc } from "@/lib/trpc/client";
 import WorkItemForm from "@/components/workItems/WorkItemForm";
-import Image from "next/image";
+import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
+import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
+import { Photo } from "@/lib/db/schema/photos";
 
 const UploadDropzone = ({
   opportunityId,
   onChange,
 }: {
   opportunityId: number;
-  onChange: (photoId: number | null) => void;
+  onChange: (photo: Photo | null) => void;
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -34,7 +36,7 @@ const UploadDropzone = ({
   const { mutate: startPolling } = trpc.photos.getPhotoByKey.useMutation({
     onSuccess: ({ photo }) => {
       setUrl(photo?.url ?? null);
-      onChange(photo?.id ?? null);
+      onChange(photo ?? null);
     },
     retry: true,
     retryDelay: 500,
@@ -97,7 +99,7 @@ const UploadDropzone = ({
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
           {...getRootProps()}
-          className="border h-64 m-4 border-dashed border-gray-300 rounded-lg"
+          className="border border-dashed h-full border-gray-300 rounded-lg"
         >
           <div className="flex items-center justify-center h-full w-full">
             <label
@@ -144,7 +146,7 @@ const UploadDropzone = ({
                   ) : null}
                 </>
               ) : (
-                <img src={url} />
+                <img src={url} className="w-full h-full" />
               )}
               <input
                 {...getInputProps()}
@@ -160,7 +162,15 @@ const UploadDropzone = ({
   );
 };
 
-const UploadButton = ({ opportunityId }: { opportunityId: number }) => {
+const UploadButton = ({
+  opportunityId,
+  issueTemplates,
+  repairTemplates,
+}: {
+  opportunityId: number;
+  issueTemplates: CompleteIssueTemplate[];
+  repairTemplates: CompleteRepairTemplate[];
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const closeModal = () => setIsOpen(false);
 
@@ -177,17 +187,28 @@ const UploadButton = ({ opportunityId }: { opportunityId: number }) => {
       }}
     >
       <DialogTrigger onClick={() => setIsOpen(true)} asChild>
-        <Button>Upload Work Item</Button>
+        <Button>Add Work Item</Button>
       </DialogTrigger>
 
-      <DialogContent>
-        <div className="flex flex-col">
-          <UploadDropzone opportunityId={opportunityId} onChange={setPhotoId} />
-          <WorkItemForm
-            closeModal={closeModal}
-            opportunityId={opportunityId}
-            photoId={photoId}
-          />
+      <DialogContent fullScreen>
+        <div className="flex flex-row gap-6">
+          <div className="basis-1/2">
+            <UploadDropzone
+              opportunityId={opportunityId}
+              onChange={async (photo) => {
+                setPhotoId(photo?.id ?? null);
+              }}
+            />
+          </div>
+          <div className="basis-1/2">
+            <WorkItemForm
+              closeModal={closeModal}
+              opportunityId={opportunityId}
+              photoId={photoId}
+              issueTemplates={issueTemplates}
+              repairTemplates={repairTemplates}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

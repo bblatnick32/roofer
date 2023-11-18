@@ -1,6 +1,6 @@
 "use client";
 
-import { CompleteWorkItem } from "@/lib/db/schema/workItems";
+import { CompleteWorkItemForList } from "@/lib/db/schema/workItems";
 import { trpc } from "@/lib/trpc/client";
 import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
@@ -13,7 +13,7 @@ const WorkItemList = ({
   workItems,
   opportunityId,
 }: {
-  workItems: CompleteWorkItem[];
+  workItems: CompleteWorkItemForList[];
   opportunityId: number;
 }) => {
   const [currentlyDeletingWorkItem, setCurrentlyDeletingWorkItem] = useState<
@@ -60,10 +60,10 @@ const WorkItemList = ({
                 >
                   <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
                     <div className="h-10 w-10 flex flex-shrink-0 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
-                    <div className="flex-1 truncate">
+                    <div className="flex-1">
                       <div className="flex items-center space-x-3">
-                        <h3 className="truncate text-lg font-medium text-zinc-900">
-                          {workItem.id}
+                        <h3 className="break-words text-sm font-medium text-zinc-900">
+                          {workItem.name}
                         </h3>
                       </div>
                     </div>

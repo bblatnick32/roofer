@@ -13,7 +13,10 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
-import { getWorkItems } from "@/lib/api/workItems/queries";
+import {
+  getWorkItems,
+  getWorkItemsByOpportunityId,
+} from "@/lib/api/workItems/queries";
 import { opportunities } from "./opportunities";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
@@ -129,4 +132,8 @@ export type WorkItemId = z.infer<typeof workItemIdSchema>["id"];
 // this type infers the return from getWorkItems() - meaning it will include any joins
 export type CompleteWorkItem = Awaited<
   ReturnType<typeof getWorkItems>
+>["workItems"][number];
+
+export type CompleteWorkItemForList = Awaited<
+  ReturnType<typeof getWorkItemsByOpportunityId>
 >["workItems"][number];
