@@ -6,7 +6,7 @@ import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Opportunity } from "@/lib/db/schema/opportunities";
 import WorkItemList from "./work-item-list";
 import { getWorkItemsByOpportunityId } from "@/lib/api/workItems/queries";
-import UploadButton from "./UploadWorkItemButton";
+import AddWorkItemButton from "./add-work-item-button";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import OpportunityModal from "@/components/opportunities/OpportunityModal";
@@ -35,7 +35,7 @@ export default async function OpportunityDetails({
         <TabsContent value="workItems">
           <div className="flex justify-between">
             <h1 className="font-semibold text-2xl my-2">Work Items</h1>
-            <UploadButton
+            <AddWorkItemButton
               opportunityId={opportunity.id}
               issueTemplates={issueTemplates}
               repairTemplates={repairTemplates}
