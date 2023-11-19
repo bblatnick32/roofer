@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 "use client";
 
 import { useState } from "react";
-import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,57 +9,79 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import WorkItemForm from "./WorkItemForm";
-import { WorkItem } from "@/lib/db/schema/workItems";
+import { Button } from "../ui/button";
+import WorkItemForm from "@/components/workItems/WorkItemForm";
+import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
+import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
+import UploadDropzone from "./upload-dropzone";
+import { Photo, WorkItem } from "@/lib/db";
 
-export default function WorkItemModal({ 
+const AddEditWorkItemButton = ({
   workItem,
-  emptyState,
-}: { 
+  opportunityId,
+  issueTemplates,
+  repairTemplates,
+  photo,
+}: {
   workItem?: WorkItem;
-  emptyState?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
+  photo?: Photo | null;
+  opportunityId: number;
+  issueTemplates: CompleteIssueTemplate[];
+  repairTemplates: CompleteRepairTemplate[];
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const closeModal = () => setIsOpen(false);
+
+  const [photoIdLocal, setPhotoIdLocal] = useState<number | null>(
+    photo?.id ?? null
+  );
+
   const editing = !!workItem?.id;
+
   return (
-    <Dialog onOpenChange={setOpen} open={open}>
-      <DialogTrigger asChild>
-      { emptyState ? (
-          <Button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mr-1"
-            >
-              <path d="M5 12h14" />
-              <path d="M12 5v14" />
-            </svg>
-            New Work Item
-          </Button>
-        ) : (
-        <Button
-          variant={editing ? "ghost" : "outline"}
-          size={editing ? "sm" : "icon"}
-        >
-          {editing ? "Edit" : "+"}
-        </Button> )}
+    <Dialog
+      open={isOpen}
+      onOpenChange={(v) => {
+        if (!v) {
+          setIsOpen(v);
+          setPhotoIdLocal(null);
+        }
+      }}
+    >
+      <DialogTrigger onClick={() => setIsOpen(true)} asChild>
+        <Button variant={editing ? "ghost" : "default"} size="sm">
+          {editing ? "Edit" : "New Work Item"}
+        </Button>
       </DialogTrigger>
-      <DialogContent>
+
+      <DialogContent fullScreen className="flex flex-col">
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{ editing ? "Edit" : "Create" } Work Item</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Work Item</DialogTitle>
         </DialogHeader>
-        <div className="px-5 pb-5">
-          <WorkItemForm closeModal={closeModal} workItem={workItem} />
+        <div className="flex flex-row gap-6 flex-grow">
+          <div className="basis-1/2">
+            <UploadDropzone
+              photoUrl={photo?.url ?? null}
+              opportunityId={opportunityId}
+              onChange={async (photo) => {
+                setPhotoIdLocal(photo?.id ?? null);
+              }}
+            />
+          </div>
+          <div className="basis-1/2">
+            <WorkItemForm
+              workItem={workItem}
+              closeModal={closeModal}
+              opportunityId={opportunityId}
+              photoId={photoIdLocal}
+              issueTemplates={issueTemplates}
+              repairTemplates={repairTemplates}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default AddEditWorkItemButton;

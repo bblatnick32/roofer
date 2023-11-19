@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/lib/db/client";
 import { eq } from "drizzle-orm";
 import { type UserId, userIdSchema, users } from "@/lib/db/schema/users";
 
@@ -12,4 +12,3 @@ export const getUserById = async (id: UserId) => {
   const [u] = await db.select().from(users).where(eq(users.id, userId));
   return { user: u };
 };
-

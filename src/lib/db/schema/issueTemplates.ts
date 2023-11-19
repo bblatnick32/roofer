@@ -11,6 +11,7 @@ import { z } from "zod";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
+import { workItems } from "./workItems";
 
 export const issueTemplates = mysqlTable("issue_templates", {
   id: serial("id").primaryKey(),
@@ -22,12 +23,16 @@ export const issueTemplates = mysqlTable("issue_templates", {
 });
 
 // relations
-export const issueTemplatesRelations = relations(issueTemplates, ({ one }) => ({
-  org: one(orgs, {
-    fields: [issueTemplates.orgId],
-    references: [orgs.id],
-  }),
-}));
+export const issueTemplatesRelations = relations(
+  issueTemplates,
+  ({ one, many }) => ({
+    org: one(orgs, {
+      fields: [issueTemplates.orgId],
+      references: [orgs.id],
+    }),
+    workItems: many(workItems),
+  })
+);
 
 // Schema for issueTemplates - used to validate API requests
 export const insertIssueTemplateSchema = createInsertSchema(issueTemplates);

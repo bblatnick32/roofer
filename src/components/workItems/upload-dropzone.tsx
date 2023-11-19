@@ -8,16 +8,18 @@ import { trpc } from "@/lib/trpc/client";
 import { useState } from "react";
 
 const UploadDropzone = ({
+  photoUrl = null,
   opportunityId,
   onChange,
 }: {
+  photoUrl?: string | null;
   opportunityId: number;
   onChange: (photo: Photo | null) => void;
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const { toast } = useToast();
-  const [url, setUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(photoUrl);
 
   const { startUpload } = useUploadThing("imageUploader");
 
@@ -87,12 +89,12 @@ const UploadDropzone = ({
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
           {...getRootProps()}
-          className="border border-dashed h-full border-gray-300 rounded-lg"
+          className="border border-dashed border-gray-300 rounded-lg relative h-full w-full"
         >
-          <div className="flex items-center justify-center h-full w-full">
+          <div className="flex items-center justify-center">
             <label
               htmlFor="dropzone-photo"
-              className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="flex flex-col items-center justify-center rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
             >
               {!url ? (
                 <>
@@ -134,7 +136,10 @@ const UploadDropzone = ({
                   ) : null}
                 </>
               ) : (
-                <img src={url} className="w-full h-full" />
+                <img
+                  src={url}
+                  className="max-h-full max-w-full top-0 left-auto absolute w-auto align-bottom overflow-clip"
+                />
               )}
               <input
                 {...getInputProps()}

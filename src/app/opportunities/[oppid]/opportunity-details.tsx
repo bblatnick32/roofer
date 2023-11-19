@@ -4,13 +4,13 @@
  */
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Opportunity } from "@/lib/db/schema/opportunities";
-import WorkItemList from "./work-item-list";
 import { getWorkItemsByOpportunityId } from "@/lib/api/workItems/queries";
-import AddWorkItemButton from "./add-work-item-button";
+import AddWorkItemButton from "../../../components/workItems/WorkItemModal";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import OpportunityModal from "@/components/opportunities/OpportunityModal";
 import { getLeads } from "@/lib/api/leads/queries";
+import WorkItemList from "@/components/workItems/WorkItemList";
 
 export default async function OpportunityDetails({
   opportunity,
@@ -23,7 +23,7 @@ export default async function OpportunityDetails({
   const { leads } = await getLeads();
 
   return (
-    <div className="w-full min-h-screen p-6">
+    <main className="mx-20 max-w-7xl w-full md:p-10">
       <div className="flex flex-row items-center justify-between mb-4">
         <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
         <OpportunityModal opportunity={opportunity} leads={leads} />
@@ -41,9 +41,14 @@ export default async function OpportunityDetails({
               repairTemplates={repairTemplates}
             />
           </div>
-          <WorkItemList workItems={workItems} opportunityId={opportunity.id} />
+          <WorkItemList
+            workItems={workItems}
+            opportunityId={opportunity.id}
+            issueTemplates={issueTemplates}
+            repairTemplates={repairTemplates}
+          />
         </TabsContent>
       </Tabs>
-    </div>
+    </main>
   );
 }

@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/lib/db/client";
 import { and, eq } from "drizzle-orm";
 import {
   OpportunityId,

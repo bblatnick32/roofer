@@ -1,11 +1,9 @@
 import {
   bigint,
-  // int,
   varchar,
   text,
   serial,
   mysqlTable,
-  // decimal,
   mysqlEnum,
   timestamp,
 } from "drizzle-orm/mysql-core";
@@ -20,6 +18,8 @@ import {
 import { opportunities } from "./opportunities";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
+import { issueTemplates } from "./issueTemplates";
+import { repairTemplates } from "./repairTemplates";
 
 export const WORK_ITEM_OPEN = "open";
 export const WORK_ITEM_IN_PROGRESS = "in_progress";
@@ -82,6 +82,14 @@ export const workItemsRelations = relations(workItems, ({ one }) => ({
     fields: [workItems.photoId],
     references: [photos.id],
   }),
+  issueTemplate: one(issueTemplates, {
+    fields: [workItems.issueTemplateId],
+    references: [issueTemplates.id],
+  }),
+  repairTemplate: one(repairTemplates, {
+    fields: [workItems.repairTemplateId],
+    references: [repairTemplates.id],
+  }),
 }));
 
 // Schema for workItems - used to validate API requests
@@ -92,7 +100,6 @@ export const insertWorkItemParams = createSelectSchema(workItems, {
   issueTemplateId: z.coerce.number(),
   repairTemplateId: z.coerce.number(),
   photoId: z.coerce.number(),
-  // costEstimate: z.coerce.number(),
 }).omit({
   id: true,
   orgId: true,
@@ -110,7 +117,6 @@ export const updateWorkItemParams = createSelectSchema(workItems, {
   issueTemplateId: z.coerce.number(),
   repairTemplateId: z.coerce.number(),
   photoId: z.coerce.number(),
-  // costEstimate: z.coerce.number(),
 }).omit({
   orgId: true,
   createdAt: true,
