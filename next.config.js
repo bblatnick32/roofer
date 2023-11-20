@@ -12,6 +12,15 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/img/:path*",
+        destination:
+          "https://uploadthing-prod.s3.us-west-2.amazonaws.com/:path*",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
