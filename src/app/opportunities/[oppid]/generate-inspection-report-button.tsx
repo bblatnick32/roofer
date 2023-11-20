@@ -1,7 +1,7 @@
 "use client";
 
 import { DialogHeader } from "@/components/ui/dialog";
-import { CompleteWorkItemForList } from "@/lib/db";
+import { CompleteIssueForList } from "@/lib/db";
 import {
   Dialog,
   DialogTrigger,
@@ -13,9 +13,9 @@ import { Button } from "@/components/ui/button";
 import PdfRenderer from "@/components/pdf-renderer";
 
 const GenerateInspectionReportButton = ({
-  workItems,
+  issues,
 }: {
-  workItems: CompleteWorkItemForList[];
+  issues: CompleteIssueForList[];
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const closeModal = () => setIsOpen(false);
@@ -40,7 +40,7 @@ const GenerateInspectionReportButton = ({
           <DialogTitle>Inspection Report</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <PdfRenderer workItems={workItems} />
+          <PdfRenderer issues={issues} />
         </div>
       </DialogContent>
     </Dialog>

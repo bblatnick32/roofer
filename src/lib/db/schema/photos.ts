@@ -13,7 +13,7 @@ import { getPhotos } from "@/lib/api/photos/queries";
 import { opportunities } from "./opportunities";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { workItems } from "./workItems";
+import { issues } from "./issues";
 
 export const PHOTO_PENDING = "pending";
 export const PHOTO_PROCESSING = "processing";
@@ -49,7 +49,7 @@ export const photosRelations = relations(photos, ({ one }) => ({
     fields: [photos.oppId],
     references: [opportunities.id],
   }),
-  workItem: one(workItems),
+  issue: one(issues),
 }));
 
 // Schema for photos - used to validate API requests

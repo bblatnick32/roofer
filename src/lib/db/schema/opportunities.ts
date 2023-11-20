@@ -16,7 +16,7 @@ import { relations } from "drizzle-orm";
 import { leads } from "./leads";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
-import { workItems } from "./workItems";
+import { issues } from "./issues";
 
 export const OPP_OPEN = "open";
 export const OPP_INSPECTION_SCHEDULED = "inspection_scheduled";
@@ -65,7 +65,7 @@ export const opportunitiesRelations = relations(
       references: [leads.id],
     }),
     photos: many(photos),
-    workItems: many(workItems),
+    issues: many(issues),
   })
 );
 

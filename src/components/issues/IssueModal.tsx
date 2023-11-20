@@ -10,20 +10,20 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import WorkItemForm from "@/components/workItems/WorkItemForm";
+import IssueForm from "@/components/issues/IssueForm";
 import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
 import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
 import UploadDropzone from "./upload-dropzone";
-import { Photo, WorkItem } from "@/lib/db";
+import { Photo, Issue } from "@/lib/db";
 
-const AddEditWorkItemButton = ({
-  workItem,
+const AddEditIssueButton = ({
+  issue,
   opportunityId,
   issueTemplates,
   repairTemplates,
   photo,
 }: {
-  workItem?: WorkItem;
+  issue?: Issue;
   photo?: Photo | null;
   opportunityId: number;
   issueTemplates: CompleteIssueTemplate[];
@@ -36,7 +36,7 @@ const AddEditWorkItemButton = ({
     photo?.id ?? null
   );
 
-  const editing = !!workItem?.id;
+  const editing = !!issue?.id;
 
   return (
     <Dialog
@@ -50,13 +50,13 @@ const AddEditWorkItemButton = ({
     >
       <DialogTrigger onClick={() => setIsOpen(true)} asChild>
         <Button variant={editing ? "ghost" : "default"} size="sm">
-          {editing ? "Edit" : "New Work Item"}
+          {editing ? "Edit" : "New Issue"}
         </Button>
       </DialogTrigger>
 
       <DialogContent fullScreen className="flex flex-col">
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Work Item</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Issue</DialogTitle>
         </DialogHeader>
         <div className="flex flex-row gap-6 flex-grow">
           <div className="basis-1/2">
@@ -69,8 +69,8 @@ const AddEditWorkItemButton = ({
             />
           </div>
           <div className="basis-1/2">
-            <WorkItemForm
-              workItem={workItem}
+            <IssueForm
+              issue={issue}
               closeModal={closeModal}
               opportunityId={opportunityId}
               photoId={photoIdLocal}
@@ -84,4 +84,4 @@ const AddEditWorkItemButton = ({
   );
 };
 
-export default AddEditWorkItemButton;
+export default AddEditIssueButton;

@@ -11,7 +11,7 @@ import { z } from "zod";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { workItems } from "./workItems";
+import { issues } from "./issues";
 
 export const repairTemplates = mysqlTable("repair_templates", {
   id: serial("id").primaryKey(),
@@ -32,7 +32,7 @@ export const repairTemplatesRelations = relations(
       fields: [repairTemplates.orgId],
       references: [orgs.id],
     }),
-    workItems: many(workItems),
+    issues: many(issues),
   })
 );
 

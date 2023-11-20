@@ -4,13 +4,13 @@
  */
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Opportunity } from "@/lib/db/schema/opportunities";
-import { getWorkItemsByOpportunityId } from "@/lib/api/workItems/queries";
-import AddWorkItemButton from "../../../components/workItems/WorkItemModal";
+import { getIssuesByOpportunityId } from "@/lib/api/issues/queries";
+import AddIssueButton from "../../../components/issues/IssueModal";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import OpportunityModal from "@/components/opportunities/OpportunityModal";
 import { getLeads } from "@/lib/api/leads/queries";
-import WorkItemList from "@/components/workItems/WorkItemList";
+import IssueList from "@/components/issues/IssueList";
 import GenerateInspectionReportButton from "./generate-inspection-report-button";
 
 export default async function OpportunityDetails({
@@ -18,7 +18,7 @@ export default async function OpportunityDetails({
 }: {
   opportunity: Opportunity;
 }) {
-  const { workItems } = await getWorkItemsByOpportunityId(opportunity.id);
+  const { issues } = await getIssuesByOpportunityId(opportunity.id);
   const { issueTemplates } = await getIssueTemplates();
   const { repairTemplates } = await getRepairTemplates();
   const { leads } = await getLeads();
@@ -28,25 +28,25 @@ export default async function OpportunityDetails({
       <div className="flex flex-row items-center justify-between mb-4">
         <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
         <div className="flex flex-row gap-4">
-          <GenerateInspectionReportButton workItems={workItems} />
+          <GenerateInspectionReportButton issues={issues} />
           <OpportunityModal opportunity={opportunity} leads={leads} />
         </div>
       </div>
-      <Tabs className="w-full" defaultValue="workItems">
+      <Tabs className="w-full" defaultValue="issues">
         <TabsList className="flex gap-4 border-b pb-2">
-          <TabsTrigger value="workItems">Work Items</TabsTrigger>
+          <TabsTrigger value="issues">Issues</TabsTrigger>
         </TabsList>
-        <TabsContent value="workItems">
+        <TabsContent value="issues">
           <div className="flex justify-between">
-            <h1 className="font-semibold text-2xl my-2">Work Items</h1>
-            <AddWorkItemButton
+            <h1 className="font-semibold text-2xl my-2">Issues</h1>
+            <AddIssueButton
               opportunityId={opportunity.id}
               issueTemplates={issueTemplates}
               repairTemplates={repairTemplates}
             />
           </div>
-          <WorkItemList
-            workItems={workItems}
+          <IssueList
+            issues={issues}
             opportunityId={opportunity.id}
             issueTemplates={issueTemplates}
             repairTemplates={repairTemplates}

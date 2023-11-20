@@ -7,7 +7,7 @@ import { relations } from "drizzle-orm";
 import { leads } from "./leads";
 import { opportunities } from "./opportunities";
 import { photos } from "./photos";
-import { workItems } from "./workItems";
+import { issues } from "./issues";
 import { repairTemplates } from "./repairTemplates";
 
 export const orgs = mysqlTable("orgs", {
@@ -28,7 +28,7 @@ export const orgsRelations = relations(orgs, ({ many }) => ({
   leads: many(leads),
   opportunities: many(opportunities),
   photos: many(photos),
-  workItems: many(workItems),
+  issues: many(issues),
   repairTemplates: many(repairTemplates),
   issueTemplates: many(repairTemplates),
   // projects: many(projects),

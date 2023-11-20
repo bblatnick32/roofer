@@ -1,14 +1,14 @@
 {
   "plugins": ["eslint-plugin-node", "@typescript-eslint"],
   "extends": [
+    "@vercel/style-guide/eslint/browser",
+    "@vercel/style-guide/eslint/node",
     "async",
     "async/node",
     "async/typescript",
     "next/core-web-vitals",
-    "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
-    "@vercel/style-guide/eslint/node",
     "@vercel/style-guide/eslint/typescript"
   ],
   "parser": "@typescript-eslint/parser",

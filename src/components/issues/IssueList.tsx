@@ -1,38 +1,38 @@
 "use client";
 import { trpc } from "@/lib/trpc/client";
-import WorkItemModal from "./WorkItemModal";
-import { CompleteWorkItemForList } from "@/lib/db/schema/workItems";
+import IssueModal from "./IssueModal";
+import { CompleteIssueForList } from "@/lib/db/schema/issues";
 import { CompleteIssueTemplate, CompleteRepairTemplate } from "@/lib/db";
 
-export default function WorkItemList({
-  workItems,
+export default function IssueList({
+  issues,
   opportunityId,
   issueTemplates,
   repairTemplates,
 }: {
-  workItems: CompleteWorkItemForList[];
+  issues: CompleteIssueForList[];
   opportunityId: number;
   issueTemplates: CompleteIssueTemplate[];
   repairTemplates: CompleteRepairTemplate[];
 }) {
-  const { data: w } = trpc.workItems.getWorkItemsByOpportunityId.useQuery(
+  const { data: w } = trpc.issues.getIssuesByOpportunityId.useQuery(
     { oppId: opportunityId },
     {
-      initialData: { workItems },
+      initialData: { issues },
       refetchOnMount: false,
     }
   );
 
-  if (w.workItems.length === 0) {
+  if (w.issues.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <ul>
-      {w.workItems.map((workItem) => (
-        <WorkItem
-          workItem={workItem}
-          key={workItem.id}
+      {w.issues.map((issue) => (
+        <Issue
+          issue={issue}
+          key={issue.id}
           opportunityId={opportunityId}
           issueTemplates={issueTemplates}
           repairTemplates={repairTemplates}
@@ -42,13 +42,13 @@ export default function WorkItemList({
   );
 }
 
-const WorkItem = ({
-  workItem,
+const Issue = ({
+  issue,
   opportunityId,
   issueTemplates,
   repairTemplates,
 }: {
-  workItem: CompleteWorkItemForList;
+  issue: CompleteIssueForList;
   opportunityId: number;
   issueTemplates: CompleteIssueTemplate[];
   repairTemplates: CompleteRepairTemplate[];
@@ -56,14 +56,14 @@ const WorkItem = ({
   return (
     <li className="flex justify-between my-2">
       <div className="w-full">
-        <div>{workItem?.issueTemplate?.name ?? "No issue set"}</div>
+        <div>{issue?.issueTemplate?.name ?? "No issue set"}</div>
       </div>
-      <WorkItemModal
-        workItem={workItem}
+      <IssueModal
+        issue={issue}
         opportunityId={opportunityId}
         issueTemplates={issueTemplates}
         repairTemplates={repairTemplates}
-        photo={workItem.photo}
+        photo={issue.photo}
       />
     </li>
   );
@@ -72,11 +72,9 @@ const WorkItem = ({
 const EmptyState = () => {
   return (
     <div className="text-center">
-      <h3 className="mt-2 text-sm font-semibold text-gray-900">
-        No work items
-      </h3>
+      <h3 className="mt-2 text-sm font-semibold text-gray-900">No issues</h3>
       <p className="mt-1 text-sm text-gray-500">
-        Get started by creating a new work item.
+        Get started by creating a new issue.
       </p>
     </div>
   );

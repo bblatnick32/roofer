@@ -1,11 +1,7 @@
-import { CompleteWorkItemForList } from "@/lib/db";
+import { CompleteIssueForList } from "@/lib/db";
 import { Document, Page, Text, PDFViewer, Image } from "@react-pdf/renderer";
 
-const PdfRenderer = ({
-  workItems,
-}: {
-  workItems: CompleteWorkItemForList[];
-}) => {
+const PdfRenderer = ({ issues }: { issues: CompleteIssueForList[] }) => {
   return (
     <div className="w-full bg-white rounded-md shadow flex flex-col items-center">
       <div className="flex-1 w-full max-h-screen">
@@ -13,14 +9,14 @@ const PdfRenderer = ({
           <PDFViewer width="100%" height="500">
             <Document>
               <Page size="A4">
-                {workItems?.map((workItem) => {
+                {issues?.map((issue) => {
                   const baseUrl =
                     "https://uploadthing-prod.s3.us-west-2.amazonaws.com/";
-                  const photoUrl = workItem?.photo?.url ?? "";
+                  const photoUrl = issue?.photo?.url ?? "";
                   const path = photoUrl.replace(baseUrl, "");
 
                   return (
-                    <div key={workItem.id}>
+                    <div key={issue.id}>
                       <Image
                         src={{
                           uri: (path && `/img/${path}`) ?? "",
@@ -30,7 +26,7 @@ const PdfRenderer = ({
                           credentials: "omit",
                         }}
                       />
-                      <Text>{workItem?.issueTemplate?.name ?? "No name"}</Text>
+                      <Text>{issue?.issueTemplate?.name ?? "No name"}</Text>
                     </div>
                   );
                 })}

@@ -1,24 +1,24 @@
 import { db } from "@/lib/db/client";
 import { and, eq } from "drizzle-orm";
 import {
-  WorkItemId,
-  NewWorkItemParams,
-  UpdateWorkItemParams,
-  updateWorkItemSchema,
-  insertWorkItemSchema,
-  workItems,
-  workItemIdSchema,
-} from "@/lib/db/schema/workItems";
+  IssueId,
+  NewIssueParams,
+  UpdateIssueParams,
+  updateIssueSchema,
+  insertIssueSchema,
+  issues,
+  issueIdSchema,
+} from "@/lib/db/schema/issues";
 import { getUserAuth } from "@/lib/auth/utils";
 
-export const createWorkItem = async (workItem: NewWorkItemParams) => {
+export const createIssue = async (issue: NewIssueParams) => {
   const { session } = await getUserAuth();
-  const newWorkItem = insertWorkItemSchema.parse({
-    ...workItem,
+  const newIssue = insertIssueSchema.parse({
+    ...issue,
     orgId: session?.user.activeOrgId!,
   });
   try {
-    await db.insert(workItems).values(newWorkItem);
+    await db.insert(issues).values(newIssue);
     return { success: true };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
@@ -27,24 +27,21 @@ export const createWorkItem = async (workItem: NewWorkItemParams) => {
   }
 };
 
-export const updateWorkItem = async (
-  id: WorkItemId,
-  workItem: UpdateWorkItemParams
-) => {
+export const updateIssue = async (id: IssueId, issue: UpdateIssueParams) => {
   const { session } = await getUserAuth();
-  const { id: workItemId } = workItemIdSchema.parse({ id });
-  const newWorkItem = updateWorkItemSchema.parse({
-    ...workItem,
+  const { id: issueId } = issueIdSchema.parse({ id });
+  const newIssue = updateIssueSchema.parse({
+    ...issue,
     orgId: session?.user.activeOrgId!,
   });
   try {
     await db
-      .update(workItems)
-      .set(newWorkItem)
+      .update(issues)
+      .set(newIssue)
       .where(
         and(
-          eq(workItems.id, workItemId!),
-          eq(workItems.orgId, session?.user.activeOrgId!)
+          eq(issues.id, issueId!),
+          eq(issues.orgId, session?.user.activeOrgId!)
         )
       );
     return { success: true };
@@ -55,16 +52,16 @@ export const updateWorkItem = async (
   }
 };
 
-export const deleteWorkItem = async (id: WorkItemId) => {
+export const deleteIssue = async (id: IssueId) => {
   const { session } = await getUserAuth();
-  const { id: workItemId } = workItemIdSchema.parse({ id });
+  const { id: issueId } = issueIdSchema.parse({ id });
   try {
     await db
-      .delete(workItems)
+      .delete(issues)
       .where(
         and(
-          eq(workItems.id, workItemId!),
-          eq(workItems.orgId, session?.user.activeOrgId!)
+          eq(issues.id, issueId!),
+          eq(issues.orgId, session?.user.activeOrgId!)
         )
       );
     return { success: true };

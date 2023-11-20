@@ -3,7 +3,7 @@ import { leadsRouter } from "./leads";
 import { authRouter } from "./auth";
 import { opportunitiesRouter } from "./opportunities";
 import { photosRouter } from "./photos";
-import { workItemsRouter } from "./workItems";
+import { issuesRouter } from "./issues";
 import { issueTemplatesRouter } from "./issueTemplates";
 import { repairTemplatesRouter } from "./repairTemplates";
 
@@ -12,7 +12,7 @@ export const appRouter = router({
   leads: leadsRouter,
   opportunities: opportunitiesRouter,
   photos: photosRouter,
-  workItems: workItemsRouter,
+  issues: issuesRouter,
   issueTemplates: issueTemplatesRouter,
   repairTemplates: repairTemplatesRouter,
 });

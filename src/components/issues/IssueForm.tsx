@@ -2,10 +2,10 @@
 "use client";
 
 import {
-  WorkItem,
-  NewWorkItemParams,
-  insertWorkItemParams,
-} from "@/lib/db/schema/workItems";
+  Issue,
+  NewIssueParams,
+  insertIssueParams,
+} from "@/lib/db/schema/issues";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -33,15 +33,15 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-const WorkItemForm = ({
-  workItem,
+const IssueForm = ({
+  issue,
   opportunityId,
   photoId,
   issueTemplates,
   repairTemplates,
   closeModal,
 }: {
-  workItem?: WorkItem;
+  issue?: Issue;
   opportunityId: number;
   photoId: number | null;
   issueTemplates: CompleteIssueTemplate[];
@@ -50,16 +50,16 @@ const WorkItemForm = ({
 }) => {
   const { toast } = useToast();
 
-  const editing = !!workItem?.id;
+  const editing = !!issue?.id;
 
   const router = useRouter();
   const utils = trpc.useUtils();
 
-  const form = useForm<z.infer<typeof insertWorkItemParams>>({
+  const form = useForm<z.infer<typeof insertIssueParams>>({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
-    resolver: zodResolver(insertWorkItemParams),
+    resolver: zodResolver(insertIssueParams),
     values: {
       status: "open",
       oppId: opportunityId,
@@ -75,7 +75,7 @@ const WorkItemForm = ({
       keepDirtyValues: true,
       keepErrors: true,
     },
-    defaultValues: workItem ?? {
+    defaultValues: issue ?? {
       oppId: opportunityId,
       issueTemplateId: null,
       repairTemplateId: null,
@@ -85,36 +85,36 @@ const WorkItemForm = ({
   });
 
   const onSuccess = async (action: "create" | "update" | "delete") => {
-    await utils.workItems.getWorkItemsByOpportunityId.invalidate();
+    await utils.issues.getIssuesByOpportunityId.invalidate();
     router.refresh();
     closeModal();
     toast({
       title: "Success",
-      description: `Work Item ${action}d!`,
+      description: `Issue ${action}d!`,
       variant: "default",
     });
   };
 
-  const { mutate: createWorkItem, isLoading: isCreating } =
-    trpc.workItems.createWorkItem.useMutation({
+  const { mutate: createIssue, isLoading: isCreating } =
+    trpc.issues.createIssue.useMutation({
       onSuccess: async () => onSuccess("create"),
     });
 
-  const { mutate: updateWorkItem, isLoading: isUpdating } =
-    trpc.workItems.updateWorkItem.useMutation({
+  const { mutate: updateIssue, isLoading: isUpdating } =
+    trpc.issues.updateIssue.useMutation({
       onSuccess: async () => onSuccess("update"),
     });
 
-  const { mutate: deleteWorkItem, isLoading: isDeleting } =
-    trpc.workItems.deleteWorkItem.useMutation({
+  const { mutate: deleteIssue, isLoading: isDeleting } =
+    trpc.issues.deleteIssue.useMutation({
       onSuccess: async () => onSuccess("delete"),
     });
 
-  const handleSubmit = (values: NewWorkItemParams) => {
+  const handleSubmit = (values: NewIssueParams) => {
     if (editing) {
-      updateWorkItem({ ...values, id: workItem.id });
+      updateIssue({ ...values, id: issue.id });
     } else {
-      createWorkItem(values);
+      createIssue(values);
     }
   };
 
@@ -249,7 +249,7 @@ const WorkItemForm = ({
           <Button
             type="button"
             variant={"destructive"}
-            onClick={() => deleteWorkItem({ id: workItem.id })}
+            onClick={() => deleteIssue({ id: issue.id })}
           >
             Delet{isDeleting ? "ing..." : "e"}
           </Button>
@@ -259,4 +259,4 @@ const WorkItemForm = ({
   );
 };
 
-export default WorkItemForm;
+export default IssueForm;

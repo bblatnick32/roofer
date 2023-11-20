@@ -11,7 +11,7 @@ import { z } from "zod";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { workItems } from "./workItems";
+import { issues } from "./issues";
 
 export const issueTemplates = mysqlTable("issue_templates", {
   id: serial("id").primaryKey(),
@@ -30,7 +30,7 @@ export const issueTemplatesRelations = relations(
       fields: [issueTemplates.orgId],
       references: [orgs.id],
     }),
-    workItems: many(workItems),
+    issues: many(issues),
   })
 );
 
