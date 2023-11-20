@@ -91,14 +91,14 @@ const UploadDropzone = ({
           {...getRootProps()}
           className="border border-dashed border-gray-300 rounded-lg relative h-full w-full"
         >
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center w-full h-full">
             <label
               htmlFor="dropzone-photo"
-              className="flex flex-col items-center justify-center rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="flex flex-col w-full h-full items-center justify-center rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
             >
               {!url ? (
                 <>
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6 w-full">
                     <Cloud className="h-6 w-6 text-zinc-500 mb-2" />
                     <p className="mb-2 text-sm text-zinc-700">
                       <span className="font-semibold">Click to upload</span> or

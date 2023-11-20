@@ -11,6 +11,7 @@ import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import OpportunityModal from "@/components/opportunities/OpportunityModal";
 import { getLeads } from "@/lib/api/leads/queries";
 import WorkItemList from "@/components/workItems/WorkItemList";
+import GenerateInspectionReportButton from "./generate-inspection-report-button";
 
 export default async function OpportunityDetails({
   opportunity,
@@ -26,7 +27,10 @@ export default async function OpportunityDetails({
     <main className="mx-20 max-w-7xl w-full md:p-10">
       <div className="flex flex-row items-center justify-between mb-4">
         <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
-        <OpportunityModal opportunity={opportunity} leads={leads} />
+        <div className="flex flex-row gap-4">
+          <GenerateInspectionReportButton workItems={workItems} />
+          <OpportunityModal opportunity={opportunity} leads={leads} />
+        </div>
       </div>
       <Tabs className="w-full" defaultValue="workItems">
         <TabsList className="flex gap-4 border-b pb-2">
