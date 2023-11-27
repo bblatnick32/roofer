@@ -85,7 +85,7 @@ dependencies:
     version: 2.30.0
   drizzle-orm:
     specifier: ^0.29.0
-    version: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.3)
+    version: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.5)
   drizzle-zod:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.29.0)(zod@3.22.4)
@@ -182,8 +182,8 @@ devDependencies:
     specifier: ^11.1.0
     version: 11.1.0(eslint@8.54.0)
   mysql2:
-    specifier: ^3.6.3
-    version: 3.6.3
+    specifier: ^3.6.5
+    version: 3.6.5
   postcss:
     specifier: ^8.4.31
     version: 8.4.31
@@ -3496,7 +3496,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /drizzle-orm@0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.3):
+  /drizzle-orm@0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.5):
     resolution: {integrity: sha512-AC+CuW4GezVjsZDGU9u9B4HyikudOyYVhjm6he3Xn1D6Kky7bHGKob97MMX2piO+t9b6UuajLzlii/T/lu1qwA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -3559,7 +3559,7 @@ packages:
         optional: true
     dependencies:
       '@planetscale/database': 1.11.0
-      mysql2: 3.6.3
+      mysql2: 3.6.5
     dev: false
 
   /drizzle-zod@0.5.1(drizzle-orm@0.29.0)(zod@3.22.4):
@@ -3568,7 +3568,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.3)
+      drizzle-orm: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.5)
       zod: 3.22.4
     dev: false
 
@@ -5386,8 +5386,8 @@ packages:
     hasBin: true
     dev: true
 
-  /mysql2@3.6.3:
-    resolution: {integrity: sha512-qYd/1CDuW1KYZjD4tzg2O8YS3X/UWuGH8ZMHyMeggMTXL3yOdMisbwZ5SNkHzDGlZXKYLAvV8tMrEH+NUMz3fw==}
+  /mysql2@3.6.5:
+    resolution: {integrity: sha512-pS/KqIb0xlXmtmqEuTvBXTmLoQ5LmAz5NW/r8UyQ1ldvnprNEj3P9GbmuQQ2J0A4LO+ynotGi6TbscPa8OUb+w==}
     engines: {node: '>= 8.0'}
     dependencies:
       denque: 2.1.0
