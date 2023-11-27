@@ -133,7 +133,7 @@ const IssueForm = ({
           name="issueTemplateId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Issue</FormLabel>
+              <FormLabel>Type</FormLabel>
               <Select
                 defaultValue={
                   field.value !== null ? field.value.toString() : undefined
@@ -163,10 +163,24 @@ const IssueForm = ({
         />
         <FormField
           control={form.control}
+          name="additionalDetails"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Additional Details</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ""} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="repairTemplateId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Repair</FormLabel>
+              <FormLabel>Recommended Repair</FormLabel>
               <Select
                 defaultValue={
                   field.value !== null ? field.value.toString() : undefined
@@ -189,20 +203,6 @@ const IssueForm = ({
                   ))}
                 </SelectContent>
               </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="additionalDetails"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Additional Details</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
 
               <FormMessage />
             </FormItem>
