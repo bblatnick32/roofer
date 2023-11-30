@@ -14,7 +14,7 @@ const Page = async () => {
   const { issueTemplates } = await getIssueTemplates();
 
   return (
-    <div className="w-full min-h-screen p-6">
+    <div className="w-full min-h-screen pt-8 px-14">
       <h1 className="text-3xl font-bold mb-4">Templates</h1>
       <Tabs className="w-full" defaultValue="issue">
         <TabsList className="flex gap-4 border-b pb-2">
