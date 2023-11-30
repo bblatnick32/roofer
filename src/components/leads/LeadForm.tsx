@@ -5,12 +5,7 @@ import {
   LEAD_CLOSED,
   LEAD_CONTACTED,
   LEAD_CONVERTED,
-  LEAD_DISQUALIFIED,
-  LEAD_ENGAGED,
-  LEAD_FOLLOW_UP,
   LEAD_NEW,
-  LEAD_OPEN,
-  LEAD_QUALIFIED,
   Lead,
   LeadStatuses,
   NewLeadParams,
@@ -112,14 +107,9 @@ const LeadForm = ({
   // status
   const statusLabelLookup = {
     [LEAD_NEW]: "New",
-    [LEAD_OPEN]: "Open",
-    [LEAD_QUALIFIED]: "Qualified",
     [LEAD_CONTACTED]: "Contacted",
-    [LEAD_FOLLOW_UP]: "Follow Up",
-    [LEAD_ENGAGED]: "Engaged",
     [LEAD_CONVERTED]: "Converted",
     [LEAD_CLOSED]: "Closed",
-    [LEAD_DISQUALIFIED]: "Disqualified",
   };
 
   const StatusEnum = z.enum(LeadStatuses);

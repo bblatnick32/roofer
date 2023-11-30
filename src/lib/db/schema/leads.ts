@@ -14,25 +14,15 @@ import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 
 export const LEAD_NEW = "new";
-export const LEAD_OPEN = "open";
-export const LEAD_QUALIFIED = "qualified";
 export const LEAD_CONTACTED = "contacted";
-export const LEAD_FOLLOW_UP = "follow_up";
-export const LEAD_ENGAGED = "engaged";
+export const LEAD_CLOSED = "closed - not converted";
 export const LEAD_CONVERTED = "converted";
-export const LEAD_CLOSED = "closed";
-export const LEAD_DISQUALIFIED = "disqualified";
 
 export const LeadStatuses = [
   LEAD_NEW,
-  LEAD_OPEN,
-  LEAD_QUALIFIED,
   LEAD_CONTACTED,
-  LEAD_FOLLOW_UP,
-  LEAD_ENGAGED,
   LEAD_CONVERTED,
   LEAD_CLOSED,
-  LEAD_DISQUALIFIED,
 ] as const;
 
 export const leads = mysqlTable("leads", {
@@ -55,7 +45,6 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
     references: [orgs.id],
   }),
   opportunities: many(opportunities),
-  // projects: many(projects),
 }));
 
 // Schema for leads - used to validate API requests
