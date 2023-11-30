@@ -93,8 +93,8 @@ dependencies:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.29.1)(zod@3.22.4)
   eslint-plugin-drizzle:
-    specifier: ^0.2.1
-    version: 0.2.1(eslint@8.54.0)
+    specifier: ^0.2.2
+    version: 0.2.2(eslint@8.54.0)
   lucide-react:
     specifier: ^0.294.0
     version: 0.294.0(react@18.2.0)
@@ -4183,8 +4183,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-drizzle@0.2.1(eslint@8.54.0):
-    resolution: {integrity: sha512-gsb/XL+VAijJ9cbrpYMOGT4eV40Mi9/N0FhiW/G8IhMDZ245OglmlJ/z0hbQjhzhW/mGoiq/sIj8uwtNHgb2pQ==}
+  /eslint-plugin-drizzle@0.2.2(eslint@8.54.0):
+    resolution: {integrity: sha512-dyGlL9iOYjSK7jpgh87jL6zZP42mLZV0xrAYv+/hMbh/4ml3oR758wnk5G3frH60rHYscIS6GYL5juSir4yELg==}
     peerDependencies:
       eslint: '>=8.0.0'
     dependencies:
