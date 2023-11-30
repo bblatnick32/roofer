@@ -27,7 +27,7 @@ const Page = () => {
             .then(
               () => {
                 // user is synced to db
-                router.push(origin ? `/${origin}` : "/dashboard");
+                router.push(origin ? `/${origin}` : "/leads");
               },
               (err) => {
                 // handle any errors here
@@ -36,7 +36,7 @@ const Page = () => {
             );
         } else {
           // user is synced to db
-          router.push(origin ? `/${origin}` : "/dashboard");
+          router.push(origin ? `/${origin}` : "/leads");
         }
       }
     },
