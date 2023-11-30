@@ -1,5 +1,5 @@
 {
-  "plugins": ["eslint-plugin-node", "@typescript-eslint"],
+  "plugins": ["eslint-plugin-node", "@typescript-eslint", "drizzle"],
   "extends": [
     "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/node",
@@ -9,7 +9,8 @@
     "next/core-web-vitals",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
-    "@vercel/style-guide/eslint/typescript"
+    "@vercel/style-guide/eslint/typescript",
+    "plugin:drizzle/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
