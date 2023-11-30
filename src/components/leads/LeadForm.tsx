@@ -2,9 +2,6 @@
 "use client";
 
 import {
-  LEAD_CLOSED,
-  LEAD_CONTACTED,
-  LEAD_CONVERTED,
   LEAD_NEW,
   Lead,
   LeadStatuses,
@@ -102,14 +99,6 @@ const LeadForm = ({
 
   const onErrors = (errors: any) => {
     console.error(errors);
-  };
-
-  // status
-  const statusLabelLookup = {
-    [LEAD_NEW]: "New",
-    [LEAD_CONTACTED]: "Contacted",
-    [LEAD_CONVERTED]: "Converted",
-    [LEAD_CLOSED]: "Closed",
   };
 
   const StatusEnum = z.enum(LeadStatuses);
@@ -210,7 +199,7 @@ const LeadForm = ({
                 <SelectContent>
                   {StatusEnum.options.map((status) => (
                     <SelectItem key={status} value={status}>
-                      {statusLabelLookup[status]}
+                      {status}
                     </SelectItem>
                   ))}
                 </SelectContent>

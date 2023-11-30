@@ -13,10 +13,10 @@ import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 
-export const LEAD_NEW = "new";
-export const LEAD_CONTACTED = "contacted";
-export const LEAD_CLOSED = "closed - not converted";
-export const LEAD_CONVERTED = "converted";
+export const LEAD_NEW = "New";
+export const LEAD_CONTACTED = "Contacted";
+export const LEAD_CLOSED = "Closed - Not Converted";
+export const LEAD_CONVERTED = "Converted";
 
 export const LeadStatuses = [
   LEAD_NEW,

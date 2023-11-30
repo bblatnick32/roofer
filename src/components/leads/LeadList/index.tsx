@@ -1,10 +1,14 @@
 "use client";
 import { CompleteLead } from "@/lib/db/schema/leads";
 import { trpc } from "@/lib/trpc/client";
-import LeadModal from "./LeadModal";
-
+import LeadModal from "../LeadModal";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./columns";
+import { useRouter } from "next/navigation";
 
 export default function LeadList({ leads }: { leads: CompleteLead[] }) {
+  const router = useRouter();
+
   const { data: l } = trpc.leads.getLeads.useQuery(undefined, {
     initialData: { leads },
     refetchOnMount: false,
@@ -14,25 +18,8 @@ export default function LeadList({ leads }: { leads: CompleteLead[] }) {
     return <EmptyState />;
   }
 
-  return (
-    <ul>
-      {l.leads.map((lead) => (
-        <Lead lead={lead} key={lead.id} />
-      ))}
-    </ul>
-  );
+  return <DataTable columns={columns} data={l.leads} />;
 }
-
-const Lead = ({ lead }: { lead: CompleteLead }) => {
-  return (
-    <li className="flex justify-between my-2">
-      <div className="w-full">
-        <div>{lead.name}</div>
-      </div>
-      <LeadModal lead={lead} />
-    </li>
-  );
-};
 
 const EmptyState = () => {
   return (
@@ -47,4 +34,3 @@ const EmptyState = () => {
     </div>
   );
 };
-
