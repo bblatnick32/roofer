@@ -1,7 +1,7 @@
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "./max-width-wrapper";
 import { buttonVariants } from "./ui/button";
 import { getUserAuth } from "@/lib/auth/utils";
 import { LeftNavBar } from "./left-nav-bar";
