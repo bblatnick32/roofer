@@ -15,7 +15,6 @@ export default function OpportunityList({
 }) {
   const { data: o } = trpc.opportunities.getOpportunities.useQuery(undefined, {
     initialData: { opportunities },
-    refetchOnMount: false,
   });
 
   if (o.opportunities.length === 0) {

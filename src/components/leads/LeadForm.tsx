@@ -46,7 +46,7 @@ const LeadForm = ({
   const editing = !!lead?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertLeadParams>>({
     // latest Zod release has introduced a TS error with zodResolver

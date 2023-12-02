@@ -3,12 +3,17 @@ import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
 import { trpc } from "@/lib/trpc/client";
 import RepairTemplateModal from "./RepairTemplateModal";
 
-
-export default function RepairTemplateList({ repairTemplates }: { repairTemplates: CompleteRepairTemplate[] }) {
-  const { data: r } = trpc.repairTemplates.getRepairTemplates.useQuery(undefined, {
-    initialData: { repairTemplates },
-    refetchOnMount: false,
-  });
+export default function RepairTemplateList({
+  repairTemplates,
+}: {
+  repairTemplates: CompleteRepairTemplate[];
+}) {
+  const { data: r } = trpc.repairTemplates.getRepairTemplates.useQuery(
+    undefined,
+    {
+      initialData: { repairTemplates },
+    }
+  );
 
   if (r.repairTemplates.length === 0) {
     return <EmptyState />;
@@ -17,13 +22,20 @@ export default function RepairTemplateList({ repairTemplates }: { repairTemplate
   return (
     <ul>
       {r.repairTemplates.map((repairTemplate) => (
-        <RepairTemplate repairTemplate={repairTemplate} key={repairTemplate.id} />
+        <RepairTemplate
+          repairTemplate={repairTemplate}
+          key={repairTemplate.id}
+        />
       ))}
     </ul>
   );
 }
 
-const RepairTemplate = ({ repairTemplate }: { repairTemplate: CompleteRepairTemplate }) => {
+const RepairTemplate = ({
+  repairTemplate,
+}: {
+  repairTemplate: CompleteRepairTemplate;
+}) => {
   return (
     <li className="flex justify-between my-2">
       <div className="w-full">
@@ -37,7 +49,9 @@ const RepairTemplate = ({ repairTemplate }: { repairTemplate: CompleteRepairTemp
 const EmptyState = () => {
   return (
     <div className="text-center">
-      <h3 className="mt-2 text-sm font-semibold text-gray-900">No repair templates</h3>
+      <h3 className="mt-2 text-sm font-semibold text-gray-900">
+        No repair templates
+      </h3>
       <p className="mt-1 text-sm text-gray-500">
         Get started by creating a new repair template.
       </p>
@@ -47,4 +61,3 @@ const EmptyState = () => {
     </div>
   );
 };
-

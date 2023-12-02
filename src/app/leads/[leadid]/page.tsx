@@ -1,4 +1,3 @@
-import MainPageWrapper from "@/components/main-page-wrapper";
 import { getLeadById } from "@/lib/api/leads/queries";
 import { checkAuth } from "@/lib/auth/utils";
 import { notFound } from "next/navigation";
@@ -19,11 +18,7 @@ const Page = async ({ params }: PageProps) => {
 
   if (!lead) notFound();
 
-  return (
-    <MainPageWrapper>
-      <LeadDetails lead={lead} />
-    </MainPageWrapper>
-  );
+  return <LeadDetails lead={lead} />;
 };
 
 export default Page;

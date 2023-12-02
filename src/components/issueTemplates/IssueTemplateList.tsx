@@ -3,12 +3,17 @@ import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
 import { trpc } from "@/lib/trpc/client";
 import IssueTemplateModal from "./IssueTemplateModal";
 
-
-export default function IssueTemplateList({ issueTemplates }: { issueTemplates: CompleteIssueTemplate[] }) {
-  const { data: i } = trpc.issueTemplates.getIssueTemplates.useQuery(undefined, {
-    initialData: { issueTemplates },
-    refetchOnMount: false,
-  });
+export default function IssueTemplateList({
+  issueTemplates,
+}: {
+  issueTemplates: CompleteIssueTemplate[];
+}) {
+  const { data: i } = trpc.issueTemplates.getIssueTemplates.useQuery(
+    undefined,
+    {
+      initialData: { issueTemplates },
+    }
+  );
 
   if (i.issueTemplates.length === 0) {
     return <EmptyState />;
@@ -23,7 +28,11 @@ export default function IssueTemplateList({ issueTemplates }: { issueTemplates: 
   );
 }
 
-const IssueTemplate = ({ issueTemplate }: { issueTemplate: CompleteIssueTemplate }) => {
+const IssueTemplate = ({
+  issueTemplate,
+}: {
+  issueTemplate: CompleteIssueTemplate;
+}) => {
   return (
     <li className="flex justify-between my-2">
       <div className="w-full">
@@ -37,7 +46,9 @@ const IssueTemplate = ({ issueTemplate }: { issueTemplate: CompleteIssueTemplate
 const EmptyState = () => {
   return (
     <div className="text-center">
-      <h3 className="mt-2 text-sm font-semibold text-gray-900">No issue templates</h3>
+      <h3 className="mt-2 text-sm font-semibold text-gray-900">
+        No issue templates
+      </h3>
       <p className="mt-1 text-sm text-gray-500">
         Get started by creating a new issue template.
       </p>
@@ -47,4 +58,3 @@ const EmptyState = () => {
     </div>
   );
 };
-

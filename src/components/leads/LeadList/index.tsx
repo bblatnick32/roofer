@@ -11,7 +11,6 @@ export default function LeadList({ leads }: { leads: CompleteLead[] }) {
 
   const { data: l } = trpc.leads.getLeads.useQuery(undefined, {
     initialData: { leads },
-    refetchOnMount: false,
   });
 
   if (l.leads.length === 0) {

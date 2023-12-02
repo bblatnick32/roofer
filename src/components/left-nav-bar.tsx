@@ -38,7 +38,7 @@ export function LeftNavBar() {
             href={item.href}
             className={cn(
               "block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700",
-              pathname === item.href && "bg-gray-700"
+              pathname.includes(item.href) && "bg-gray-700"
             )}
           >
             {item.label}
@@ -51,7 +51,7 @@ export function LeftNavBar() {
             href={item.href}
             className={cn(
               "block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700",
-              pathname === item.href && "bg-gray-700"
+              pathname.includes(item.href) && "bg-gray-700"
             )}
           >
             {item.label}

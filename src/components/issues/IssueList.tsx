@@ -19,7 +19,6 @@ export default function IssueList({
     { oppId: opportunityId },
     {
       initialData: { issues },
-      refetchOnMount: false,
     }
   );
 

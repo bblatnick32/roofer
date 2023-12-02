@@ -21,8 +21,8 @@ export const LEAD_CONVERTED = "Converted";
 export const LeadStatuses = [
   LEAD_NEW,
   LEAD_CONTACTED,
-  LEAD_CONVERTED,
   LEAD_CLOSED,
+  LEAD_CONVERTED,
 ] as const;
 
 export const leads = mysqlTable("leads", {
