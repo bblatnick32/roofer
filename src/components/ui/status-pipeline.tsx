@@ -3,19 +3,14 @@
 import { trpc } from "@/lib/trpc/client";
 import Stage from "./stage";
 import { toast } from "./use-toast";
-import { Lead, UpdateLeadParams } from "@/lib/db";
+import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db";
 import { useRouter } from "next/navigation";
 
-const StatusPipeline = ({
-  lead,
-  statuses,
-  currentStatus,
-}: {
-  lead: Lead;
-  statuses: ("New" | "Contacted" | "Closed - Not Converted" | "Converted")[];
-  currentStatus: string;
-}) => {
+const statuses = Array.from(LeadStatuses);
+
+const StatusPipeline = ({ lead }: { lead: Lead }) => {
   let found = false;
+  const currentStatus = lead.status;
 
   const router = useRouter();
   const utils = trpc.useUtils();
@@ -30,10 +25,9 @@ const StatusPipeline = ({
     });
   };
 
-  const { mutate: updateLead, isLoading: isUpdating } =
-    trpc.leads.updateLead.useMutation({
-      onSuccess: async () => onSuccess("update"),
-    });
+  const { mutate: updateLead } = trpc.leads.updateLead.useMutation({
+    onSuccess: async () => onSuccess("update"),
+  });
 
   const handleOnClick = (
     status: "New" | "Contacted" | "Closed - Not Converted" | "Converted"
