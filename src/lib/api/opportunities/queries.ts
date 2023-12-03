@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/client";
+import { db } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 import { getUserAuth } from "@/lib/auth/utils";
 import {

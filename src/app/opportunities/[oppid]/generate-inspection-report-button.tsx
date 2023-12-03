@@ -1,7 +1,7 @@
 "use client";
 
 import { DialogHeader } from "@/components/ui/dialog";
-import { CompleteIssueForList } from "@/lib/db";
+import { CompleteIssueForList } from "@/lib/db/schema";
 import {
   Dialog,
   DialogTrigger,

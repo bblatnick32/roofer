@@ -1,10 +1,9 @@
-import { db } from "@/lib/db/client";
+import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import {
   OrgId,
   UpdateOrgParams,
   updateOrgSchema,
-  insertOrgSchema,
   orgs,
   orgIdSchema,
   NewOrg,

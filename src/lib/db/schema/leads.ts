@@ -30,7 +30,7 @@ export const leads = mysqlTable("leads", {
   name: varchar("name", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  company: varchar("company", { length: 256 }),
+  company: varchar("company", { length: 256 }).notNull(),
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
@@ -51,7 +51,8 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
 export const insertLeadSchema = createInsertSchema(leads);
 
 export const insertLeadParams = createSelectSchema(leads, {
-  name: z.string().nonempty("Name cannot be empty."),
+  name: z.string().min(1, "Name cannot be empty."),
+  company: z.string().min(1, "Company cannot be empty."),
 }).omit({
   id: true,
   orgId: true,
@@ -65,7 +66,8 @@ export const updateLeadSchema = createSelectSchema(leads, {}).omit({
 });
 
 export const updateLeadParams = createSelectSchema(leads, {
-  name: z.string().nonempty("Name cannot be empty."),
+  name: z.string().min(1, "Name cannot be empty."),
+  company: z.string().min(1, "Company cannot be empty."),
 }).omit({
   orgId: true,
   createdAt: true,

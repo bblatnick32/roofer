@@ -14,7 +14,7 @@ import IssueForm from "@/components/issues/IssueForm";
 import { CompleteIssueTemplate } from "@/lib/db/schema/issueTemplates";
 import { CompleteRepairTemplate } from "@/lib/db/schema/repairTemplates";
 import UploadDropzone from "./upload-dropzone";
-import { Photo, Issue } from "@/lib/db";
+import { Photo, Issue } from "@/lib/db/schema";
 
 const AddEditIssueButton = ({
   issue,

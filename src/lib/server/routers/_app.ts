@@ -6,6 +6,7 @@ import { photosRouter } from "./photos";
 import { issuesRouter } from "./issues";
 import { issueTemplatesRouter } from "./issueTemplates";
 import { repairTemplatesRouter } from "./repairTemplates";
+import { contactsRouter } from "./contacts";
 
 export const appRouter = router({
   auth: authRouter,
@@ -15,6 +16,7 @@ export const appRouter = router({
   issues: issuesRouter,
   issueTemplates: issueTemplatesRouter,
   repairTemplates: repairTemplatesRouter,
+  contacts: contactsRouter,
 });
 
 export type AppRouter = typeof appRouter;

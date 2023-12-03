@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/client";
+import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { type UserId, userIdSchema, users } from "@/lib/db/schema/users";
 
