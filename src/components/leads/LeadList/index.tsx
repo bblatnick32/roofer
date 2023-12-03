@@ -1,23 +1,14 @@
-"use client";
 import { CompleteLead } from "@/lib/db/schema/leads";
-import { trpc } from "@/lib/trpc/client";
 import LeadModal from "../LeadModal";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
-import { useRouter } from "next/navigation";
 
 export default function LeadList({ leads }: { leads: CompleteLead[] }) {
-  const router = useRouter();
-
-  const { data: l } = trpc.leads.getLeads.useQuery(undefined, {
-    initialData: { leads },
-  });
-
-  if (l.leads.length === 0) {
+  if (leads.length === 0) {
     return <EmptyState />;
   }
 
-  return <DataTable columns={columns} data={l.leads} />;
+  return <DataTable columns={columns} data={leads} />;
 }
 
 const EmptyState = () => {

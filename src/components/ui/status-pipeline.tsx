@@ -1,22 +1,19 @@
 "use client";
-
 import { trpc } from "@/lib/trpc/client";
 import Stage from "./stage";
 import { toast } from "./use-toast";
 import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const statuses = Array.from(LeadStatuses);
 
 const StatusPipeline = ({ lead }: { lead: Lead }) => {
   let found = false;
-  const currentStatus = lead.status;
-
+  const [currentStatus, setCurrentStatus] = useState(lead.status);
   const router = useRouter();
-  const utils = trpc.useUtils();
 
   const onSuccess = async (action: "update") => {
-    await utils.leads.getLeads.invalidate();
     router.refresh();
     toast({
       title: "Success",
@@ -32,6 +29,7 @@ const StatusPipeline = ({ lead }: { lead: Lead }) => {
   const handleOnClick = (
     status: "New" | "Contacted" | "Closed - Not Converted" | "Converted"
   ) => {
+    setCurrentStatus(status);
     updateLead({ ...(lead as UpdateLeadParams), status });
   };
 

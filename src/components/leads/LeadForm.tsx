@@ -46,7 +46,6 @@ const LeadForm = ({
   const editing = !!lead?.id;
 
   const router = useRouter();
-  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertLeadParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -64,9 +63,8 @@ const LeadForm = ({
   });
 
   const onSuccess = async (action: "create" | "update" | "delete") => {
-    await utils.leads.getLeads.invalidate();
-    router.refresh();
     closeModal();
+    router.refresh();
     toast({
       title: "Success",
       description: `Lead ${action}d!`,

@@ -15,7 +15,6 @@ const Page = async ({ params }: PageProps) => {
 
   // make a call to get the lead
   const { lead } = await getLeadById(Number(leadid));
-
   if (!lead) notFound();
 
   return <LeadDetails lead={lead} />;
