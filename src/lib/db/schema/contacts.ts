@@ -23,7 +23,7 @@ export const contacts = mysqlTable("contacts", {
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
   orgId: varchar("org_id", { length: 256 }).notNull(),
-  leadId: bigint("lead_id", { mode: "number" }).notNull(),
+  leadId: bigint("lead_id", { mode: "number" }),
   // companyId: bigint("company_id", { mode: "number" }).notNull(),
 });
 
@@ -50,11 +50,13 @@ export const insertContactParams = createSelectSchema(contacts, {
   orgId: true,
   createdAt: true,
   updatedAt: true,
+  leadId: true,
 });
 
 export const updateContactSchema = createSelectSchema(contacts, {}).omit({
   createdAt: true,
   updatedAt: true,
+  leadId: true,
 });
 
 export const updateContactParams = createSelectSchema(contacts, {
@@ -63,6 +65,7 @@ export const updateContactParams = createSelectSchema(contacts, {
   orgId: true,
   createdAt: true,
   updatedAt: true,
+  leadId: true,
 });
 
 export const contactIdSchema = updateContactSchema.pick({ id: true });
