@@ -1,5 +1,5 @@
 "use client";
-import { Lead } from "@/lib/db/schema";
+import { Lead } from "@/lib/db";
 import { ColumnDef } from "@tanstack/react-table";
 import LeadModal from "../LeadModal";
 import Link from "next/link";

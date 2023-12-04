@@ -1,10 +1,10 @@
-import ContactList from "undefined/components/contacts/ContactList";
-import NewContactModal from "undefined/components/contacts/ContactModal";
-import { api } from "@/lib/trpc/api";
+import ContactList from "@/components/contacts/ContactList";
+import NewContactModal from "@/components/contacts/ContactModal";
 import { checkAuth } from "@/lib/auth/utils";
+import { api } from "@/lib/trpc/api";
 
 export default async function Contacts() {
-  await checkAuth();
+  await checkAuth("contacts");
   const { contacts } = await api.contacts.getContacts.query();
 
   return (

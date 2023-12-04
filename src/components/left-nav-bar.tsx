@@ -17,6 +17,18 @@ const primaryItems = [
     href: "/opportunities",
     label: "Opportunities",
   },
+  {
+    href: "/contacts",
+    label: "Contacts",
+  },
+  {
+    href: "/companies",
+    label: "Companies",
+  },
+  {
+    href: "/properties",
+    label: "Properties",
+  },
 ];
 
 const secondaryItems = [

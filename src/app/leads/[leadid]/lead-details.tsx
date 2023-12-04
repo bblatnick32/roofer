@@ -1,4 +1,4 @@
-import { CompleteLead } from "@/lib/db/schema";
+import { CompleteLead } from "@/lib/db";
 import MainPageWrapper from "@/components/main-page-wrapper";
 import StatusPipeline from "@/components/ui/status-pipeline";
 

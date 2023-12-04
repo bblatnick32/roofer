@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "undefined/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -45,11 +45,8 @@ export default function ContactModal({
             New Contact
           </Button>
         ) : (
-          <Button
-            variant={editing ? "ghost" : "outline"}
-            size={editing ? "sm" : "icon"}
-          >
-            {editing ? "Edit" : "+"}
+          <Button variant={editing ? "ghost" : "default"} size="sm">
+            {editing ? "Edit" : "New Contact"}
           </Button>
         )}
       </DialogTrigger>

@@ -2,7 +2,7 @@
 import { trpc } from "@/lib/trpc/client";
 import IssueModal from "./IssueModal";
 import { CompleteIssueForList } from "@/lib/db/schema/issues";
-import { CompleteIssueTemplate, CompleteRepairTemplate } from "@/lib/db/schema";
+import { CompleteIssueTemplate, CompleteRepairTemplate } from "@/lib/db";
 
 export default function IssueList({
   issues,

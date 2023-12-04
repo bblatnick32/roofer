@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db/client";
 import { and, eq } from "drizzle-orm";
 import {
   ContactId,
@@ -15,7 +15,7 @@ export const createContact = async (contact: NewContactParams) => {
   const { session } = await getUserAuth();
   const newContact = insertContactSchema.parse({
     ...contact,
-    userId: session?.user.id!,
+    orgId: session?.user.activeOrgId!,
   });
   try {
     await db.insert(contacts).values(newContact);
@@ -35,14 +35,17 @@ export const updateContact = async (
   const { id: contactId } = contactIdSchema.parse({ id });
   const newContact = updateContactSchema.parse({
     ...contact,
-    userId: session?.user.id!,
+    orgId: session?.user.activeOrgId!,
   });
   try {
     await db
       .update(contacts)
       .set(newContact)
       .where(
-        and(eq(contacts.id, contactId!), eq(contacts.userId, session?.user.id!))
+        and(
+          eq(contacts.id, contactId!),
+          eq(contacts.orgId, session?.user.activeOrgId!)
+        )
       );
     return { success: true };
   } catch (err) {
@@ -59,7 +62,10 @@ export const deleteContact = async (id: ContactId) => {
     await db
       .delete(contacts)
       .where(
-        and(eq(contacts.id, contactId!), eq(contacts.userId, session?.user.id!))
+        and(
+          eq(contacts.id, contactId!),
+          eq(contacts.orgId, session?.user.activeOrgId!)
+        )
       );
     return { success: true };
   } catch (err) {

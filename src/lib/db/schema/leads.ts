@@ -4,6 +4,7 @@ import {
   mysqlTable,
   mysqlEnum,
   timestamp,
+  bigint,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -12,6 +13,7 @@ import { getLeads } from "@/lib/api/leads/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
+import { contacts } from "./contacts";
 
 export const LEAD_NEW = "New";
 export const LEAD_CONTACTED = "Contacted";
@@ -36,6 +38,7 @@ export const leads = mysqlTable("leads", {
   address: varchar("address", { length: 256 }),
   status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
   orgId: varchar("org_id", { length: 256 }).notNull(),
+  convertedContactId: bigint("converted_contact_id", { mode: "number" }),
 });
 
 // relations
@@ -45,6 +48,10 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
     references: [orgs.id],
   }),
   opportunities: many(opportunities),
+  contact: one(contacts, {
+    fields: [leads.convertedContactId],
+    references: [contacts.id],
+  }),
 }));
 
 // Schema for leads - used to validate API requests

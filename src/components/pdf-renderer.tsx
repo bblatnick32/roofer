@@ -1,4 +1,4 @@
-import { CompleteIssueForList } from "@/lib/db/schema";
+import { CompleteIssueForList } from "@/lib/db";
 import { Document, Page, Text, PDFViewer, Image } from "@react-pdf/renderer";
 
 const PdfRenderer = ({ issues }: { issues: CompleteIssueForList[] }) => {

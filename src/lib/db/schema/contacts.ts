@@ -1,31 +1,68 @@
-import { varchar, serial, mysqlTable } from "drizzle-orm/mysql-core";
+import {
+  varchar,
+  serial,
+  mysqlTable,
+  bigint,
+  timestamp,
+} from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { getContacts } from "@/lib/api/contacts/queries";
+import { relations } from "drizzle-orm";
+import { orgs } from "./orgs";
+import { opportunities } from "./opportunities";
+import { leads } from "./leads";
 
 export const contacts = mysqlTable("contacts", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  company: varchar("company", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
-  userId: varchar("user_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+  leadId: bigint("lead_id", { mode: "number" }).notNull(),
+  // companyId: bigint("company_id", { mode: "number" }).notNull(),
 });
+
+// relations
+export const contactsRelations = relations(contacts, ({ many, one }) => ({
+  org: one(orgs, {
+    fields: [contacts.orgId],
+    references: [orgs.id],
+  }),
+  opportunities: many(opportunities),
+  lead: one(leads, {
+    fields: [contacts.leadId],
+    references: [leads.id],
+  }),
+}));
 
 // Schema for contacts - used to validate API requests
 export const insertContactSchema = createInsertSchema(contacts);
 
-export const insertContactParams = createSelectSchema(contacts, {}).omit({
+export const insertContactParams = createSelectSchema(contacts, {
+  name: z.string().min(1, "Name cannot be empty."),
+}).omit({
   id: true,
-  userId: true,
+  orgId: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
-export const updateContactSchema = createSelectSchema(contacts);
+export const updateContactSchema = createSelectSchema(contacts, {}).omit({
+  createdAt: true,
+  updatedAt: true,
+});
 
-export const updateContactParams = createSelectSchema(contacts, {}).omit({
-  userId: true,
+export const updateContactParams = createSelectSchema(contacts, {
+  name: z.string().min(1, "Name cannot be empty."),
+}).omit({
+  orgId: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const contactIdSchema = updateContactSchema.pick({ id: true });

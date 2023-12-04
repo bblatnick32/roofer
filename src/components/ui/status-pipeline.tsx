@@ -2,7 +2,7 @@
 import { trpc } from "@/lib/trpc/client";
 import Stage from "./stage";
 import { toast } from "./use-toast";
-import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db/schema";
+import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 

@@ -1,5 +1,5 @@
 import { getContactById, getContacts } from "@/lib/api/contacts/queries";
-import { publicProcedure, router } from "@/lib/server/trpc";
+import { privateProcedure, router } from "@/lib/server/trpc";
 import {
   contactIdSchema,
   insertContactParams,
@@ -12,25 +12,25 @@ import {
 } from "@/lib/api/contacts/mutations";
 
 export const contactsRouter = router({
-  getContacts: publicProcedure.query(async () => {
+  getContacts: privateProcedure.query(async () => {
     return getContacts();
   }),
-  getContactById: publicProcedure
+  getContactById: privateProcedure
     .input(contactIdSchema)
     .query(async ({ input }) => {
       return getContactById(input.id);
     }),
-  createContact: publicProcedure
+  createContact: privateProcedure
     .input(insertContactParams)
     .mutation(async ({ input }) => {
       return createContact(input);
     }),
-  updateContact: publicProcedure
+  updateContact: privateProcedure
     .input(updateContactParams)
     .mutation(async ({ input }) => {
       return updateContact(input.id, input);
     }),
-  deleteContact: publicProcedure
+  deleteContact: privateProcedure
     .input(contactIdSchema)
     .mutation(async ({ input }) => {
       return deleteContact(input.id);

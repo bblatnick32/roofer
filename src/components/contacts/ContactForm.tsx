@@ -15,13 +15,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "undefined/components/ui/form";
-import { Input } from "undefined/components/ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc/client";
-import { Button } from "undefined/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { useToast } from "undefined/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const ContactForm = ({
   contact,
@@ -35,7 +35,7 @@ const ContactForm = ({
   const editing = !!contact?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertContactParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -44,7 +44,6 @@ const ContactForm = ({
     resolver: zodResolver(insertContactParams),
     defaultValues: contact ?? {
       name: "",
-      company: "",
       email: "",
       phone: "",
       address: "",
@@ -118,26 +117,12 @@ const ContactForm = ({
         />
         <FormField
           control={form.control}
-          name="company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Company</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
 
               <FormMessage />
@@ -151,7 +136,7 @@ const ContactForm = ({
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
 
               <FormMessage />
@@ -165,7 +150,7 @@ const ContactForm = ({
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
 
               <FormMessage />

@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db/client";
 import { eq, and } from "drizzle-orm";
 import { getUserAuth } from "@/lib/auth/utils";
 import {
@@ -12,7 +12,7 @@ export const getContacts = async () => {
   const c = await db
     .select()
     .from(contacts)
-    .where(eq(contacts.userId, session?.user.id!));
+    .where(eq(contacts.orgId, session?.user.activeOrgId!));
   return { contacts: c };
 };
 
@@ -23,7 +23,10 @@ export const getContactById = async (id: ContactId) => {
     .select()
     .from(contacts)
     .where(
-      and(eq(contacts.id, contactId), eq(contacts.userId, session?.user.id!))
+      and(
+        eq(contacts.id, contactId),
+        eq(contacts.orgId, session?.user.activeOrgId!)
+      )
     );
   return { contact: c };
 };
