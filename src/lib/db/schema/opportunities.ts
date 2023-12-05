@@ -17,6 +17,7 @@ import { contacts } from "./contacts";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
+import { companies } from "./companies";
 
 export const OPP_OPEN = "Open";
 export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
@@ -50,6 +51,7 @@ export const opportunities = mysqlTable("opportunities", {
   closeDate: date("close_date"),
   status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
   orgId: varchar("org_id", { length: 256 }).notNull(),
+  companyId: bigint("company_id", { mode: "number" }).notNull(),
 });
 
 // relations
@@ -59,6 +61,10 @@ export const opportunitiesRelations = relations(
     org: one(orgs, {
       fields: [opportunities.orgId],
       references: [orgs.id],
+    }),
+    company: one(companies, {
+      fields: [opportunities.companyId],
+      references: [companies.id],
     }),
     contact: one(contacts, {
       fields: [opportunities.contactId],

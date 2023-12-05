@@ -34,7 +34,6 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
     fields: [contacts.orgId],
     references: [orgs.id],
   }),
-  opportunities: many(opportunities),
   lead: one(leads, {
     fields: [contacts.leadId],
     references: [leads.id],
@@ -43,6 +42,7 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
     fields: [contacts.companyId],
     references: [companies.id],
   }),
+  opportunities: many(opportunities),
 }));
 
 // Schema for contacts - used to validate API requests
