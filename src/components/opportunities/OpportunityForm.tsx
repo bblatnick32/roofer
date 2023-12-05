@@ -6,15 +6,7 @@ import {
   NewOpportunityParams,
   insertOpportunityParams,
   UpdateOpportunityParams,
-  OPP_CLOSED_WON,
-  OPP_INSPECTION_COMPLETED,
-  OPP_INSPECTION_SCHEDULED,
-  OPP_LOST,
-  OPP_NEGOTIATING,
   OPP_OPEN,
-  OPP_PRESENTED,
-  OPP_QUOTED,
-  OPP_WON,
   OppStatuses,
 } from "@/lib/db/schema/opportunities";
 import { useForm } from "react-hook-form";
@@ -50,15 +42,15 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { Lead } from "@/lib/db/schema/leads";
+import { Contact } from "@/lib/db/schema/contacts";
 
 const OpportunityForm = ({
   opportunity,
-  leads,
+  contacts,
   closeModal,
 }: {
   opportunity?: Opportunity;
-  leads: Lead[];
+  contacts: Contact[];
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
@@ -66,7 +58,7 @@ const OpportunityForm = ({
   const editing = !!opportunity?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertOpportunityParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -125,19 +117,6 @@ const OpportunityForm = ({
 
   const onErrors = (errors: any) => {
     console.error(errors);
-  };
-
-  // status
-  const statusLabelLookup = {
-    [OPP_OPEN]: "Open",
-    [OPP_INSPECTION_SCHEDULED]: "Inspection Scheduled",
-    [OPP_INSPECTION_COMPLETED]: "Inspection Completed",
-    [OPP_QUOTED]: "Quoted",
-    [OPP_PRESENTED]: "Presented",
-    [OPP_NEGOTIATING]: "Negotiating",
-    [OPP_WON]: "Won",
-    [OPP_LOST]: "Lost",
-    [OPP_CLOSED_WON]: "Closed Won",
   };
 
   const StatusEnum = z.enum(OppStatuses);
@@ -240,7 +219,7 @@ const OpportunityForm = ({
                 <SelectContent>
                   {StatusEnum.options.map((status) => (
                     <SelectItem key={status} value={status}>
-                      {statusLabelLookup[status]}
+                      {status}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -252,10 +231,10 @@ const OpportunityForm = ({
         />
         <FormField
           control={form.control}
-          name="leadId"
+          name="contactId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Lead</FormLabel>
+              <FormLabel>Contact</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(parseInt(value))}
                 defaultValue={field.value ? field.value.toString() : ""}
@@ -266,9 +245,9 @@ const OpportunityForm = ({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {leads.map((lead) => (
-                    <SelectItem key={lead.id} value={lead.id.toString()}>
-                      {lead.name}
+                  {contacts.map((contact) => (
+                    <SelectItem key={contact.id} value={contact.id.toString()}>
+                      {contact.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

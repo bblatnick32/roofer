@@ -11,16 +11,16 @@ import {
 } from "../ui/dialog";
 import OpportunityForm from "./OpportunityForm";
 import { Opportunity } from "@/lib/db/schema/opportunities";
-import { Lead } from "@/lib/db/schema/leads";
+import { Contact } from "@/lib/db/schema/contacts";
 
 export default function OpportunityModal({
   opportunity,
   emptyState,
-  leads,
+  contacts,
 }: {
   opportunity?: Opportunity;
   emptyState?: boolean;
-  leads: Lead[];
+  contacts: Contact[];
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -61,7 +61,7 @@ export default function OpportunityModal({
           <OpportunityForm
             closeModal={closeModal}
             opportunity={opportunity}
-            leads={leads}
+            contacts={contacts}
           />
         </div>
       </DialogContent>

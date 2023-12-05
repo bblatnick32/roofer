@@ -9,7 +9,7 @@ import AddIssueButton from "../../../components/issues/IssueModal";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
 import { getRepairTemplates } from "@/lib/api/repairTemplates/queries";
 import OpportunityModal from "@/components/opportunities/OpportunityModal";
-import { getLeads } from "@/lib/api/leads/queries";
+import { getContacts } from "@/lib/api/contacts/queries";
 import IssueList from "@/components/issues/IssueList";
 import GenerateInspectionReportButton from "./generate-inspection-report-button";
 
@@ -21,7 +21,7 @@ export default async function OpportunityDetails({
   const { issues } = await getIssuesByOpportunityId(opportunity.id);
   const { issueTemplates } = await getIssueTemplates();
   const { repairTemplates } = await getRepairTemplates();
-  const { leads } = await getLeads();
+  const { contacts } = await getContacts();
 
   return (
     <main className="mx-20 max-w-7xl w-full md:p-10">
@@ -29,7 +29,7 @@ export default async function OpportunityDetails({
         <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
         <div className="flex flex-row gap-4">
           <GenerateInspectionReportButton issues={issues} />
-          <OpportunityModal opportunity={opportunity} leads={leads} />
+          <OpportunityModal opportunity={opportunity} contacts={contacts} />
         </div>
       </div>
       <Tabs className="w-full" defaultValue="issues">

@@ -13,20 +13,20 @@ import { z } from "zod";
 
 import { getOpportunities } from "@/lib/api/opportunities/queries";
 import { relations } from "drizzle-orm";
-import { leads } from "./leads";
+import { contacts } from "./contacts";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
 
-export const OPP_OPEN = "open";
-export const OPP_INSPECTION_SCHEDULED = "inspection_scheduled";
-export const OPP_INSPECTION_COMPLETED = "inspection_completed";
-export const OPP_QUOTED = "quoted";
-export const OPP_PRESENTED = "presented";
-export const OPP_NEGOTIATING = "negotiating";
-export const OPP_WON = "won";
-export const OPP_LOST = "lost";
-export const OPP_CLOSED_WON = "closed_won";
+export const OPP_OPEN = "Open";
+export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
+export const OPP_INSPECTION_COMPLETED = "Inspection Completed";
+export const OPP_QUOTED = "Quoted";
+export const OPP_PRESENTED = "Presented";
+export const OPP_NEGOTIATING = "Negotiating";
+export const OPP_WON = "Won";
+export const OPP_LOST = "Lost";
+export const OPP_CLOSED_WON = "Closed Won";
 
 export const OppStatuses = [
   OPP_OPEN,
@@ -45,7 +45,7 @@ export const opportunities = mysqlTable("opportunities", {
   name: varchar("name", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  leadId: bigint("lead_id", { mode: "number" }).notNull(),
+  contactId: bigint("contact_id", { mode: "number" }).notNull(),
   value: int("value"),
   closeDate: date("close_date"),
   status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
@@ -60,9 +60,9 @@ export const opportunitiesRelations = relations(
       fields: [opportunities.orgId],
       references: [orgs.id],
     }),
-    lead: one(leads, {
-      fields: [opportunities.leadId],
-      references: [leads.id],
+    contact: one(contacts, {
+      fields: [opportunities.contactId],
+      references: [contacts.id],
     }),
     photos: many(photos),
     issues: many(issues),

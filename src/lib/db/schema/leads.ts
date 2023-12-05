@@ -12,7 +12,6 @@ import { z } from "zod";
 import { getLeads } from "@/lib/api/leads/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { opportunities } from "./opportunities";
 import { contacts } from "./contacts";
 
 export const LEAD_NEW = "New";
@@ -47,7 +46,6 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
     fields: [leads.orgId],
     references: [orgs.id],
   }),
-  opportunities: many(opportunities),
   contact: one(contacts, {
     fields: [leads.convertedContactId],
     references: [contacts.id],
