@@ -13,6 +13,7 @@ import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 import { leads } from "./leads";
+import { companies } from "./companies";
 
 export const contacts = mysqlTable("contacts", {
   id: serial("id").primaryKey(),
@@ -24,7 +25,7 @@ export const contacts = mysqlTable("contacts", {
   address: varchar("address", { length: 256 }),
   orgId: varchar("org_id", { length: 256 }).notNull(),
   leadId: bigint("lead_id", { mode: "number" }),
-  // companyId: bigint("company_id", { mode: "number" }).notNull(),
+  companyId: bigint("company_id", { mode: "number" }).notNull(),
 });
 
 // relations
@@ -37,6 +38,10 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
   lead: one(leads, {
     fields: [contacts.leadId],
     references: [leads.id],
+  }),
+  company: one(companies, {
+    fields: [contacts.companyId],
+    references: [companies.id],
   }),
 }));
 
