@@ -12,6 +12,7 @@ import { getProperties } from "@/lib/api/properties/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { companies } from "./companies";
+import { opportunityProperties } from "./opportunityProperties";
 
 export const properties = mysqlTable("properties", {
   id: serial("id").primaryKey(),
@@ -33,6 +34,7 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
     fields: [properties.companyId],
     references: [companies.id],
   }),
+  opportunityProperties: many(opportunityProperties)
 }));
 
 // Schema for properties - used to validate API requests

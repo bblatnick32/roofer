@@ -18,6 +18,7 @@ import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
 import { companies } from "./companies";
+import { opportunityProperties } from "./opportunityProperties";
 
 export const OPP_OPEN = "Open";
 export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
@@ -72,6 +73,7 @@ export const opportunitiesRelations = relations(
     }),
     photos: many(photos),
     issues: many(issues),
+    opportunityProperties: many(opportunityProperties)
   })
 );
 
