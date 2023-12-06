@@ -20,8 +20,12 @@ export const properties = mysqlTable("properties", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   address: varchar("address", { length: 256 }).notNull(),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
-  companyId: bigint("company_id", { mode: "number" }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
+  companyId: bigint("company_id", { mode: "number" })
+    .notNull()
+    .references(() => companies.id),
 });
 
 // relations
@@ -34,7 +38,7 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
     fields: [properties.companyId],
     references: [companies.id],
   }),
-  opportunityProperties: many(opportunityProperties)
+  opportunityProperties: many(opportunityProperties),
 }));
 
 // Schema for properties - used to validate API requests

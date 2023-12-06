@@ -6,15 +6,20 @@ import { getOpportunityProperties } from "@/lib/api/opportunityProperties/querie
 import { opportunities } from "./opportunities";
 import { properties } from "./properties";
 import { relations } from "drizzle-orm";
+import { orgs } from "./orgs";
 
 export const opportunityProperties = mysqlTable('opportunity_properties', {
   id: serial("id").primaryKey(),
   opportunityId: bigint("company_id", { mode: "number" }).notNull().references(() => opportunities.id),
   propertyId: bigint("company_id", { mode: "number" }).notNull().references(() => properties.id),
-  orgId: varchar("user_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 }).notNull().references(() => orgs.id),
 });
 
 export const opportunityPropertiesRelations = relations(opportunityProperties, ({ one }) => ({
+  org: one(orgs, {
+    fields: [opportunityProperties.orgId],
+    references: [orgs.id],
+  }),
   opportunity: one(opportunities, {
     fields: [opportunityProperties.opportunityId],
     references: [opportunities.id],

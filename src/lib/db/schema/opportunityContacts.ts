@@ -5,16 +5,21 @@ import { z } from "zod";
 import { getOpportunityContacts } from "@/lib/api/opportunityContacts/queries";
 import { opportunities } from "./opportunities";
 import { contacts } from "./contacts";
+import { orgs } from "./orgs";
 import { relations } from "drizzle-orm";
 
 export const opportunityContacts = mysqlTable('opportunity_contacts', {
   id: serial("id").primaryKey(),
   opportunityId: bigint("company_id", { mode: "number" }).notNull().references(() => opportunities.id),
   contactId: bigint("company_id", { mode: "number" }).notNull().references(() => contacts.id),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 }).notNull().references(() => orgs.id),
 });
 
 export const opportunityContactsRelations = relations(opportunityContacts, ({ one }) => ({
+  org: one(orgs, {
+    fields: [opportunityContacts.orgId],
+    references: [orgs.id],
+  }),
   opportunity: one(opportunities, {
     fields: [opportunityContacts.opportunityId],
     references: [opportunities.id],

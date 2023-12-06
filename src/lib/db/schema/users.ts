@@ -8,7 +8,9 @@ import { orgs } from "./orgs";
 
 export const users = mysqlTable("users", {
   id: varchar("id", { length: 256 }).primaryKey(), // matches clerk user id
-  orgId: varchar("org_id", { length: 256 }).notNull(), // matches clerk org id
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id), // matches clerk org id
   email: varchar("email", { length: 256 }).unique(),
 });
 

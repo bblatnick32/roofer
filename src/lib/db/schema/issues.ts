@@ -46,10 +46,16 @@ export const issues = mysqlTable("work_items", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  oppId: bigint("opp_id", { mode: "number" }).notNull(),
-  issueTemplateId: bigint("issue_template_id", { mode: "number" }),
-  repairTemplateId: bigint("repair_template_id", { mode: "number" }),
-  photoId: bigint("photo_id", { mode: "number" }),
+  oppId: bigint("opp_id", { mode: "number" })
+    .notNull()
+    .references(() => opportunities.id),
+  issueTemplateId: bigint("issue_template_id", { mode: "number" }).references(
+    () => issueTemplates.id
+  ),
+  repairTemplateId: bigint("repair_template_id", { mode: "number" }).references(
+    () => repairTemplates.id
+  ),
+  photoId: bigint("photo_id", { mode: "number" }).references(() => photos.id),
   // location: varchar("location", { length: 256 }),
   // measurements: varchar("measurements", { length: 256 }),
   // quantity: int("quantity"),
@@ -60,7 +66,9 @@ export const issues = mysqlTable("work_items", {
   additionalDetails: text("additional_details"),
   status: mysqlEnum("status", IssueStatuses).notNull().default(ISSUE_OPEN),
   severity: mysqlEnum("severity", IssueSeverities),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
 });
 
 // relations

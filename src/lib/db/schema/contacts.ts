@@ -23,9 +23,13 @@ export const contacts = mysqlTable("contacts", {
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
-  leadId: bigint("lead_id", { mode: "number" }),
-  companyId: bigint("company_id", { mode: "number" }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
+  leadId: bigint("lead_id", { mode: "number" }).references(() => leads.id),
+  companyId: bigint("company_id", { mode: "number" })
+    .notNull()
+    .references(() => companies.id),
 });
 
 // relations

@@ -50,8 +50,12 @@ export const opportunities = mysqlTable("opportunities", {
   value: int("value"),
   closeDate: date("close_date"),
   status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
-  companyId: bigint("company_id", { mode: "number" }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
+  companyId: bigint("company_id", { mode: "number" })
+    .notNull()
+    .references(() => companies.id),
 });
 
 // relations

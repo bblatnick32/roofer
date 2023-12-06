@@ -15,7 +15,7 @@ export const companies = mysqlTable("companies", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   address: varchar("address", { length: 256 }),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 }).notNull().references(() => orgs.id),
 });
 
 // relations

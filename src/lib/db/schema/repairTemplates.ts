@@ -21,7 +21,9 @@ export const repairTemplates = mysqlTable("repair_templates", {
   description: text("description"),
   // materialList: varchar("material_list", { length: 256 }),
   // costEstimateFormula: varchar("cost_estimate_formula", { length: 256 }),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
 });
 
 // relations

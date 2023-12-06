@@ -36,7 +36,9 @@ export const leads = mysqlTable("leads", {
   phone: varchar("phone", { length: 256 }),
   address: varchar("address", { length: 256 }),
   status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
   convertedContactId: bigint("converted_contact_id", { mode: "number" }),
 });
 

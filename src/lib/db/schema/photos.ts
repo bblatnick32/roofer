@@ -34,8 +34,12 @@ export const photos = mysqlTable("photos", {
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   url: varchar("url", { length: 256 }),
   key: varchar("key", { length: 256 }),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
-  oppId: bigint("opp_id", { mode: "number" }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
+  oppId: bigint("opp_id", { mode: "number" })
+    .notNull()
+    .references(() => opportunities.id),
   status: mysqlEnum("status", PhotoStatuses).notNull().default(PHOTO_PENDING),
 });
 

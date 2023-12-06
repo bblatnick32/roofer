@@ -19,7 +19,9 @@ export const issueTemplates = mysqlTable("issue_templates", {
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   name: varchar("name", { length: 256 }).notNull(),
   description: text("description"),
-  orgId: varchar("org_id", { length: 256 }).notNull(),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id),
 });
 
 // relations
