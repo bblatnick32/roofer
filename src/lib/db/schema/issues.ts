@@ -42,20 +42,24 @@ export const IssueSeverities = [
   ISSUE_CRITICAL,
 ] as const;
 
-export const issues = mysqlTable("work_items", {
+export const issues = mysqlTable("issues", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  oppId: bigint("opp_id", { mode: "number" })
+  oppId: bigint("opp_id", { mode: "number", unsigned: true })
     .notNull()
     .references(() => opportunities.id),
-  issueTemplateId: bigint("issue_template_id", { mode: "number" }).references(
-    () => issueTemplates.id
+  issueTemplateId: bigint("issue_template_id", {
+    mode: "number",
+    unsigned: true,
+  }).references(() => issueTemplates.id),
+  repairTemplateId: bigint("repair_template_id", {
+    mode: "number",
+    unsigned: true,
+  }).references(() => repairTemplates.id),
+  photoId: bigint("photo_id", { mode: "number", unsigned: true }).references(
+    () => photos.id
   ),
-  repairTemplateId: bigint("repair_template_id", { mode: "number" }).references(
-    () => repairTemplates.id
-  ),
-  photoId: bigint("photo_id", { mode: "number" }).references(() => photos.id),
   // location: varchar("location", { length: 256 }),
   // measurements: varchar("measurements", { length: 256 }),
   // quantity: int("quantity"),

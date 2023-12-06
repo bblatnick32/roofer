@@ -40,7 +40,7 @@ export const photos = mysqlTable(
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
-    oppId: bigint("opp_id", { mode: "number" })
+    oppId: bigint("opp_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => opportunities.id),
     status: mysqlEnum("status", PhotoStatuses).notNull().default(PHOTO_PENDING),

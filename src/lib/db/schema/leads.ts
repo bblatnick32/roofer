@@ -42,7 +42,10 @@ export const leads = mysqlTable(
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
-    convertedContactId: bigint("converted_contact_id", { mode: "number" }),
+    convertedContactId: bigint("converted_contact_id", {
+      mode: "number",
+      unsigned: true,
+    }),
   },
   (table) => {
     return {

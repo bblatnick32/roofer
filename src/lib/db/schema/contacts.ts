@@ -29,8 +29,10 @@ export const contacts = mysqlTable(
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
-    leadId: bigint("lead_id", { mode: "number" }).references(() => leads.id),
-    companyId: bigint("company_id", { mode: "number" })
+    leadId: bigint("lead_id", { mode: "number", unsigned: true }).references(
+      () => leads.id
+    ),
+    companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => companies.id),
   },

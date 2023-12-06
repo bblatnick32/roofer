@@ -56,7 +56,7 @@ export const opportunities = mysqlTable(
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
-    companyId: bigint("company_id", { mode: "number" })
+    companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => companies.id),
   },
