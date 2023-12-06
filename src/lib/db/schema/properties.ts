@@ -11,7 +11,6 @@ import { z } from "zod";
 import { getProperties } from "@/lib/api/properties/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { opportunities } from "./opportunities";
 import { companies } from "./companies";
 
 export const properties = mysqlTable("properties", {
@@ -34,7 +33,6 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
     fields: [properties.companyId],
     references: [companies.id],
   }),
-  opportunities: many(opportunities),
 }));
 
 // Schema for properties - used to validate API requests

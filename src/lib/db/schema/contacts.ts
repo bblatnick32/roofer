@@ -11,7 +11,6 @@ import { z } from "zod";
 import { getContacts } from "@/lib/api/contacts/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { opportunities } from "./opportunities";
 import { leads } from "./leads";
 import { companies } from "./companies";
 
@@ -42,7 +41,6 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
     fields: [contacts.companyId],
     references: [companies.id],
   }),
-  opportunities: many(opportunities),
 }));
 
 // Schema for contacts - used to validate API requests

@@ -1,5 +1,6 @@
 import ContactList from "@/components/contacts/ContactList";
 import NewContactModal from "@/components/contacts/ContactModal";
+import MainPageWrapper from "@/components/main-page-wrapper";
 import { checkAuth } from "@/lib/auth/utils";
 import { api } from "@/lib/trpc/api";
 
@@ -8,12 +9,12 @@ export default async function Contacts() {
   const { contacts } = await api.contacts.getContacts.query();
 
   return (
-    <main className="max-w-3xl mx-auto p-4 rounded-lg bg-card">
+    <MainPageWrapper>
       <div className="flex justify-between">
         <h1 className="font-semibold text-2xl my-2">Contacts</h1>
         <NewContactModal />
       </div>
       <ContactList contacts={contacts} />
-    </main>
+    </MainPageWrapper>
   );
 }
