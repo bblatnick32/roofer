@@ -7,6 +7,7 @@ import {
   timestamp,
   mysqlEnum,
   bigint,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -42,21 +43,29 @@ export const OppStatuses = [
   OPP_CLOSED_WON,
 ] as const;
 
-export const opportunities = mysqlTable("opportunities", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  value: int("value"),
-  closeDate: date("close_date"),
-  status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-  companyId: bigint("company_id", { mode: "number" })
-    .notNull()
-    .references(() => companies.id),
-});
+export const opportunities = mysqlTable(
+  "opportunities",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+    value: int("value"),
+    closeDate: date("close_date"),
+    status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+    companyId: bigint("company_id", { mode: "number" })
+      .notNull()
+      .references(() => companies.id),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const opportunitiesRelations = relations(

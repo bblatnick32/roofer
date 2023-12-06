@@ -5,6 +5,7 @@ import {
   mysqlEnum,
   timestamp,
   bigint,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -26,21 +27,29 @@ export const LeadStatuses = [
   LEAD_CONVERTED,
 ] as const;
 
-export const leads = mysqlTable("leads", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  company: varchar("company", { length: 256 }).notNull(),
-  email: varchar("email", { length: 256 }),
-  phone: varchar("phone", { length: 256 }),
-  address: varchar("address", { length: 256 }),
-  status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-  convertedContactId: bigint("converted_contact_id", { mode: "number" }),
-});
+export const leads = mysqlTable(
+  "leads",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+    company: varchar("company", { length: 256 }).notNull(),
+    email: varchar("email", { length: 256 }),
+    phone: varchar("phone", { length: 256 }),
+    address: varchar("address", { length: 256 }),
+    status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+    convertedContactId: bigint("converted_contact_id", { mode: "number" }),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const leadsRelations = relations(leads, ({ many, one }) => ({

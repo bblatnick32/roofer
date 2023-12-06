@@ -1,4 +1,9 @@
-import { varchar, mysqlTable, datetime } from "drizzle-orm/mysql-core";
+import {
+  varchar,
+  mysqlTable,
+  datetime,
+  uniqueIndex,
+} from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { users } from "./users";
@@ -15,17 +20,25 @@ import { properties } from "./properties";
 import { opportunityProperties } from "./opportunityProperties";
 import { opportunityContacts } from "./opportunityContacts";
 
-export const orgs = mysqlTable("orgs", {
-  id: varchar("id", { length: 256 }).primaryKey(), // matches clerk org id
+export const orgs = mysqlTable(
+  "orgs",
+  {
+    id: varchar("id", { length: 256 }).primaryKey(), // matches clerk org id
 
-  // Stripe
-  stripeCustomerId: varchar("stripe_customer_id", { length: 256 }).unique(),
-  stripeSubscriptionId: varchar("stripe_subscription_id", {
-    length: 256,
-  }).unique(),
-  stripePriceId: varchar("stripe_price_id", { length: 256 }),
-  stripeCurrentPeriodEnd: datetime("stripe_current_period_end"),
-});
+    // Stripe
+    stripeCustomerId: varchar("stripe_customer_id", { length: 256 }).unique(),
+    stripeSubscriptionId: varchar("stripe_subscription_id", {
+      length: 256,
+    }).unique(),
+    stripePriceId: varchar("stripe_price_id", { length: 256 }),
+    stripeCurrentPeriodEnd: datetime("stripe_current_period_end"),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const orgsRelations = relations(orgs, ({ many }) => ({
@@ -40,7 +53,7 @@ export const orgsRelations = relations(orgs, ({ many }) => ({
   companies: many(companies),
   properties: many(properties),
   opportunityProperties: many(opportunityProperties),
-  opportunityContacts: many(opportunityContacts)
+  opportunityContacts: many(opportunityContacts),
 }));
 
 // Schema for orgs - used to validate API requests

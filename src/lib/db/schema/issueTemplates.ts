@@ -4,6 +4,7 @@ import {
   serial,
   mysqlTable,
   timestamp,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -13,16 +14,24 @@ import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { issues } from "./issues";
 
-export const issueTemplates = mysqlTable("issue_templates", {
-  id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  name: varchar("name", { length: 256 }).notNull(),
-  description: text("description"),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-});
+export const issueTemplates = mysqlTable(
+  "issue_templates",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+    name: varchar("name", { length: 256 }).notNull(),
+    description: text("description"),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const issueTemplatesRelations = relations(

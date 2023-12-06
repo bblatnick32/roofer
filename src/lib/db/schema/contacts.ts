@@ -4,6 +4,7 @@ import {
   mysqlTable,
   bigint,
   timestamp,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -15,22 +16,30 @@ import { leads } from "./leads";
 import { companies } from "./companies";
 import { opportunityContacts } from "./opportunityContacts";
 
-export const contacts = mysqlTable("contacts", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  email: varchar("email", { length: 256 }),
-  phone: varchar("phone", { length: 256 }),
-  address: varchar("address", { length: 256 }),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-  leadId: bigint("lead_id", { mode: "number" }).references(() => leads.id),
-  companyId: bigint("company_id", { mode: "number" })
-    .notNull()
-    .references(() => companies.id),
-});
+export const contacts = mysqlTable(
+  "contacts",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+    email: varchar("email", { length: 256 }),
+    phone: varchar("phone", { length: 256 }),
+    address: varchar("address", { length: 256 }),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+    leadId: bigint("lead_id", { mode: "number" }).references(() => leads.id),
+    companyId: bigint("company_id", { mode: "number" })
+      .notNull()
+      .references(() => companies.id),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const contactsRelations = relations(contacts, ({ many, one }) => ({

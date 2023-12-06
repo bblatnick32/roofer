@@ -4,6 +4,7 @@ import {
   mysqlTable,
   bigint,
   timestamp,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -14,19 +15,27 @@ import { orgs } from "./orgs";
 import { companies } from "./companies";
 import { opportunityProperties } from "./opportunityProperties";
 
-export const properties = mysqlTable("properties", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  address: varchar("address", { length: 256 }).notNull(),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-  companyId: bigint("company_id", { mode: "number" })
-    .notNull()
-    .references(() => companies.id),
-});
+export const properties = mysqlTable(
+  "properties",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+    address: varchar("address", { length: 256 }).notNull(),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+    companyId: bigint("company_id", { mode: "number" })
+      .notNull()
+      .references(() => companies.id),
+  },
+  (table) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(table.id),
+    };
+  }
+);
 
 // relations
 export const propertiesRelations = relations(properties, ({ many, one }) => ({
