@@ -13,12 +13,12 @@ import { z } from "zod";
 
 import { getOpportunities } from "@/lib/api/opportunities/queries";
 import { relations } from "drizzle-orm";
-import { contacts } from "./contacts";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
 import { companies } from "./companies";
 import { opportunityProperties } from "./opportunityProperties";
+import { opportunityContacts } from "./opportunityContacts";
 
 export const OPP_OPEN = "Open";
 export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
@@ -47,7 +47,6 @@ export const opportunities = mysqlTable("opportunities", {
   name: varchar("name", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  contactId: bigint("contact_id", { mode: "number" }).notNull(),
   value: int("value"),
   closeDate: date("close_date"),
   status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
@@ -67,13 +66,10 @@ export const opportunitiesRelations = relations(
       fields: [opportunities.companyId],
       references: [companies.id],
     }),
-    contact: one(contacts, {
-      fields: [opportunities.contactId],
-      references: [contacts.id],
-    }),
     photos: many(photos),
     issues: many(issues),
-    opportunityProperties: many(opportunityProperties)
+    opportunityProperties: many(opportunityProperties),
+    opportunityContacts: many(opportunityContacts),
   })
 );
 

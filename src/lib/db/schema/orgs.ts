@@ -13,6 +13,7 @@ import { contacts } from "./contacts";
 import { companies } from "./companies";
 import { properties } from "./properties";
 import { opportunityProperties } from "./opportunityProperties";
+import { opportunityContacts } from "./opportunityContacts";
 
 export const orgs = mysqlTable("orgs", {
   id: varchar("id", { length: 256 }).primaryKey(), // matches clerk org id
@@ -38,7 +39,8 @@ export const orgsRelations = relations(orgs, ({ many }) => ({
   contacts: many(contacts),
   companies: many(companies),
   properties: many(properties),
-  opportunityProperties: many(opportunityProperties)
+  opportunityProperties: many(opportunityProperties),
+  opportunityContacts: many(opportunityContacts)
 }));
 
 // Schema for orgs - used to validate API requests
