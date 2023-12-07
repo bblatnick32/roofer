@@ -32,6 +32,7 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
+import AddressInput from "../ui/address-input";
 
 const LeadForm = ({
   lead,
@@ -106,6 +107,7 @@ const LeadForm = ({
       <form
         onSubmit={form.handleSubmit(onSubmit, onErrors)}
         className={"space-y-8"}
+        autoComplete="off"
       >
         <FormField
           control={form.control}
@@ -169,7 +171,7 @@ const LeadForm = ({
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <Input {...field} value={field.value ?? ""} />
+                <AddressInput {...field} value={field.value ?? ""} />
               </FormControl>
 
               <FormMessage />
