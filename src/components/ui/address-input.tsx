@@ -58,7 +58,7 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
 
         return (
           <li key={place_id} onClick={handleSelect(suggestion)}>
-            <strong>{main_text}</strong> <small>{secondary_text}</small>
+            {main_text} {secondary_text}
           </li>
         );
       });
