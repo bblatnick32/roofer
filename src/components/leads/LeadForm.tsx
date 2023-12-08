@@ -2,7 +2,6 @@
 import {
   LEAD_NEW,
   Lead,
-  LeadStatuses,
   NewLeadParams,
   UpdateLeadParams,
   insertLeadParams,
@@ -90,9 +89,6 @@ const LeadForm = ({
   const onErrors = (errors: any) => {
     console.error(errors);
   };
-
-  const StatusEnum = z.enum(LeadStatuses);
-  type StatusEnum = z.infer<typeof StatusEnum>;
 
   return (
     <Form {...form}>
