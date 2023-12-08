@@ -1,37 +1,15 @@
-"use client";
-import { trpc } from "@/lib/trpc/client";
 import Stage from "./stage";
-import { toast } from "./use-toast";
-import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const statuses = Array.from(LeadStatuses);
-
-const StatusPipeline = ({ lead }: { lead: Lead }) => {
+const StatusPipeline = <Status extends string>({
+  statuses,
+  currentStatus,
+  onClick,
+}: {
+  statuses: Status[];
+  currentStatus: Status;
+  onClick: (status: Status) => void;
+}) => {
   let found = false;
-  const [currentStatus, setCurrentStatus] = useState(lead.status);
-  const router = useRouter();
-
-  const onSuccess = async (action: "update") => {
-    router.refresh();
-    toast({
-      title: "Success",
-      description: `Lead ${action}d!`,
-      variant: "default",
-    });
-  };
-
-  const { mutate: updateLead } = trpc.leads.updateLead.useMutation({
-    onSuccess: async () => onSuccess("update"),
-  });
-
-  const handleOnClick = (
-    status: "New" | "Contacted" | "Closed - Not Converted" | "Converted"
-  ) => {
-    setCurrentStatus(status);
-    updateLead({ ...(lead as UpdateLeadParams), status });
-  };
 
   return (
     <div aria-label="Progress">
@@ -45,7 +23,7 @@ const StatusPipeline = ({ lead }: { lead: Lead }) => {
                   className="bg-green-600 hover:bg-green-500 before:bg-green-600 after:border-l-green-600 hover:after:border-l-green-500 hover:before:bg-green-500"
                   isLast={statusIdx === statuses.length - 1}
                   isFirst={statusIdx === 0}
-                  onClick={() => handleOnClick(status)}
+                  onClick={() => onClick(status)}
                 >
                   {status}
                 </Stage>
@@ -54,7 +32,7 @@ const StatusPipeline = ({ lead }: { lead: Lead }) => {
                   className="before:bg-primary after:border-l-primary hover:bg-primary"
                   isLast={statusIdx === statuses.length - 1}
                   isFirst={statusIdx === 0}
-                  onClick={() => handleOnClick(status)}
+                  onClick={() => onClick(status)}
                 >
                   {status}
                 </Stage>
@@ -64,7 +42,7 @@ const StatusPipeline = ({ lead }: { lead: Lead }) => {
                   variant="secondary"
                   isLast={statusIdx === statuses.length - 1}
                   isFirst={statusIdx === 0}
-                  onClick={() => handleOnClick(status)}
+                  onClick={() => onClick(status)}
                 >
                   {status}
                 </Stage>

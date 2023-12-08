@@ -1,5 +1,4 @@
 "use client";
-
 import {
   LEAD_NEW,
   Lead,
@@ -25,13 +24,6 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../ui/select";
 import AddressInput from "../ui/address-input";
 
 const LeadForm = ({
@@ -178,7 +170,7 @@ const LeadForm = ({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
@@ -207,7 +199,7 @@ const LeadForm = ({
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button
           type="submit"
           className="mr-1"

@@ -1,6 +1,6 @@
 import { CompleteLead } from "@/lib/db";
 import MainPageWrapper from "@/components/main-page-wrapper";
-import StatusPipeline from "@/components/ui/status-pipeline";
+import LeadStatusPipeline from "./lead-status-pipeline";
 
 const LeadDetails = ({ lead }: { lead: CompleteLead }) => {
   return (
@@ -11,7 +11,7 @@ const LeadDetails = ({ lead }: { lead: CompleteLead }) => {
           <h1 className="mb-3 font-bold text-5xl text-gray-900">{lead.name}</h1>
         </div>
       </div>
-      <StatusPipeline lead={lead} />
+      <LeadStatusPipeline lead={lead} />
     </MainPageWrapper>
   );
 };

@@ -35,6 +35,9 @@ export const updateLead = async (id: LeadId, lead: UpdateLeadParams) => {
     orgId: session?.user.activeOrgId!,
   });
   try {
+    // await db.transaction(async (tx) => {
+    //   // if lead is converted, create a new contact, a new company (if needed),
+    // });
     await db
       .update(leads)
       .set(newLead)

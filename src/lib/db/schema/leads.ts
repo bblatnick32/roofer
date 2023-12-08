@@ -83,7 +83,6 @@ export const insertLeadParams = createSelectSchema(leads, {
 export const updateLeadSchema = createSelectSchema(leads, {}).omit({
   createdAt: true,
   updatedAt: true,
-  convertedContactId: true,
 });
 
 export const updateLeadParams = createSelectSchema(leads, {
@@ -93,7 +92,6 @@ export const updateLeadParams = createSelectSchema(leads, {
   orgId: true,
   createdAt: true,
   updatedAt: true,
-  convertedContactId: true,
 });
 
 export const leadIdSchema = updateLeadSchema.pick({ id: true });
