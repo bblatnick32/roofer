@@ -170,36 +170,6 @@ const LeadForm = ({
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
-              <Select
-                defaultValue={field.value}
-                onValueChange={(value) =>
-                  field.onChange(StatusEnum.parse(value))
-                }
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {StatusEnum.options.map((status) => (
-                    <SelectItem key={status} value={status}>
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
         <Button
           type="submit"
           className="mr-1"
