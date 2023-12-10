@@ -6,7 +6,7 @@ import {
   UpdateLeadParams,
   insertLeadParams,
 } from "@/lib/db/schema/leads";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -24,6 +24,18 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import AddressInput from "../ui/address-input";
+import { cn } from "@/lib/utils";
+import { Trash } from "lucide-react";
+
+const LeadPropertiesSchema = z.object({
+  properties: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Please enter a valid name."),
+      })
+    )
+    .optional(),
+});
 
 const LeadForm = ({
   lead,
@@ -38,7 +50,9 @@ const LeadForm = ({
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof insertLeadParams>>({
+  const form = useForm<
+    z.infer<typeof insertLeadParams & typeof LeadPropertiesSchema>
+  >({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
@@ -51,6 +65,11 @@ const LeadForm = ({
       address: "",
       status: LEAD_NEW,
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    name: "properties",
+    control: form.control,
   });
 
   const onSuccess = async (action: "create" | "update" | "delete") => {
@@ -97,75 +116,117 @@ const LeadForm = ({
         className={"space-y-8"}
         autoComplete="off"
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field, fieldState: { error } }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              {error && <FormMessage>{error.message}</FormMessage>}
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Company</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
+        <div className="flex gap-8">
+          <div className="space-y-4 basis-1/2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field, fieldState: { error } }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  {error && <FormMessage>{error.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ""} />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ""} />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ""} />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <AddressInput {...field} value={field.value ?? ""} />
-              </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <AddressInput {...field} value={field.value ?? ""} />
+                  </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="basis-1/2">
+            {fields.map((field, index) => (
+              <FormField
+                control={form.control}
+                key={field.id}
+                name={`properties.${index}.name`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={cn(index !== 0 && "sr-only")}>
+                      Properties
+                    </FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash className="h-5 w-5" />
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={() => append({ name: "" })}
+            >
+              Add Property
+            </Button>
+          </div>
+        </div>
         <Button
           type="submit"
           className="mr-1"

@@ -21,6 +21,7 @@ export const opportunityProperties = mysqlTable("opportunity_properties", {
     .references(() => orgs.id),
 });
 
+// relations
 export const opportunityPropertiesRelations = relations(
   opportunityProperties,
   ({ one }) => ({
