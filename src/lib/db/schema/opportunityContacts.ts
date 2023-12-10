@@ -1,4 +1,9 @@
-import { serial, varchar, mysqlTable, bigint } from "drizzle-orm/mysql-core";
+import {
+  varchar,
+  mysqlTable,
+  bigint,
+  primaryKey,
+} from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,18 +13,25 @@ import { contacts } from "./contacts";
 import { orgs } from "./orgs";
 import { relations } from "drizzle-orm";
 
-export const opportunityContacts = mysqlTable("opportunity_contacts", {
-  id: serial("id").primaryKey(),
-  opportunityId: bigint("opportunity_id", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => opportunities.id),
-  contactId: bigint("contact_id", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => contacts.id),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-});
+export const opportunityContacts = mysqlTable(
+  "opportunity_contacts",
+  {
+    opportunityId: bigint("opportunity_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => opportunities.id),
+    contactId: bigint("contact_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => contacts.id),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.contactId, table.opportunityId] }),
+    };
+  }
+);
 
 export const opportunityContactsRelations = relations(
   opportunityContacts,
@@ -67,9 +79,7 @@ export const updateOpportunityContactParams = createSelectSchema(
   orgId: true,
 });
 
-export const opportunityContactIdSchema = updateOpportunityContactSchema.pick({
-  id: true,
-});
+export const opportunityContactIdSchema = updateOpportunityContactSchema;
 
 // Types for opportunityContacts - used to type API request params and within Components
 export type OpportunityContact = z.infer<typeof updateOpportunityContactSchema>;
@@ -82,9 +92,6 @@ export type NewOpportunityContactParams = z.infer<
 export type UpdateOpportunityContactParams = z.infer<
   typeof updateOpportunityContactParams
 >;
-export type OpportunityContactId = z.infer<
-  typeof opportunityContactIdSchema
->["id"];
 
 // this type infers the return from getOpportunityContacts() - meaning it will include any joins
 export type CompleteOpportunityContact = Awaited<

@@ -1,4 +1,9 @@
-import { varchar, serial, mysqlTable, bigint } from "drizzle-orm/mysql-core";
+import {
+  varchar,
+  mysqlTable,
+  bigint,
+  primaryKey,
+} from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,18 +13,25 @@ import { properties } from "./properties";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 
-export const opportunityProperties = mysqlTable("opportunity_properties", {
-  id: serial("id").primaryKey(),
-  opportunityId: bigint("opportunity_id", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => opportunities.id),
-  propertyId: bigint("property_id", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => properties.id),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id),
-});
+export const opportunityProperties = mysqlTable(
+  "opportunity_properties",
+  {
+    opportunityId: bigint("opportunity_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => opportunities.id),
+    propertyId: bigint("property_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => properties.id),
+    orgId: varchar("org_id", { length: 256 })
+      .notNull()
+      .references(() => orgs.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.propertyId, table.opportunityId] }),
+    };
+  }
+);
 
 // relations
 export const opportunityPropertiesRelations = relations(
@@ -64,9 +76,7 @@ export const updateOpportunityPropertyParams = createSelectSchema(
   orgId: true,
 });
 
-export const opportunityPropertyIdSchema = updateOpportunityPropertySchema.pick(
-  { id: true }
-);
+export const opportunityPropertyIdSchema = updateOpportunityPropertySchema;
 
 // Types for opportunityProperties - used to type API request params and within Components
 export type OpportunityProperty = z.infer<
@@ -81,9 +91,6 @@ export type NewOpportunityPropertyParams = z.infer<
 export type UpdateOpportunityPropertyParams = z.infer<
   typeof updateOpportunityPropertyParams
 >;
-export type OpportunityPropertyId = z.infer<
-  typeof opportunityPropertyIdSchema
->["id"];
 
 // this type infers the return from getOpportunityProperties() - meaning it will include any joins
 export type CompleteOpportunityProperty = Awaited<
