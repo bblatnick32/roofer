@@ -6,6 +6,7 @@ import {
   timestamp,
   bigint,
   uniqueIndex,
+  json,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -27,6 +28,12 @@ export const LeadStatuses = [
   LEAD_CONVERTED,
 ] as const;
 
+type Property = {
+  name: string;
+};
+
+type Properties = Property[];
+
 export const leads = mysqlTable(
   "leads",
   {
@@ -38,6 +45,7 @@ export const leads = mysqlTable(
     email: varchar("email", { length: 256 }),
     phone: varchar("phone", { length: 256 }),
     address: varchar("address", { length: 256 }),
+    properties: json("properties").$type<Properties>(),
     status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
@@ -55,7 +63,7 @@ export const leads = mysqlTable(
 );
 
 // relations
-export const leadsRelations = relations(leads, ({ many, one }) => ({
+export const leadsRelations = relations(leads, ({ one }) => ({
   org: one(orgs, {
     fields: [leads.orgId],
     references: [orgs.id],
@@ -67,11 +75,22 @@ export const leadsRelations = relations(leads, ({ many, one }) => ({
 }));
 
 // Schema for leads - used to validate API requests
-export const insertLeadSchema = createInsertSchema(leads);
+export const insertLeadSchema = createInsertSchema(leads, {
+  properties: z.array(
+    z.object({
+      name: z.string().min(1, "Please enter a valid name."),
+    })
+  ),
+});
 
 export const insertLeadParams = createSelectSchema(leads, {
   name: z.string().min(1, "Name cannot be empty."),
   company: z.string().min(1, "Company cannot be empty."),
+  properties: z.array(
+    z.object({
+      name: z.string().min(1, "Please enter a valid name."),
+    })
+  ),
 }).omit({
   id: true,
   orgId: true,
@@ -80,18 +99,31 @@ export const insertLeadParams = createSelectSchema(leads, {
   convertedContactId: true,
 });
 
-export const updateLeadSchema = createSelectSchema(leads, {}).omit({
+export const updateLeadSchema = createSelectSchema(leads, {
+  properties: z.array(
+    z.object({
+      name: z.string().min(1, "Please enter a valid name."),
+    })
+  ),
+}).omit({
   createdAt: true,
   updatedAt: true,
+  convertedContactId: true,
 });
 
 export const updateLeadParams = createSelectSchema(leads, {
   name: z.string().min(1, "Name cannot be empty."),
   company: z.string().min(1, "Company cannot be empty."),
+  properties: z.array(
+    z.object({
+      name: z.string().min(1, "Please enter a valid name."),
+    })
+  ),
 }).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
+  convertedContactId: true,
 });
 
 export const leadIdSchema = updateLeadSchema.pick({ id: true });

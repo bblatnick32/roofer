@@ -27,16 +27,6 @@ import AddressInput from "../ui/address-input";
 import { cn } from "@/lib/utils";
 import { Trash } from "lucide-react";
 
-const LeadPropertiesSchema = z.object({
-  properties: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Please enter a valid name."),
-      })
-    )
-    .optional(),
-});
-
 const LeadForm = ({
   lead,
   closeModal,
@@ -50,9 +40,7 @@ const LeadForm = ({
 
   const router = useRouter();
 
-  const form = useForm<
-    z.infer<typeof insertLeadParams & typeof LeadPropertiesSchema>
-  >({
+  const form = useForm<z.infer<typeof insertLeadParams>>({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
