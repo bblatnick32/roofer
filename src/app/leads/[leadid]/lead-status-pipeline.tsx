@@ -13,8 +13,16 @@ type Status = (typeof statuses)[number];
 const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   const [currentStatus, setCurrentStatus] = useState(lead.status);
   const router = useRouter();
+  const utils = trpc.useUtils();
 
-  const onSuccess = async (action: "update") => {
+  const onSuccess = async (action: "update" | "convert") => {
+    if (action === "convert") {
+      await utils.companies.getCompanies.invalidate();
+      await utils.contacts.getContacts.invalidate();
+      await utils.opportunities.getOpportunities.invalidate();
+      await utils.properties.getProperties.invalidate();
+    }
+
     router.refresh();
     toast({
       title: "Success",
@@ -28,7 +36,7 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   });
 
   const { mutate: convertLead } = trpc.leads.convertLead.useMutation({
-    onSuccess: async () => onSuccess("update"),
+    onSuccess: async () => onSuccess("convert"),
   });
 
   const handleOnClick = (status: Status) => {

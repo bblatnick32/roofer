@@ -1,24 +1,24 @@
 "use client";
 import { CompleteProperty } from "@/lib/db/schema/properties";
 import PropertyModal from "./PropertyModal";
+import { trpc } from "@/lib/trpc/client";
 
 export default function PropertyList({
   properties,
 }: {
   properties: CompleteProperty[];
 }) {
-  // const { data: p } = trpc.properties.getProperties.useQuery(undefined, {
-  //   initialData: { properties },
-  //   refetchOnMount: false,
-  // });
+  const { data: p } = trpc.properties.getProperties.useQuery(undefined, {
+    initialData: { properties },
+  });
 
-  if (properties.length === 0) {
+  if (p.properties.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <ul>
-      {properties.map((property) => (
+      {p.properties.map((property) => (
         <Property property={property} key={property.id} />
       ))}
     </ul>

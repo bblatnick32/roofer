@@ -1,24 +1,24 @@
 "use client";
 import { CompleteContact } from "@/lib/db/schema/contacts";
 import ContactModal from "./ContactModal";
+import { trpc } from "@/lib/trpc/client";
 
 export default function ContactList({
   contacts,
 }: {
   contacts: CompleteContact[];
 }) {
-  // const { data: c } = trpc.contacts.getContacts.useQuery(undefined, {
-  //   initialData: { contacts },
-  //   refetchOnMount: false,
-  // });
+  const { data: c } = trpc.contacts.getContacts.useQuery(undefined, {
+    initialData: { contacts },
+  });
 
-  if (contacts.length === 0) {
+  if (c.contacts.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <ul>
-      {contacts.map((contact) => (
+      {c.contacts.map((contact) => (
         <Contact contact={contact} key={contact.id} />
       ))}
     </ul>
