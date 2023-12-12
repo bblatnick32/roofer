@@ -229,34 +229,6 @@ const OpportunityForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="contactId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contact</FormLabel>
-              <Select
-                onValueChange={(value) => field.onChange(parseInt(value))}
-                defaultValue={field.value ? field.value.toString() : ""}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {contacts.map((contact) => (
-                    <SelectItem key={contact.id} value={contact.id.toString()}>
-                      {contact.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button
           type="submit"
           className="mr-1"
