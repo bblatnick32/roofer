@@ -20,6 +20,7 @@ import { issues } from "./issues";
 import { companies } from "./companies";
 import { opportunityProperties } from "./opportunityProperties";
 import { opportunityContacts } from "./opportunityContacts";
+import { leads } from "./leads";
 
 export const OPP_OPEN = "Open";
 export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
@@ -56,6 +57,9 @@ export const opportunities = mysqlTable(
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
+    leadId: bigint("lead_id", { mode: "number", unsigned: true }).references(
+      () => leads.id
+    ),
     companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => companies.id),
@@ -75,6 +79,10 @@ export const opportunitiesRelations = relations(
       fields: [opportunities.orgId],
       references: [orgs.id],
     }),
+    lead: one(leads, {
+      fields: [opportunities.leadId],
+      references: [leads.id],
+    }),
     company: one(companies, {
       fields: [opportunities.companyId],
       references: [companies.id],
@@ -88,6 +96,19 @@ export const opportunitiesRelations = relations(
 
 // Schema for opportunities - used to validate API requests
 export const insertOpportunitySchema = createInsertSchema(opportunities);
+
+export const insertOpportunityFromLeadSchema = createInsertSchema(opportunities)
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    value: true,
+    closeDate: true,
+    status: true,
+  })
+  .required({
+    leadId: true,
+  });
 
 export const insertOpportunityParams = createSelectSchema(opportunities, {
   value: z.coerce.number(),
@@ -121,6 +142,9 @@ export const opportunityIdSchema = updateOpportunitySchema.pick({ id: true });
 // Types for opportunities - used to type API request params and within Components
 export type Opportunity = z.infer<typeof updateOpportunitySchema>;
 export type NewOpportunity = z.infer<typeof insertOpportunitySchema>;
+export type NewOpportunityFromLead = z.infer<
+  typeof insertOpportunityFromLeadSchema
+>;
 export type NewOpportunityParams = z.infer<typeof insertOpportunityParams>;
 export type UpdateOpportunityParams = z.infer<typeof updateOpportunityParams>;
 export type OpportunityId = z.infer<typeof opportunityIdSchema>["id"];

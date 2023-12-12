@@ -8,8 +8,11 @@ import {
   insertCompanySchema,
   companies,
   companyIdSchema,
+  NewCompanyFromLead,
 } from "@/lib/db/schema/companies";
 import { getUserAuth } from "@/lib/auth/utils";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import * as schema from "@/lib/db";
 
 export const createCompany = async (company: NewCompanyParams) => {
   const { session } = await getUserAuth();
@@ -73,4 +76,15 @@ export const deleteCompany = async (id: CompanyId) => {
     console.error(message);
     return { error: message };
   }
+};
+
+export const insertCompanyFromLeadRawQuery = async ({
+  newCompany,
+  db,
+}: {
+  newCompany: NewCompanyFromLead;
+  db: PlanetScaleDatabase<typeof schema>;
+}) => {
+  const resultSetHeader = await db.insert(companies).values(newCompany);
+  return Number(resultSetHeader.insertId);
 };

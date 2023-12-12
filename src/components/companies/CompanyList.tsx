@@ -1,6 +1,5 @@
 "use client";
 import { CompleteCompany } from "@/lib/db/schema/companies";
-import { trpc } from "@/lib/trpc/client";
 import CompanyModal from "./CompanyModal";
 
 export default function CompanyList({
@@ -8,18 +7,18 @@ export default function CompanyList({
 }: {
   companies: CompleteCompany[];
 }) {
-  const { data: c } = trpc.companies.getCompanies.useQuery(undefined, {
-    initialData: { companies },
-    refetchOnMount: false,
-  });
+  // const { data: c } = trpc.companies.getCompanies.useQuery(undefined, {
+  //   initialData: { companies },
+  //   refetchOnMount: false,
+  // });
 
-  if (c.companies.length === 0) {
+  if (companies.length === 0) {
     return <EmptyState />;
   }
 
   return (
     <ul>
-      {c.companies.map((company) => (
+      {companies.map((company) => (
         <Company company={company} key={company.id} />
       ))}
     </ul>

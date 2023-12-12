@@ -10,6 +10,9 @@ import {
   opportunityIdSchema,
 } from "@/lib/db/schema/opportunities";
 import { getUserAuth } from "@/lib/auth/utils";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import * as schema from "@/lib/db";
+import { NewOpportunityFromLead } from "@/lib/db/schema/opportunities";
 
 export const createOpportunity = async (opportunity: NewOpportunityParams) => {
   const { session } = await getUserAuth();
@@ -75,4 +78,15 @@ export const deleteOpportunity = async (id: OpportunityId) => {
     console.error(message);
     return { error: message };
   }
+};
+
+export const insertOpportunityFromLeadRawQuery = async ({
+  newOpportunity,
+  db,
+}: {
+  newOpportunity: NewOpportunityFromLead;
+  db: PlanetScaleDatabase<typeof schema>;
+}) => {
+  const resultSetHeader = await db.insert(opportunities).values(newOpportunity);
+  return Number(resultSetHeader.insertId);
 };

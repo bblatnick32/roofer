@@ -1,6 +1,5 @@
 "use client";
 import { CompleteOpportunity } from "@/lib/db/schema/opportunities";
-import { trpc } from "@/lib/trpc/client";
 import OpportunityModal from "./OpportunityModal";
 import { CompleteContact } from "@/lib/db/schema/contacts";
 import { Button } from "../ui/button";
@@ -13,17 +12,17 @@ export default function OpportunityList({
   opportunities: CompleteOpportunity[];
   contacts: CompleteContact[];
 }) {
-  const { data: o } = trpc.opportunities.getOpportunities.useQuery(undefined, {
-    initialData: { opportunities },
-  });
+  // const { data: o } = trpc.opportunities.getOpportunities.useQuery(undefined, {
+  //   initialData: { opportunities },
+  // });
 
-  if (o.opportunities.length === 0) {
+  if (opportunities.length === 0) {
     return <EmptyState contacts={contacts} />;
   }
 
   return (
     <ul>
-      {o.opportunities.map((opportunity) => (
+      {opportunities.map((opportunity) => (
         <Opportunity
           opportunity={opportunity}
           key={opportunity.id}

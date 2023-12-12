@@ -4,6 +4,7 @@ import {
   mysqlTable,
   timestamp,
   uniqueIndex,
+  bigint,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -14,18 +15,22 @@ import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 import { contacts } from "./contacts";
 import { properties } from "./properties";
+import { leads } from "./leads";
 
 export const companies = mysqlTable(
   "companies",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
+    name: varchar("name", { length: 256 }).notNull().unique(),
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
     address: varchar("address", { length: 256 }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
       .references(() => orgs.id),
+    leadId: bigint("lead_id", { mode: "number", unsigned: true }).references(
+      () => leads.id
+    ),
   },
   (table) => {
     return {
@@ -40,6 +45,10 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
     fields: [companies.orgId],
     references: [orgs.id],
   }),
+  lead: one(leads, {
+    fields: [companies.leadId],
+    references: [leads.id],
+  }),
   opportunities: many(opportunities),
   contacts: many(contacts),
   properties: many(properties),
@@ -47,6 +56,17 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
 
 // Schema for companies - used to validate API requests
 export const insertCompanySchema = createInsertSchema(companies);
+
+export const insertCompanyFromLeadSchema = createInsertSchema(companies)
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    address: true,
+  })
+  .required({
+    leadId: true,
+  });
 
 export const insertCompanyParams = createSelectSchema(companies, {
   name: z.string().min(1, "Name cannot be empty."),
@@ -74,6 +94,7 @@ export const companyIdSchema = updateCompanySchema.pick({ id: true });
 // Types for companies - used to type API request params and within Components
 export type Company = z.infer<typeof updateCompanySchema>;
 export type NewCompany = z.infer<typeof insertCompanySchema>;
+export type NewCompanyFromLead = z.infer<typeof insertCompanyFromLeadSchema>;
 export type NewCompanyParams = z.infer<typeof insertCompanyParams>;
 export type UpdateCompanyParams = z.infer<typeof updateCompanyParams>;
 export type CompanyId = z.infer<typeof companyIdSchema>["id"];

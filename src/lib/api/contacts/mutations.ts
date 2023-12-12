@@ -8,8 +8,11 @@ import {
   insertContactSchema,
   contacts,
   contactIdSchema,
+  NewContactFromLead,
 } from "@/lib/db/schema/contacts";
 import { getUserAuth } from "@/lib/auth/utils";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import * as schema from "@/lib/db";
 
 export const createContact = async (contact: NewContactParams) => {
   const { session } = await getUserAuth();
@@ -73,4 +76,15 @@ export const deleteContact = async (id: ContactId) => {
     console.error(message);
     return { error: message };
   }
+};
+
+export const insertContactFromLeadRawQuery = async ({
+  newContact,
+  db,
+}: {
+  db: PlanetScaleDatabase<typeof schema>;
+  newContact: NewContactFromLead;
+}) => {
+  const resultSetHeader = await db.insert(contacts).values(newContact);
+  return Number(resultSetHeader.insertId);
 };

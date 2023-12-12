@@ -1,6 +1,10 @@
 "use client";
 
-import { Property, NewPropertyParams, insertPropertyParams } from "@/lib/db/schema/properties";
+import {
+  Property,
+  NewPropertyParams,
+  insertPropertyParams,
+} from "@/lib/db/schema/properties";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -27,7 +31,7 @@ const PropertyForm = ({
   closeModal?: () => void;
 }) => {
   const { toast } = useToast();
-  
+
   const editing = !!property?.id;
 
   const router = useRouter();
@@ -40,14 +44,15 @@ const PropertyForm = ({
     resolver: zodResolver(insertPropertyParams),
     defaultValues: property ?? {
       name: "",
-     address: ""
+      address: "",
     },
   });
 
-  const onSuccess = async (action: "create" | "update" | "delete",
-    data?: { error?: string },
+  const onSuccess = async (
+    action: "create" | "update" | "delete",
+    data?: { error?: string }
   ) => {
-        if (data?.error) {
+    if (data?.error) {
       toast({
         title: `${action
           .slice(0, 1)
@@ -62,8 +67,8 @@ const PropertyForm = ({
     await utils.properties.getProperties.invalidate();
     router.refresh();
     if (closeModal) closeModal();
-        toast({
-      title: 'Success',
+    toast({
+      title: "Success",
       description: `Property ${action}d!`,
       variant: "default",
     });
@@ -97,11 +102,12 @@ const PropertyForm = ({
         <FormField
           control={form.control}
           name="name"
-          render={({ field }) => (<FormItem>
+          render={({ field }) => (
+            <FormItem>
               <FormLabel>Name</FormLabel>
-                <FormControl>
-            <Input {...field} />
-          </FormControl>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
 
               <FormMessage />
             </FormItem>
@@ -110,11 +116,12 @@ const PropertyForm = ({
         <FormField
           control={form.control}
           name="address"
-          render={({ field }) => (<FormItem>
+          render={({ field }) => (
+            <FormItem>
               <FormLabel>Address</FormLabel>
-                <FormControl>
-            <Input {...field} />
-          </FormControl>
+              <FormControl>
+                <Input {...field} value={field.value ?? ""} />
+              </FormControl>
 
               <FormMessage />
             </FormItem>

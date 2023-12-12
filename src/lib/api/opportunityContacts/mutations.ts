@@ -1,10 +1,13 @@
 import { db } from "@/lib/db/client";
 import {
+  NewOpportunityContact,
   NewOpportunityContactParams,
   insertOpportunityContactSchema,
   opportunityContacts,
 } from "@/lib/db/schema/opportunityContacts";
 import { getUserAuth } from "@/lib/auth/utils";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import * as schema from "@/lib/db";
 
 export const createOpportunityContact = async (
   opportunityContact: NewOpportunityContactParams
@@ -53,3 +56,16 @@ export const createOpportunityContact = async (
 //     return { error: message };
 //   }
 // };
+
+export const insertOpportunityContactRawQuery = async ({
+  newOpportunityContact,
+  db,
+}: {
+  newOpportunityContact: NewOpportunityContact;
+  db: PlanetScaleDatabase<typeof schema>;
+}) => {
+  const resultSetHeader = await db
+    .insert(opportunityContacts)
+    .values(newOpportunityContact);
+  return Number(resultSetHeader.insertId);
+};

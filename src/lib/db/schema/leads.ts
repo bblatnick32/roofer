@@ -32,7 +32,7 @@ type Property = {
   name: string;
 };
 
-type Properties = Property[];
+export type Properties = Property[];
 
 export const leads = mysqlTable(
   "leads",
@@ -127,6 +127,7 @@ export const updateLeadParams = createSelectSchema(leads, {
 });
 
 export const leadIdSchema = updateLeadSchema.pick({ id: true });
+export const leadPropertiesSchema = updateLeadSchema.pick({ properties: true });
 
 // Types for leads - used to type API request params and within Components
 export type Lead = z.infer<typeof updateLeadSchema>;
@@ -134,6 +135,7 @@ export type NewLead = z.infer<typeof insertLeadSchema>;
 export type NewLeadParams = z.infer<typeof insertLeadParams>;
 export type UpdateLeadParams = z.infer<typeof updateLeadParams>;
 export type LeadId = z.infer<typeof leadIdSchema>["id"];
+export type LeadProperties = z.infer<typeof leadPropertiesSchema>["properties"];
 
 // this type infers the return from getLeads() - meaning it will include any joins
 export type CompleteLead = Awaited<

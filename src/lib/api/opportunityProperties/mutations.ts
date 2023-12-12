@@ -5,6 +5,10 @@ import {
   opportunityProperties,
 } from "@/lib/db/schema/opportunityProperties";
 import { getUserAuth } from "@/lib/auth/utils";
+import { OrgId } from "@/lib/db/schema/orgs";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import { OpportunityId } from "@/lib/db/schema/opportunities";
+import * as schema from "@/lib/db";
 
 export const createOpportunityProperty = async (
   opportunityProperty: NewOpportunityPropertyParams
@@ -53,3 +57,35 @@ export const createOpportunityProperty = async (
 //     return { error: message };
 //   }
 // };
+
+export const insertOpportunityPropertiesRawQuery = async ({
+  newOpportunityPropertyIds,
+  orgId,
+  oppId,
+  db,
+}: {
+  newOpportunityPropertyIds: number[];
+  orgId: OrgId;
+  oppId: OpportunityId;
+  db: PlanetScaleDatabase<typeof schema>;
+}) => {
+  if (!newOpportunityPropertyIds) return [];
+
+  const valuesToInsert = [];
+  for (const propId of newOpportunityPropertyIds) {
+    const newOpportunityProperty = insertOpportunityPropertySchema.parse({
+      propertyId: propId,
+      orgId,
+      opportunityId: oppId,
+    });
+    valuesToInsert.push(newOpportunityProperty);
+  }
+
+  const inserts = await Promise.all(
+    valuesToInsert.map((value) =>
+      db.insert(opportunityProperties).values(value)
+    )
+  );
+  const insertedIds = inserts.map(({ insertId }) => Number(insertId));
+  return insertedIds;
+};

@@ -5,7 +5,12 @@ import {
   insertLeadParams,
   updateLeadParams,
 } from "@/lib/db/schema/leads";
-import { createLead, deleteLead, updateLead } from "@/lib/api/leads/mutations";
+import {
+  convertLead,
+  createLead,
+  deleteLead,
+  updateLead,
+} from "@/lib/api/leads/mutations";
 
 export const leadsRouter = router({
   getLeads: privateProcedure.query(async () => {
@@ -23,6 +28,11 @@ export const leadsRouter = router({
     .input(updateLeadParams)
     .mutation(async ({ input }) => {
       return updateLead(input.id, input);
+    }),
+  convertLead: privateProcedure
+    .input(updateLeadParams)
+    .mutation(async ({ input }) => {
+      return convertLead(input.id, input);
     }),
   deleteLead: privateProcedure
     .input(leadIdSchema)

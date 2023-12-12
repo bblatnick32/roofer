@@ -27,8 +27,16 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
     onSuccess: async () => onSuccess("update"),
   });
 
+  const { mutate: convertLead } = trpc.leads.convertLead.useMutation({
+    onSuccess: async () => onSuccess("update"),
+  });
+
   const handleOnClick = (status: Status) => {
     setCurrentStatus(status);
+    if (status === "Converted") {
+      convertLead({ ...(lead as UpdateLeadParams), status });
+      return;
+    }
     updateLead({ ...(lead as UpdateLeadParams), status });
   };
 

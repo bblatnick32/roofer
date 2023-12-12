@@ -5,7 +5,11 @@ import {
   type CompanyId,
   companyIdSchema,
   companies,
+  CompanyName,
 } from "@/lib/db/schema/companies";
+import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import * as schema from "@/lib/db";
+import { OrgId } from "@/lib/db/schema/orgs";
 
 export const getCompanies = async () => {
   const { session } = await getUserAuth();
@@ -28,5 +32,21 @@ export const getCompanyById = async (id: CompanyId) => {
         eq(companies.orgId, session?.user.activeOrgId!)
       )
     );
+  return { company: c };
+};
+
+export const getCompanyByNameRawQuery = async ({
+  name,
+  orgId,
+  db,
+}: {
+  name: CompanyName;
+  orgId: OrgId;
+  db: PlanetScaleDatabase<typeof schema>;
+}) => {
+  const [c] = await db
+    .select()
+    .from(companies)
+    .where(and(eq(companies.name, name), eq(companies.orgId, orgId)));
   return { company: c };
 };
