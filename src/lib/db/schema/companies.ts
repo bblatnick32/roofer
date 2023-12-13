@@ -90,6 +90,7 @@ export const updateCompanyParams = createSelectSchema(companies, {
   updatedAt: true,
 });
 export const companyIdSchema = updateCompanySchema.pick({ id: true });
+export const companyNameSchema = updateCompanySchema.pick({ name: true });
 
 // Types for companies - used to type API request params and within Components
 export type Company = z.infer<typeof updateCompanySchema>;
@@ -98,6 +99,7 @@ export type NewCompanyFromLead = z.infer<typeof insertCompanyFromLeadSchema>;
 export type NewCompanyParams = z.infer<typeof insertCompanyParams>;
 export type UpdateCompanyParams = z.infer<typeof updateCompanyParams>;
 export type CompanyId = z.infer<typeof companyIdSchema>["id"];
+export type CompanyName = z.infer<typeof companyNameSchema>["name"];
 
 // this type infers the return from getCompanies() - meaning it will include any joins
 export type CompleteCompany = Awaited<
