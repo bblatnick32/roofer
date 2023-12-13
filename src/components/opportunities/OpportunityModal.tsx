@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -11,16 +10,13 @@ import {
 } from "../ui/dialog";
 import OpportunityForm from "./OpportunityForm";
 import { Opportunity } from "@/lib/db/schema/opportunities";
-import { Contact } from "@/lib/db/schema/contacts";
 
 export default function OpportunityModal({
   opportunity,
   emptyState,
-  contacts,
 }: {
   opportunity?: Opportunity;
   emptyState?: boolean;
-  contacts: Contact[];
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -58,11 +54,7 @@ export default function OpportunityModal({
           <DialogTitle>{editing ? "Edit" : "Create"} Opportunity</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <OpportunityForm
-            closeModal={closeModal}
-            opportunity={opportunity}
-            contacts={contacts}
-          />
+          <OpportunityForm closeModal={closeModal} opportunity={opportunity} />
         </div>
       </DialogContent>
     </Dialog>

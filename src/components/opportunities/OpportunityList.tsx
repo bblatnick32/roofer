@@ -1,46 +1,33 @@
 "use client";
 import { CompleteOpportunity } from "@/lib/db/schema/opportunities";
 import OpportunityModal from "./OpportunityModal";
-import { CompleteContact } from "@/lib/db/schema/contacts";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { trpc } from "@/lib/trpc/client";
 
 export default function OpportunityList({
   opportunities,
-  contacts,
 }: {
   opportunities: CompleteOpportunity[];
-  contacts: CompleteContact[];
 }) {
   const { data: o } = trpc.opportunities.getOpportunities.useQuery(undefined, {
     initialData: { opportunities },
   });
 
   if (o.opportunities.length === 0) {
-    return <EmptyState contacts={contacts} />;
+    return <EmptyState />;
   }
 
   return (
     <ul>
       {o.opportunities.map((opportunity) => (
-        <Opportunity
-          opportunity={opportunity}
-          key={opportunity.id}
-          contacts={contacts}
-        />
+        <Opportunity opportunity={opportunity} key={opportunity.id} />
       ))}
     </ul>
   );
 }
 
-const Opportunity = ({
-  opportunity,
-  contacts,
-}: {
-  opportunity: CompleteOpportunity;
-  contacts: CompleteContact[];
-}) => {
+const Opportunity = ({ opportunity }: { opportunity: CompleteOpportunity }) => {
   return (
     <li className="flex justify-between my-2 w-full">
       <Link href={`/opportunities/${opportunity.id}`} className="w-full">
@@ -48,12 +35,12 @@ const Opportunity = ({
           {opportunity.name}
         </Button>
       </Link>
-      {/* <OpportunityModal opportunity={opportunity} contacts={contacts} /> */}
+      {/* <OpportunityModal opportunity={opportunity} /> */}
     </li>
   );
 };
 
-const EmptyState = ({ contacts }: { contacts: CompleteContact[] }) => {
+const EmptyState = () => {
   return (
     <div className="text-center">
       <h3 className="mt-2 text-sm font-semibold text-gray-900">
@@ -63,7 +50,7 @@ const EmptyState = ({ contacts }: { contacts: CompleteContact[] }) => {
         Get started by creating a new opportunity.
       </p>
       <div className="mt-6">
-        <OpportunityModal emptyState={true} contacts={contacts} />
+        <OpportunityModal emptyState={true} />
       </div>
     </div>
   );

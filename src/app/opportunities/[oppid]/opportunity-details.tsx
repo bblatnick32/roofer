@@ -29,7 +29,7 @@ export default async function OpportunityDetails({
         <h1 className="text-3xl font-bold">Opportunity: {opportunity.name}</h1>
         <div className="flex flex-row gap-4">
           <GenerateInspectionReportButton issues={issues} />
-          <OpportunityModal opportunity={opportunity} contacts={contacts} />
+          <OpportunityModal opportunity={opportunity} />
         </div>
       </div>
       <Tabs className="w-full" defaultValue="issues">

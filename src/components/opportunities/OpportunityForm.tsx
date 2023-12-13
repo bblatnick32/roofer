@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 "use client";
-
 import {
   Opportunity,
   NewOpportunityParams,
@@ -42,15 +41,12 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { Contact } from "@/lib/db/schema/contacts";
 
 const OpportunityForm = ({
   opportunity,
-  contacts,
   closeModal,
 }: {
   opportunity?: Opportunity;
-  contacts: Contact[];
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
