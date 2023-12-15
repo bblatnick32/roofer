@@ -17,7 +17,7 @@
     "db:check": "drizzle-kit check:mysql"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.27.7",
+    "@clerk/nextjs": "^4.28.1",
     "@hello-pangea/dnd": "^16.5.0",
     "@hookform/resolvers": "^3.3.2",
     "@planetscale/database": "^1.11.0",
