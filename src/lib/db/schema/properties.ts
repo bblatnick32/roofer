@@ -26,13 +26,11 @@ export const properties = mysqlTable(
     address: varchar("address", { length: 256 }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
-    leadId: bigint("lead_id", { mode: "number", unsigned: true }).references(
-      () => leads.id
-    ),
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    leadId: bigint("lead_id", { mode: "number", unsigned: true }),
     companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()
-      .references(() => companies.id),
+      .references(() => companies.id, { onDelete: "cascade" }),
   },
   (table) => {
     return {

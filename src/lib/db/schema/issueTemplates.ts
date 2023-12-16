@@ -24,7 +24,7 @@ export const issueTemplates = mysqlTable(
     description: text("description"),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
+      .references(() => orgs.id, { onDelete: "cascade" }),
   },
   (table) => {
     return {

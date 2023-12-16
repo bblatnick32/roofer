@@ -26,7 +26,7 @@ export const repairTemplates = mysqlTable(
     // costEstimateFormula: varchar("cost_estimate_formula", { length: 256 }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
+      .references(() => orgs.id, { onDelete: "cascade" }),
   },
   (table) => {
     return {

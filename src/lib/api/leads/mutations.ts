@@ -65,7 +65,6 @@ export const convertLead = async (id: LeadId, lead: UpdateLeadParams) => {
           newCompany: {
             name: newLead.company,
             orgId,
-            leadId,
           },
           db: tx,
         });

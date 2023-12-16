@@ -4,7 +4,6 @@ import {
   mysqlTable,
   timestamp,
   uniqueIndex,
-  bigint,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -15,7 +14,6 @@ import { orgs } from "./orgs";
 import { opportunities } from "./opportunities";
 import { contacts } from "./contacts";
 import { properties } from "./properties";
-import { leads } from "./leads";
 
 export const companies = mysqlTable(
   "companies",
@@ -27,10 +25,7 @@ export const companies = mysqlTable(
     address: varchar("address", { length: 256 }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
-    leadId: bigint("lead_id", { mode: "number", unsigned: true }).references(
-      () => leads.id
-    ),
+      .references(() => orgs.id, { onDelete: "cascade" }),
   },
   (table) => {
     return {
@@ -45,10 +40,6 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
     fields: [companies.orgId],
     references: [orgs.id],
   }),
-  lead: one(leads, {
-    fields: [companies.leadId],
-    references: [leads.id],
-  }),
   opportunities: many(opportunities),
   contacts: many(contacts),
   properties: many(properties),
@@ -57,16 +48,12 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
 // Schema for companies - used to validate API requests
 export const insertCompanySchema = createInsertSchema(companies);
 
-export const insertCompanyFromLeadSchema = createInsertSchema(companies)
-  .omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true,
-    address: true,
-  })
-  .required({
-    leadId: true,
-  });
+export const insertCompanyFromLeadSchema = createInsertSchema(companies).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  address: true,
+});
 
 export const insertCompanyParams = createSelectSchema(companies, {
   name: z.string().min(1, "Name cannot be empty."),

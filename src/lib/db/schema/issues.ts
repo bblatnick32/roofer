@@ -48,17 +48,18 @@ export const issues = mysqlTable("issues", {
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   oppId: bigint("opp_id", { mode: "number", unsigned: true })
     .notNull()
-    .references(() => opportunities.id),
+    .references(() => opportunities.id, { onDelete: "cascade" }),
   issueTemplateId: bigint("issue_template_id", {
     mode: "number",
     unsigned: true,
-  }).references(() => issueTemplates.id),
+  }).references(() => issueTemplates.id, { onDelete: "restrict" }),
   repairTemplateId: bigint("repair_template_id", {
     mode: "number",
     unsigned: true,
-  }).references(() => repairTemplates.id),
+  }).references(() => repairTemplates.id, { onDelete: "restrict" }),
   photoId: bigint("photo_id", { mode: "number", unsigned: true }).references(
-    () => photos.id
+    () => photos.id,
+    { onDelete: "set null" }
   ),
   // location: varchar("location", { length: 256 }),
   // measurements: varchar("measurements", { length: 256 }),
@@ -72,7 +73,7 @@ export const issues = mysqlTable("issues", {
   severity: mysqlEnum("severity", IssueSeverities),
   orgId: varchar("org_id", { length: 256 })
     .notNull()
-    .references(() => orgs.id),
+    .references(() => orgs.id, { onDelete: "cascade" }),
 });
 
 // relations

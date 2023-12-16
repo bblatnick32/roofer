@@ -18,13 +18,13 @@ export const opportunityProperties = mysqlTable(
   {
     opportunityId: bigint("opportunity_id", { mode: "number", unsigned: true })
       .notNull()
-      .references(() => opportunities.id),
+      .references(() => opportunities.id, { onDelete: "cascade" }),
     propertyId: bigint("property_id", { mode: "number", unsigned: true })
       .notNull()
-      .references(() => properties.id),
+      .references(() => properties.id, { onDelete: "cascade" }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
+      .references(() => orgs.id, { onDelete: "cascade" }),
   },
   (table) => {
     return {

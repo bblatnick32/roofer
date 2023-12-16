@@ -39,10 +39,10 @@ export const photos = mysqlTable(
     key: varchar("key", { length: 256 }),
     orgId: varchar("org_id", { length: 256 })
       .notNull()
-      .references(() => orgs.id),
+      .references(() => orgs.id, { onDelete: "cascade" }),
     oppId: bigint("opp_id", { mode: "number", unsigned: true })
       .notNull()
-      .references(() => opportunities.id),
+      .references(() => opportunities.id, { onDelete: "cascade" }),
     status: mysqlEnum("status", PhotoStatuses).notNull().default(PHOTO_PENDING),
   },
   (table) => {

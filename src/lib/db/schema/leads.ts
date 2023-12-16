@@ -5,7 +5,6 @@ import {
   mysqlEnum,
   timestamp,
   bigint,
-  uniqueIndex,
   json,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
@@ -34,33 +33,25 @@ type Property = {
 
 export type Properties = Property[];
 
-export const leads = mysqlTable(
-  "leads",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    company: varchar("company", { length: 256 }).notNull(),
-    email: varchar("email", { length: 256 }),
-    phone: varchar("phone", { length: 256 }),
-    address: varchar("address", { length: 256 }),
-    properties: json("properties").$type<Properties>(),
-    status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id),
-    convertedContactId: bigint("converted_contact_id", {
-      mode: "number",
-      unsigned: true,
-    }),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const leads = mysqlTable("leads", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  company: varchar("company", { length: 256 }).notNull(),
+  email: varchar("email", { length: 256 }),
+  phone: varchar("phone", { length: 256 }),
+  address: varchar("address", { length: 256 }),
+  properties: json("properties").$type<Properties>(),
+  status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
+  orgId: varchar("org_id", { length: 256 })
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  convertedContactId: bigint("converted_contact_id", {
+    mode: "number",
+    unsigned: true,
+  }),
+});
 
 // relations
 export const leadsRelations = relations(leads, ({ one }) => ({
