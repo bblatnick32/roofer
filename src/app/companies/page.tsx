@@ -2,7 +2,7 @@ import CompanyList from "@/components/companies/CompanyList";
 import NewCompanyModal from "@/components/companies/CompanyModal";
 import { api } from "@/lib/trpc/api";
 import { checkAuth } from "@/lib/auth/utils";
-import MainPageWrapper from "@/components/main-page-wrapper";
+import { MainPageWrapper } from "@/components/main-page";
 
 export default async function Companies() {
   await checkAuth();

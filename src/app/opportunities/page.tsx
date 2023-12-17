@@ -1,4 +1,4 @@
-import MainPageWrapper from "@/components/main-page-wrapper";
+import { MainPageHeader, MainPageWrapper } from "@/components/main-page";
 import OpportunityList from "@/components/opportunities/OpportunityList";
 import NewOpportunityModal from "@/components/opportunities/OpportunityModal";
 import { getOpportunities } from "@/lib/api/opportunities/queries";
@@ -11,7 +11,7 @@ export default async function Opportunities() {
   return (
     <MainPageWrapper>
       <div className="flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
-        <h1 className="mb-3 font-bold text-5xl text-gray-900">Opportunities</h1>
+        <MainPageHeader>Opportunities</MainPageHeader>
         <NewOpportunityModal />
       </div>
       <OpportunityList opportunities={opportunities} />

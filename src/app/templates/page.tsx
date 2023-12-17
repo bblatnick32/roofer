@@ -6,6 +6,7 @@ import NewRepairTemplateModal from "@/components/repairTemplates/RepairTemplateM
 import NewIssueTemplateModal from "@/components/issueTemplates/IssueTemplateModal";
 import IssueTemplateList from "@/components/issueTemplates/IssueTemplateList";
 import { getIssueTemplates } from "@/lib/api/issueTemplates/queries";
+import { MainPageHeader, MainPageWrapper } from "@/components/main-page";
 
 const Page = async () => {
   await checkAuth("templates");
@@ -14,8 +15,8 @@ const Page = async () => {
   const { issueTemplates } = await getIssueTemplates();
 
   return (
-    <main className="w-full min-h-screen pt-8 px-14">
-      <h1 className="text-3xl font-bold mb-4">Templates</h1>
+    <MainPageWrapper>
+      <MainPageHeader>Templates</MainPageHeader>
       <Tabs className="w-full" defaultValue="issue">
         <TabsList className="flex gap-4 border-b pb-2">
           <TabsTrigger value="issue">Issue Templates</TabsTrigger>
@@ -36,7 +37,7 @@ const Page = async () => {
           <RepairTemplateList repairTemplates={repairTemplates} />
         </TabsContent>
       </Tabs>
-    </main>
+    </MainPageWrapper>
   );
 };
 

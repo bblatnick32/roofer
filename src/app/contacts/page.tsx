@@ -1,6 +1,6 @@
 import ContactList from "@/components/contacts/ContactList";
 import NewContactModal from "@/components/contacts/ContactModal";
-import MainPageWrapper from "@/components/main-page-wrapper";
+import { MainPageWrapper } from "@/components/main-page";
 import { checkAuth } from "@/lib/auth/utils";
 import { api } from "@/lib/trpc/api";
 

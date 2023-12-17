@@ -2,7 +2,7 @@ import PropertyList from "@/components/properties/PropertyList";
 import NewPropertyModal from "@/components/properties/PropertyModal";
 import { api } from "@/lib/trpc/api";
 import { checkAuth } from "@/lib/auth/utils";
-import MainPageWrapper from "@/components/main-page-wrapper";
+import { MainPageWrapper } from "@/components/main-page";
 
 export default async function Properties() {
   await checkAuth();

@@ -1,5 +1,5 @@
 import { CompleteLead } from "@/lib/db";
-import MainPageWrapper from "@/components/main-page-wrapper";
+import { MainPageWrapper } from "@/components/main-page";
 import LeadStatusPipeline from "./lead-status-pipeline";
 
 const LeadDetails = ({ lead }: { lead: CompleteLead }) => {
