@@ -18,15 +18,22 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   const onSuccess = async (action: "update" | "convert") => {
     if (action === "convert") {
       await utils.companies.getCompanies.invalidate();
+      utils.companies.getCompanies.prefetch();
+
       await utils.contacts.getContacts.invalidate();
+      utils.contacts.getContacts.prefetch();
+
       await utils.opportunities.getOpportunities.invalidate();
+      utils.opportunities.getOpportunities.prefetch();
+
       await utils.properties.getProperties.invalidate();
+      utils.properties.getProperties.prefetch();
     }
 
     router.refresh();
     toast({
       title: "Success",
-      description: `Lead ${action}d!`,
+      description: action === "update" ? "Lead updated!" : "Lead converted!",
       variant: "default",
     });
   };

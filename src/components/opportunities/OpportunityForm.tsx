@@ -76,6 +76,7 @@ const OpportunityForm = ({
 
   const onSuccess = async (action: "create" | "update" | "delete") => {
     await utils.opportunities.getOpportunities.invalidate();
+    utils.opportunities.getOpportunities.prefetch();
     router.refresh();
     closeModal();
     toast({

@@ -65,6 +65,7 @@ const PropertyForm = ({
     }
 
     await utils.properties.getProperties.invalidate();
+    utils.properties.getProperties.prefetch();
     router.refresh();
     if (closeModal) closeModal();
     toast({

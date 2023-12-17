@@ -65,6 +65,7 @@ const CompanyForm = ({
     }
 
     await utils.companies.getCompanies.invalidate();
+    utils.companies.getCompanies.prefetch();
     router.refresh();
     if (closeModal) closeModal();
     toast({

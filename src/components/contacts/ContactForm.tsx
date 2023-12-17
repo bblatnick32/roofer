@@ -67,6 +67,7 @@ const ContactForm = ({
     }
 
     await utils.contacts.getContacts.invalidate();
+    utils.contacts.getContacts.prefetch();
     router.refresh();
     if (closeModal) closeModal();
     toast({
