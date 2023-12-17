@@ -22,9 +22,7 @@ export const opportunityContacts = mysqlTable(
     contactId: bigint("contact_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => contacts.id, { onDelete: "cascade" }),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
   },
   (table) => {
     return {

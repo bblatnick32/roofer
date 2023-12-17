@@ -37,9 +37,7 @@ export const photos = mysqlTable(
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
     url: varchar("url", { length: 256 }),
     key: varchar("key", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
     oppId: bigint("opp_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => opportunities.id, { onDelete: "cascade" }),

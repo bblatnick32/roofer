@@ -22,9 +22,7 @@ export const issueTemplates = mysqlTable(
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
     name: varchar("name", { length: 256 }).notNull(),
     description: text("description"),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
   },
   (table) => {
     return {

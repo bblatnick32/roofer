@@ -71,9 +71,7 @@ export const issues = mysqlTable("issues", {
   additionalDetails: text("additional_details"),
   status: mysqlEnum("status", IssueStatuses).notNull().default(ISSUE_OPEN),
   severity: mysqlEnum("severity", IssueSeverities),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id, { onDelete: "cascade" }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
 });
 
 // relations

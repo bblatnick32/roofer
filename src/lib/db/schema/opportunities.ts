@@ -26,10 +26,7 @@ export const OPP_OPEN = "Open";
 export const OPP_INSPECTION_SCHEDULED = "Inspection Scheduled";
 export const OPP_INSPECTION_COMPLETED = "Inspection Completed";
 export const OPP_QUOTED = "Quoted";
-export const OPP_PRESENTED = "Presented";
-export const OPP_NEGOTIATING = "Negotiating";
-export const OPP_WON = "Won";
-export const OPP_LOST = "Lost";
+export const OPP_CLOSED_LOST = "Closed Lost";
 export const OPP_CLOSED_WON = "Closed Won";
 
 export const OppStatuses = [
@@ -37,10 +34,7 @@ export const OppStatuses = [
   OPP_INSPECTION_SCHEDULED,
   OPP_INSPECTION_COMPLETED,
   OPP_QUOTED,
-  OPP_PRESENTED,
-  OPP_NEGOTIATING,
-  OPP_WON,
-  OPP_LOST,
+  OPP_CLOSED_LOST,
   OPP_CLOSED_WON,
 ] as const;
 
@@ -54,9 +48,7 @@ export const opportunities = mysqlTable(
     value: int("value"),
     closeDate: date("close_date"),
     status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
     leadId: bigint("lead_id", { mode: "number", unsigned: true }),
     companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()

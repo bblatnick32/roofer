@@ -22,9 +22,7 @@ export const opportunityProperties = mysqlTable(
     propertyId: bigint("property_id", { mode: "number", unsigned: true })
       .notNull()
       .references(() => properties.id, { onDelete: "cascade" }),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
   },
   (table) => {
     return {

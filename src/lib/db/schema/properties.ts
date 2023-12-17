@@ -24,9 +24,7 @@ export const properties = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
     address: varchar("address", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 })
-      .notNull()
-      .references(() => orgs.id, { onDelete: "cascade" }),
+    orgId: varchar("org_id", { length: 256 }).notNull(),
     leadId: bigint("lead_id", { mode: "number", unsigned: true }),
     companyId: bigint("company_id", { mode: "number", unsigned: true })
       .notNull()

@@ -44,9 +44,7 @@ export const leads = mysqlTable("leads", {
   address: varchar("address", { length: 256 }),
   properties: json("properties").$type<Properties>(),
   status: mysqlEnum("status", LeadStatuses).notNull().default(LEAD_NEW),
-  orgId: varchar("org_id", { length: 256 })
-    .notNull()
-    .references(() => orgs.id, { onDelete: "cascade" }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
   convertedContactId: bigint("converted_contact_id", {
     mode: "number",
     unsigned: true,
