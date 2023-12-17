@@ -12,6 +12,7 @@ import OpportunityModal from "@/components/opportunities/OpportunityModal";
 import { getContacts } from "@/lib/api/contacts/queries";
 import IssueList from "@/components/issues/IssueList";
 import GenerateInspectionReportButton from "./generate-inspection-report-button";
+import OppStatusPipeline from "./opp-status-pipeline";
 
 export default async function OpportunityDetails({
   opportunity,
@@ -32,8 +33,9 @@ export default async function OpportunityDetails({
           <OpportunityModal opportunity={opportunity} />
         </div>
       </div>
-      <Tabs className="w-full" defaultValue="issues">
-        <TabsList className="flex gap-4 border-b pb-2">
+      <OppStatusPipeline opportunity={opportunity} />
+      <Tabs className="mt-4" defaultValue="issues">
+        <TabsList>
           <TabsTrigger value="issues">Issues</TabsTrigger>
         </TabsList>
         <TabsContent value="issues">

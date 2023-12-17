@@ -51,7 +51,6 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
 
   const handleOnClick = (status: Status) => {
     if (status === "Converted") {
-      // convertLead({ ...(lead as UpdateLeadParams), status });
       setConvertModalOpen(true);
       return;
     }
