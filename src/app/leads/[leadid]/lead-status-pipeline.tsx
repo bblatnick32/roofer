@@ -6,6 +6,7 @@ import { Lead, LeadStatuses, UpdateLeadParams } from "@/lib/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StatusPipeline from "@/components/ui/status-pipeline";
+import { ConvertLeadModal } from "@/components/leads/convert-lead-modal";
 
 const statuses = Array.from(LeadStatuses);
 type Status = (typeof statuses)[number];
@@ -14,6 +15,8 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   const [currentStatus, setCurrentStatus] = useState(lead.status);
   const router = useRouter();
   const utils = trpc.useUtils();
+
+  const [convertModalOpen, setConvertModalOpen] = useState(false);
 
   const onSuccess = async (action: "update" | "convert") => {
     if (action === "convert") {
@@ -47,20 +50,39 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   });
 
   const handleOnClick = (status: Status) => {
-    setCurrentStatus(status);
     if (status === "Converted") {
-      convertLead({ ...(lead as UpdateLeadParams), status });
+      // convertLead({ ...(lead as UpdateLeadParams), status });
+      setConvertModalOpen(true);
       return;
     }
+
+    setCurrentStatus(status);
     updateLead({ ...(lead as UpdateLeadParams), status });
   };
 
+  const handleConvertModalOnOpenChange = (
+    open: boolean,
+    shouldConvert?: boolean
+  ) => {
+    setConvertModalOpen(open);
+    if (shouldConvert) {
+      setCurrentStatus("Converted");
+      convertLead({ ...(lead as UpdateLeadParams), status: "Converted" });
+    }
+  };
+
   return (
-    <StatusPipeline<Status>
-      statuses={statuses}
-      currentStatus={currentStatus}
-      onClick={handleOnClick}
-    />
+    <>
+      <StatusPipeline<Status>
+        statuses={statuses}
+        currentStatus={currentStatus}
+        onClick={handleOnClick}
+      />
+      <ConvertLeadModal
+        open={convertModalOpen}
+        onOpenChange={handleConvertModalOnOpenChange}
+      />
+    </>
   );
 };
 
