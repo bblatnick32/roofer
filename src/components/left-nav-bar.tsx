@@ -17,6 +17,9 @@ const primaryItems = [
     href: "/opportunities",
     label: "Opportunities",
   },
+];
+
+const secondaryItems = [
   {
     href: "/contacts",
     label: "Contacts",
@@ -31,7 +34,7 @@ const primaryItems = [
   },
 ];
 
-const secondaryItems = [
+const tertiaryItems = [
   {
     href: "/templates",
     label: "Templates",
@@ -58,6 +61,19 @@ export function LeftNavBar() {
         ))}
         <hr className="my-2 border-gray-700" />
         {secondaryItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700",
+              pathname.includes(item.href) && "bg-gray-700"
+            )}
+          >
+            {item.label}
+          </Link>
+        ))}
+        <hr className="my-2 border-gray-700" />
+        {tertiaryItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
