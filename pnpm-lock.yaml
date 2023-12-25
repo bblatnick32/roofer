@@ -191,8 +191,8 @@ devDependencies:
     specifier: 14.0.4
     version: 14.0.4(eslint@8.56.0)(typescript@5.3.3)
   eslint-plugin-drizzle:
-    specifier: ^0.2.2
-    version: 0.2.2(eslint@8.56.0)
+    specifier: ^0.2.3
+    version: 0.2.3(eslint@8.56.0)
   eslint-plugin-node:
     specifier: ^11.1.0
     version: 11.1.0(eslint@8.56.0)
@@ -4460,8 +4460,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-drizzle@0.2.2(eslint@8.56.0):
-    resolution: {integrity: sha512-dyGlL9iOYjSK7jpgh87jL6zZP42mLZV0xrAYv+/hMbh/4ml3oR758wnk5G3frH60rHYscIS6GYL5juSir4yELg==}
+  /eslint-plugin-drizzle@0.2.3(eslint@8.56.0):
+    resolution: {integrity: sha512-BO+ymHo33IUNoJlC0rbd7HP9EwwpW4VIp49R/tWQF/d2E1K2kgTf0tCXT0v9MSiBr6gGR1LtPwMLapTKEWSg9A==}
     peerDependencies:
       eslint: '>=8.0.0'
     dependencies:
