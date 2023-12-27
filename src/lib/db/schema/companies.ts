@@ -32,13 +32,6 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
 // Schema for companies - used to validate API requests
 export const insertCompanySchema = createInsertSchema(companies);
 
-export const insertCompanyFromLeadSchema = createInsertSchema(companies).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  address: true,
-});
-
 export const insertCompanyParams = createSelectSchema(companies, {
   name: z.string().min(1, "Name cannot be empty."),
 }).omit({
@@ -66,7 +59,6 @@ export const companyNameSchema = updateCompanySchema.pick({ name: true });
 // Types for companies - used to type API request params and within Components
 export type Company = z.infer<typeof updateCompanySchema>;
 export type NewCompany = z.infer<typeof insertCompanySchema>;
-export type NewCompanyFromLead = z.infer<typeof insertCompanyFromLeadSchema>;
 export type NewCompanyParams = z.infer<typeof insertCompanyParams>;
 export type UpdateCompanyParams = z.infer<typeof updateCompanyParams>;
 export type CompanyId = z.infer<typeof companyIdSchema>["id"];

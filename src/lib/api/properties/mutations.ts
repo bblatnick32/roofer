@@ -8,12 +8,8 @@ import {
   insertPropertySchema,
   properties,
   propertyIdSchema,
-  insertPropertyFromLeadSchema,
 } from "@/lib/db/schema/properties";
 import { getUserAuth } from "@/lib/auth/utils";
-import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
-import * as schema from "@/lib/db";
-import { LeadProperties } from "@/lib/db/schema/leads";
 
 export const createProperty = async (property: NewPropertyParams) => {
   const { session } = await getUserAuth();
@@ -77,37 +73,4 @@ export const deleteProperty = async (id: PropertyId) => {
     console.error(message);
     return { error: message };
   }
-};
-
-export const insertPropertiesFromLeadRawQuery = async ({
-  newProperties,
-  orgId,
-  leadId,
-  companyId,
-  db,
-}: {
-  newProperties: LeadProperties;
-  orgId: string;
-  leadId: number;
-  companyId: number;
-  db: PlanetScaleDatabase<typeof schema>;
-}) => {
-  if (!newProperties) return [];
-
-  const valuesToInsert = [];
-  for (const property of newProperties) {
-    const newProperty = insertPropertyFromLeadSchema.parse({
-      ...property,
-      orgId,
-      companyId,
-      leadId,
-    });
-    valuesToInsert.push(newProperty);
-  }
-
-  const inserts = await Promise.all(
-    valuesToInsert.map((value) => db.insert(properties).values(value))
-  );
-  const insertedIds = inserts.map(({ insertId }) => Number(insertId));
-  return insertedIds;
 };

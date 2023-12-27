@@ -46,16 +46,6 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
 // Schema for contacts - used to validate API requests
 export const insertContactSchema = createInsertSchema(contacts);
 
-export const insertContactFromLeadSchema = createInsertSchema(contacts)
-  .omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true,
-  })
-  .required({
-    leadId: true,
-  });
-
 export const insertContactParams = createSelectSchema(contacts, {
   name: z.string().min(1, "Name cannot be empty."),
 }).omit({
@@ -86,7 +76,6 @@ export const contactIdSchema = updateContactSchema.pick({ id: true });
 // Types for contacts - used to type API request params and within Components
 export type Contact = z.infer<typeof updateContactSchema>;
 export type NewContact = z.infer<typeof insertContactSchema>;
-export type NewContactFromLead = z.infer<typeof insertContactFromLeadSchema>;
 export type NewContactParams = z.infer<typeof insertContactParams>;
 export type UpdateContactParams = z.infer<typeof updateContactParams>;
 export type ContactId = z.infer<typeof contactIdSchema>["id"];

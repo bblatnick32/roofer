@@ -72,19 +72,6 @@ export const opportunitiesRelations = relations(
 // Schema for opportunities - used to validate API requests
 export const insertOpportunitySchema = createInsertSchema(opportunities);
 
-export const insertOpportunityFromLeadSchema = createInsertSchema(opportunities)
-  .omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true,
-    value: true,
-    closeDate: true,
-    status: true,
-  })
-  .required({
-    leadId: true,
-  });
-
 export const insertOpportunityParams = createSelectSchema(opportunities, {
   value: z.coerce.number(),
   closeDate: z.coerce.string(),
@@ -117,9 +104,6 @@ export const opportunityIdSchema = updateOpportunitySchema.pick({ id: true });
 // Types for opportunities - used to type API request params and within Components
 export type Opportunity = z.infer<typeof updateOpportunitySchema>;
 export type NewOpportunity = z.infer<typeof insertOpportunitySchema>;
-export type NewOpportunityFromLead = z.infer<
-  typeof insertOpportunityFromLeadSchema
->;
 export type NewOpportunityParams = z.infer<typeof insertOpportunityParams>;
 export type UpdateOpportunityParams = z.infer<typeof updateOpportunityParams>;
 export type OpportunityId = z.infer<typeof opportunityIdSchema>["id"];

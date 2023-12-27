@@ -44,17 +44,6 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
 // Schema for properties - used to validate API requests
 export const insertPropertySchema = createInsertSchema(properties);
 
-export const insertPropertyFromLeadSchema = createInsertSchema(properties)
-  .omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true,
-    address: true,
-  })
-  .required({
-    leadId: true,
-  });
-
 export const insertPropertyParams = createSelectSchema(properties, {
   name: z.string().min(1, "Name cannot be empty."),
   address: z.string().min(1, "Address cannot be empty."),
@@ -84,7 +73,6 @@ export const propertyIdSchema = updatePropertySchema.pick({ id: true });
 // Types for properties - used to type API request params and within Components
 export type Property = z.infer<typeof updatePropertySchema>;
 export type NewProperty = z.infer<typeof insertPropertySchema>;
-export type NewPropertyFromLead = z.infer<typeof insertPropertyFromLeadSchema>;
 export type NewPropertyParams = z.infer<typeof insertPropertyParams>;
 export type UpdatePropertyParams = z.infer<typeof updatePropertyParams>;
 export type PropertyId = z.infer<typeof propertyIdSchema>["id"];
