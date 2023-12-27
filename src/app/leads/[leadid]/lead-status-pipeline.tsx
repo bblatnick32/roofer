@@ -45,10 +45,6 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
     onSuccess: async () => onSuccess("update"),
   });
 
-  const { mutate: convertLead } = trpc.leads.convertLead.useMutation({
-    onSuccess: async () => onSuccess("convert"),
-  });
-
   const handleOnClick = (status: Status) => {
     if (status === "Converted") {
       setConvertModalOpen(true);
@@ -66,7 +62,7 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
     setConvertModalOpen(open);
     if (shouldConvert) {
       setCurrentStatus("Converted");
-      convertLead({ ...(lead as UpdateLeadParams), status: "Converted" });
+      // convertLead({ ...(lead as UpdateLeadParams), status: "Converted" });
     }
   };
 

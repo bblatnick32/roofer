@@ -4,7 +4,6 @@ import {
   mysqlTable,
   bigint,
   timestamp,
-  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -14,30 +13,19 @@ import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { leads } from "./leads";
 import { companies } from "./companies";
-import { opportunityContacts } from "./opportunityContacts";
 
-export const contacts = mysqlTable(
-  "contacts",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    email: varchar("email", { length: 256 }),
-    phone: varchar("phone", { length: 256 }),
-    address: varchar("address", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 }).notNull(),
-    leadId: bigint("lead_id", { mode: "number", unsigned: true }),
-    companyId: bigint("company_id", { mode: "number", unsigned: true })
-      .notNull()
-      .references(() => companies.id, { onDelete: "cascade" }),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const contacts = mysqlTable("contacts", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  email: varchar("email", { length: 256 }),
+  phone: varchar("phone", { length: 256 }),
+  address: varchar("address", { length: 256 }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+  leadId: bigint("lead_id", { mode: "number", unsigned: true }),
+  companyId: bigint("company_id", { mode: "number", unsigned: true }).notNull(),
+});
 
 // relations
 export const contactsRelations = relations(contacts, ({ many, one }) => ({
@@ -53,7 +41,6 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
     fields: [contacts.companyId],
     references: [companies.id],
   }),
-  opportunityContacts: many(opportunityContacts),
 }));
 
 // Schema for contacts - used to validate API requests

@@ -7,7 +7,6 @@ import {
   timestamp,
   mysqlEnum,
   bigint,
-  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -18,8 +17,6 @@ import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
 import { companies } from "./companies";
-import { opportunityProperties } from "./opportunityProperties";
-import { opportunityContacts } from "./opportunityContacts";
 import { leads } from "./leads";
 
 export const OPP_OPEN = "Open";
@@ -38,28 +35,18 @@ export const OppStatuses = [
   OPP_CLOSED_WON,
 ] as const;
 
-export const opportunities = mysqlTable(
-  "opportunities",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    value: int("value"),
-    closeDate: date("close_date"),
-    status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
-    orgId: varchar("org_id", { length: 256 }).notNull(),
-    leadId: bigint("lead_id", { mode: "number", unsigned: true }),
-    companyId: bigint("company_id", { mode: "number", unsigned: true })
-      .notNull()
-      .references(() => companies.id, { onDelete: "cascade" }),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const opportunities = mysqlTable("opportunities", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  value: int("value"),
+  closeDate: date("close_date"),
+  status: mysqlEnum("status", OppStatuses).notNull().default(OPP_OPEN),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+  leadId: bigint("lead_id", { mode: "number", unsigned: true }),
+  companyId: bigint("company_id", { mode: "number", unsigned: true }).notNull(),
+});
 
 // relations
 export const opportunitiesRelations = relations(
@@ -79,8 +66,6 @@ export const opportunitiesRelations = relations(
     }),
     photos: many(photos),
     issues: many(issues),
-    opportunityProperties: many(opportunityProperties),
-    opportunityContacts: many(opportunityContacts),
   })
 );
 

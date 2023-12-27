@@ -1,10 +1,4 @@
-import {
-  varchar,
-  serial,
-  mysqlTable,
-  timestamp,
-  uniqueIndex,
-} from "drizzle-orm/mysql-core";
+import { varchar, serial, mysqlTable, timestamp } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -15,22 +9,14 @@ import { opportunities } from "./opportunities";
 import { contacts } from "./contacts";
 import { properties } from "./properties";
 
-export const companies = mysqlTable(
-  "companies",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    address: varchar("address", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 }).notNull(),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const companies = mysqlTable("companies", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  address: varchar("address", { length: 256 }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+});
 
 // relations
 export const companiesRelations = relations(companies, ({ many, one }) => ({

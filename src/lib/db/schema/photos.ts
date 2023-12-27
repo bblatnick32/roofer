@@ -5,7 +5,6 @@ import {
   mysqlTable,
   timestamp,
   mysqlEnum,
-  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -28,27 +27,17 @@ export const PhotoStatuses = [
   PHOTO_SUCCESS,
 ] as const;
 
-export const photos = mysqlTable(
-  "photos",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    url: varchar("url", { length: 256 }),
-    key: varchar("key", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 }).notNull(),
-    oppId: bigint("opp_id", { mode: "number", unsigned: true })
-      .notNull()
-      .references(() => opportunities.id, { onDelete: "cascade" }),
-    status: mysqlEnum("status", PhotoStatuses).notNull().default(PHOTO_PENDING),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const photos = mysqlTable("photos", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  url: varchar("url", { length: 256 }),
+  key: varchar("key", { length: 256 }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+  oppId: bigint("opp_id", { mode: "number", unsigned: true }).notNull(),
+  status: mysqlEnum("status", PhotoStatuses).notNull().default(PHOTO_PENDING),
+});
 
 // relations
 export const photosRelations = relations(photos, ({ one }) => ({

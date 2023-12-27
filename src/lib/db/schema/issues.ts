@@ -46,26 +46,16 @@ export const issues = mysqlTable("issues", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  oppId: bigint("opp_id", { mode: "number", unsigned: true })
-    .notNull()
-    .references(() => opportunities.id, { onDelete: "cascade" }),
+  oppId: bigint("opp_id", { mode: "number", unsigned: true }).notNull(),
   issueTemplateId: bigint("issue_template_id", {
     mode: "number",
     unsigned: true,
-  }).references(() => issueTemplates.id, { onDelete: "restrict" }),
+  }),
   repairTemplateId: bigint("repair_template_id", {
     mode: "number",
     unsigned: true,
-  }).references(() => repairTemplates.id, { onDelete: "restrict" }),
-  photoId: bigint("photo_id", { mode: "number", unsigned: true }).references(
-    () => photos.id,
-    { onDelete: "set null" }
-  ),
-  // location: varchar("location", { length: 256 }),
-  // measurements: varchar("measurements", { length: 256 }),
-  // quantity: int("quantity"),
-  // materials_list: varchar("measurements", { length: 256 }),
-  // costEstimate: decimal("cost_estimate", { precision: 2 }),
+  }),
+  photoId: bigint("photo_id", { mode: "number", unsigned: true }),
   conditionText: text("condition_text"),
   deficiencyText: text("deficiency_text"),
   additionalDetails: text("additional_details"),

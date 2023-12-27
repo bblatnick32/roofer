@@ -4,7 +4,6 @@ import {
   mysqlTable,
   bigint,
   timestamp,
-  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -13,29 +12,18 @@ import { getProperties } from "@/lib/api/properties/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { companies } from "./companies";
-import { opportunityProperties } from "./opportunityProperties";
 import { leads } from "./leads";
 
-export const properties = mysqlTable(
-  "properties",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-    address: varchar("address", { length: 256 }),
-    orgId: varchar("org_id", { length: 256 }).notNull(),
-    leadId: bigint("lead_id", { mode: "number", unsigned: true }),
-    companyId: bigint("company_id", { mode: "number", unsigned: true })
-      .notNull()
-      .references(() => companies.id, { onDelete: "cascade" }),
-  },
-  (table) => {
-    return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
-    };
-  }
-);
+export const properties = mysqlTable("properties", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  address: varchar("address", { length: 256 }),
+  orgId: varchar("org_id", { length: 256 }).notNull(),
+  leadId: bigint("lead_id", { mode: "number", unsigned: true }),
+  companyId: bigint("company_id", { mode: "number", unsigned: true }).notNull(),
+});
 
 // relations
 export const propertiesRelations = relations(properties, ({ many, one }) => ({
@@ -51,7 +39,6 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
     fields: [properties.companyId],
     references: [companies.id],
   }),
-  opportunityProperties: many(opportunityProperties),
 }));
 
 // Schema for properties - used to validate API requests
