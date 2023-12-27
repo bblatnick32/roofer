@@ -11,8 +11,7 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
-import { getIssues, getIssuesByOpportunityId } from "@/lib/api/issues/queries";
-import { opportunities } from "./opportunities";
+import { getIssues } from "@/lib/api/issues/queries";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issueTemplates } from "./issueTemplates";
@@ -69,10 +68,6 @@ export const issuesRelations = relations(issues, ({ one }) => ({
   org: one(orgs, {
     fields: [issues.orgId],
     references: [orgs.id],
-  }),
-  opportunity: one(opportunities, {
-    fields: [issues.oppId],
-    references: [opportunities.id],
   }),
   photo: one(photos, {
     fields: [issues.photoId],
@@ -134,8 +129,4 @@ export type IssueId = z.infer<typeof issueIdSchema>["id"];
 // this type infers the return from getIssues() - meaning it will include any joins
 export type CompleteIssue = Awaited<
   ReturnType<typeof getIssues>
->["issues"][number];
-
-export type CompleteIssueForList = Awaited<
-  ReturnType<typeof getIssuesByOpportunityId>
 >["issues"][number];

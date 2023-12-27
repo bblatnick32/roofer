@@ -1,8 +1,4 @@
-import {
-  getPhotoById,
-  getPhotos,
-  getPhotosByOpportunityId,
-} from "@/lib/api/photos/queries";
+import { getPhotoById, getPhotos } from "@/lib/api/photos/queries";
 import { privateProcedure, router } from "../trpc";
 import {
   photoIdSchema,
@@ -31,11 +27,11 @@ export const photosRouter = router({
     .mutation(async ({ input }) => {
       return getPhotoByKey(input.key);
     }),
-  getPhotosByOpportunityId: privateProcedure
-    .input(photoIdSchema)
-    .query(async ({ input }) => {
-      return getPhotosByOpportunityId(input.id);
-    }),
+  // getPhotosByOpportunityId: privateProcedure
+  //   .input(photoIdSchema)
+  //   .query(async ({ input }) => {
+  //     return getPhotosByOpportunityId(input.id);
+  //   }),
   createPhoto: privateProcedure
     .input(insertPhotoParams)
     .mutation(async ({ input }) => {

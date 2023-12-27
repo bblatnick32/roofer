@@ -11,8 +11,8 @@ import { z } from "zod";
 import { getContacts } from "@/lib/api/contacts/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { leads } from "./leads";
 import { companies } from "./companies";
+import { jobs } from "./jobs";
 
 export const contacts = mysqlTable("contacts", {
   id: serial("id").primaryKey(),
@@ -33,14 +33,11 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
     fields: [contacts.orgId],
     references: [orgs.id],
   }),
-  lead: one(leads, {
-    fields: [contacts.leadId],
-    references: [leads.id],
-  }),
   company: one(companies, {
     fields: [contacts.companyId],
     references: [companies.id],
   }),
+  jobs: many(jobs),
 }));
 
 // Schema for contacts - used to validate API requests

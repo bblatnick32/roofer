@@ -1,7 +1,4 @@
-import { getOpportunityById } from "@/lib/api/opportunities/queries";
 import { checkAuth } from "@/lib/auth/utils";
-import { notFound } from "next/navigation";
-import OpportunityDetails from "./opportunity-details";
 
 interface PageProps {
   params: {
@@ -15,11 +12,10 @@ const Page = async ({ params }: PageProps) => {
   await checkAuth(`opportunities/${oppid}`);
 
   // make a call to get the opportunity
-  const { opportunity } = await getOpportunityById(Number(oppid));
+  // const { opportunity } = await getOpportunityById(Number(oppid));
+  // if (!opportunity) notFound();
 
-  if (!opportunity) notFound();
-
-  return <OpportunityDetails opportunity={opportunity} />;
+  // return <OpportunityDetails opportunity={opportunity} />;
 };
 
 export default Page;

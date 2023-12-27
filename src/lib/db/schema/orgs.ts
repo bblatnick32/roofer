@@ -4,8 +4,6 @@ import { z } from "zod";
 import { users } from "./users";
 import { getOrgs } from "@/lib/api/orgs/queries";
 import { relations } from "drizzle-orm";
-import { leads } from "./leads";
-import { opportunities } from "./opportunities";
 import { photos } from "./photos";
 import { issues } from "./issues";
 import { repairTemplates } from "./repairTemplates";
@@ -29,8 +27,6 @@ export const orgs = mysqlTable("orgs", {
 // relations
 export const orgsRelations = relations(orgs, ({ many }) => ({
   users: many(users),
-  leads: many(leads),
-  opportunities: many(opportunities),
   photos: many(photos),
   issues: many(issues),
   repairTemplates: many(repairTemplates),

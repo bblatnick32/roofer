@@ -1,14 +1,9 @@
-import {
-  getIssueById,
-  getIssues,
-  getIssuesByOpportunityId,
-} from "@/lib/api/issues/queries";
+import { getIssueById, getIssues } from "@/lib/api/issues/queries";
 import { privateProcedure, router } from "../trpc";
 import {
   issueIdSchema,
   insertIssueParams,
   updateIssueParams,
-  issueOpportunityIdSchema,
 } from "@/lib/db/schema/issues";
 import {
   createIssue,
@@ -25,11 +20,11 @@ export const issuesRouter = router({
     .query(async ({ input }) => {
       return getIssueById(input.id);
     }),
-  getIssuesByOpportunityId: privateProcedure
-    .input(issueOpportunityIdSchema)
-    .query(async ({ input }) => {
-      return getIssuesByOpportunityId(input.oppId);
-    }),
+  // getIssuesByOpportunityId: privateProcedure
+  //   .input(issueOpportunityIdSchema)
+  //   .query(async ({ input }) => {
+  //     return getIssuesByOpportunityId(input.oppId);
+  //   }),
   createIssue: privateProcedure
     .input(insertIssueParams)
     .mutation(async ({ input }) => {

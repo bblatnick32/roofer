@@ -16,6 +16,8 @@ import { orgs } from "./orgs";
 import { photos } from "./photos";
 import { issues } from "./issues";
 import { companies } from "./companies";
+import { properties } from "./properties";
+import { contacts } from "./contacts";
 
 // statuses
 export const NEW = "New Lead";
@@ -77,6 +79,14 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
   company: one(companies, {
     fields: [jobs.companyId],
     references: [companies.id],
+  }),
+  property: one(properties, {
+    fields: [jobs.propertyId],
+    references: [properties.id],
+  }),
+  contact: one(contacts, {
+    fields: [jobs.contactId],
+    references: [contacts.id],
   }),
   photos: many(photos),
   issues: many(issues),

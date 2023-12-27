@@ -10,7 +10,6 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { getPhotos } from "@/lib/api/photos/queries";
-import { opportunities } from "./opportunities";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { issues } from "./issues";
@@ -44,10 +43,6 @@ export const photosRelations = relations(photos, ({ one }) => ({
   org: one(orgs, {
     fields: [photos.orgId],
     references: [orgs.id],
-  }),
-  opportunity: one(opportunities, {
-    fields: [photos.oppId],
-    references: [opportunities.id],
   }),
   issue: one(issues),
 }));

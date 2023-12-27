@@ -1,13 +1,7 @@
 import { db } from "@/lib/db/client";
 import { eq, and } from "drizzle-orm";
 import { getUserAuth } from "@/lib/auth/utils";
-import {
-  type IssueId,
-  issueIdSchema,
-  issues,
-  issueOpportunityIdSchema,
-} from "@/lib/db/schema/issues";
-import { OpportunityId } from "@/lib/db/schema/opportunities";
+import { type IssueId, issueIdSchema, issues } from "@/lib/db/schema/issues";
 
 export const getIssues = async () => {
   const { session } = await getUserAuth();
@@ -30,23 +24,23 @@ export const getIssueById = async (id: IssueId) => {
   return { issue: w };
 };
 
-export const getIssuesByOpportunityId = async (oppId: OpportunityId) => {
-  const { session } = await getUserAuth();
-  const { oppId: opportunityId } = issueOpportunityIdSchema.parse({ oppId });
-  const w = await db.query.issues.findMany({
-    where: and(
-      eq(issues.oppId, opportunityId),
-      eq(issues.orgId, session?.user.activeOrgId!)
-    ),
-    with: {
-      issueTemplate: {
-        columns: {
-          name: true,
-        },
-      },
-      photo: true,
-    },
-  });
+// export const getIssuesByOpportunityId = async (oppId: OpportunityId) => {
+//   const { session } = await getUserAuth();
+//   const { oppId: opportunityId } = issueOpportunityIdSchema.parse({ oppId });
+//   const w = await db.query.issues.findMany({
+//     where: and(
+//       eq(issues.oppId, opportunityId),
+//       eq(issues.orgId, session?.user.activeOrgId!)
+//     ),
+//     with: {
+//       issueTemplate: {
+//         columns: {
+//           name: true,
+//         },
+//       },
+//       photo: true,
+//     },
+//   });
 
-  return { issues: w };
-};
+//   return { issues: w };
+// };
