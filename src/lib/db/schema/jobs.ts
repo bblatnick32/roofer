@@ -92,18 +92,30 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
   issues: many(issues),
 }));
 
-// Schema for jobs - used to validate API requests
+// Schema for jobs/leads - used to validate API requests
 export const insertJobSchema = createInsertSchema(jobs);
+export const insertLeadSchema = insertJobSchema.extend({
+  type: z.literal(LEAD),
+});
 
 export const insertJobParams = createSelectSchema(jobs, {}).omit({
   id: true,
   orgId: true,
 });
+export const insertLeadParams = insertJobParams.extend({
+  type: z.literal(LEAD),
+});
 
 export const updateJobSchema = createSelectSchema(jobs);
+export const updateLeadSchema = updateJobSchema.extend({
+  type: z.literal(LEAD),
+});
 
 export const updateJobParams = createSelectSchema(jobs, {}).omit({
   orgId: true,
+});
+export const updateLeadParams = updateJobParams.extend({
+  type: z.literal(LEAD),
 });
 
 export const jobIdSchema = updateJobSchema.pick({ id: true });
@@ -114,6 +126,13 @@ export type NewJob = z.infer<typeof insertJobSchema>;
 export type NewJobParams = z.infer<typeof insertJobParams>;
 export type UpdateJobParams = z.infer<typeof updateJobParams>;
 export type JobId = z.infer<typeof jobIdSchema>["id"];
+
+// Types for leads - used to type API request params and within Components
+export type Lead = z.infer<typeof updateLeadSchema>;
+export type NewLead = z.infer<typeof insertLeadSchema>;
+export type NewLeadParams = z.infer<typeof insertLeadParams>;
+export type UpdateLeadParams = z.infer<typeof updateLeadParams>;
+export type LeadId = z.infer<typeof jobIdSchema>["id"];
 
 // this type infers the return from getJobs() - meaning it will include any joins
 export type CompleteJob = Awaited<ReturnType<typeof getJobs>>["jobs"][number];

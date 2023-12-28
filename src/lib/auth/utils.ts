@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 export type AuthSession = {
   session: {
@@ -33,7 +34,7 @@ export const getUserAuth = async () => {
   }
 };
 
-export const checkAuth = async (origin?: string) => {
+export const checkAuth = cache(async (origin?: string) => {
   const { session } = await getUserAuth();
   const { user } = session ?? {};
 
@@ -42,4 +43,4 @@ export const checkAuth = async (origin?: string) => {
   if (origin) return redirect(`/auth-callback?origin=${origin}`);
 
   throw new Error("Unauthorized");
-};
+});

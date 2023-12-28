@@ -4,8 +4,17 @@ import {
   jobIdSchema,
   insertJobParams,
   updateJobParams,
+  insertLeadParams,
+  updateLeadParams,
 } from "@/lib/db/schema/jobs";
-import { createJob, deleteJob, updateJob } from "@/lib/api/jobs/mutations";
+import {
+  createJob,
+  createLead,
+  deleteJob,
+  deleteLead,
+  updateJob,
+  updateLead,
+} from "@/lib/api/jobs/mutations";
 
 export const jobsRouter = router({
   getJobs: privateProcedure.query(async () => {
@@ -27,4 +36,19 @@ export const jobsRouter = router({
   deleteJob: privateProcedure.input(jobIdSchema).mutation(async ({ input }) => {
     return deleteJob(input.id);
   }),
+  createLead: privateProcedure
+    .input(insertLeadParams)
+    .mutation(async ({ input }) => {
+      return createLead(input);
+    }),
+  updateLead: privateProcedure
+    .input(updateLeadParams)
+    .mutation(async ({ input }) => {
+      return updateLead(input.id, input);
+    }),
+  deleteLead: privateProcedure
+    .input(jobIdSchema)
+    .mutation(async ({ input }) => {
+      return deleteLead(input.id);
+    }),
 });
