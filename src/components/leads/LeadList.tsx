@@ -61,7 +61,9 @@ export default function LeadList({
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()}>New Lead</Button>
+        <Button variant={"outline"} onClick={() => openModal()}>
+          Create New Lead
+        </Button>
       </div>
       {optimisticLeads.length === 0 ? (
         <EmptyState openModal={openModal} />

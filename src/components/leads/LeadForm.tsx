@@ -12,6 +12,9 @@ import { type TAddOptimistic } from "@/app/leads/useOptimisticLeads";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import NewCompanyModal from "@/components/companies/CompanyModal";
+import NewPropertyModal from "@/components/properties/PropertyModal";
+import NewContactModal from "@/components/contacts/ContactModal";
 
 import {
   Select,
@@ -84,7 +87,9 @@ const LeadForm = ({
   const handleSubmit = async (data: FormData) => {
     setErrors(null);
 
-    const payload = Object.fromEntries(data.entries());
+    const payload = Object.fromEntries(data.entries()) as any;
+    payload.type = "Lead";
+
     const leadParsed = await insertLeadParams.safeParseAsync(payload);
     if (!leadParsed.success) {
       setErrors(leadParsed?.error.flatten().fieldErrors);
@@ -174,6 +179,9 @@ const LeadForm = ({
             ))}
           </SelectContent>
         </Select>
+        <div className="mt-4">
+          <NewCompanyModal />
+        </div>
         {errors?.companyId ? (
           <p className="text-xs text-destructive mt-2">{errors.companyId[0]}</p>
         ) : (
@@ -204,6 +212,9 @@ const LeadForm = ({
             ))}
           </SelectContent>
         </Select>
+        <div className="mt-4">
+          <NewPropertyModal />
+        </div>
         {errors?.propertyId ? (
           <p className="text-xs text-destructive mt-2">
             {errors.propertyId[0]}
@@ -236,6 +247,9 @@ const LeadForm = ({
             ))}
           </SelectContent>
         </Select>
+        <div className="mt-4">
+          <NewContactModal />
+        </div>
         {errors?.contactId ? (
           <p className="text-xs text-destructive mt-2">{errors.contactId[0]}</p>
         ) : (

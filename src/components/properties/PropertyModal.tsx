@@ -45,8 +45,8 @@ export default function PropertyModal({
             New Property
           </Button>
         ) : (
-          <Button variant={editing ? "ghost" : "default"} size="sm">
-            {editing ? "Edit" : "New Property"}
+          <Button variant={editing ? "ghost" : "outline"} size="sm">
+            {editing ? "Edit" : "Create New Property"}
           </Button>
         )}
       </DialogTrigger>

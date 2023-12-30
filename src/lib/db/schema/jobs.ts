@@ -93,7 +93,13 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
 }));
 
 // Schema for jobs/leads - used to validate API requests
-export const insertJobSchema = createInsertSchema(jobs);
+export const insertJobSchema = createInsertSchema(jobs, {}).omit({
+  id: true,
+  orgId: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
+});
 export const insertLeadSchema = insertJobSchema.extend({
   type: z.literal(LEAD),
 });
@@ -101,6 +107,9 @@ export const insertLeadSchema = insertJobSchema.extend({
 export const insertJobParams = createSelectSchema(jobs, {}).omit({
   id: true,
   orgId: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
 });
 export const insertLeadParams = insertJobParams.extend({
   type: z.literal(LEAD),
@@ -108,6 +117,9 @@ export const insertLeadParams = insertJobParams.extend({
 
 export const updateJobSchema = createSelectSchema(jobs, {}).omit({
   orgId: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
 });
 export const updateLeadSchema = updateJobSchema.extend({
   type: z.literal(LEAD),
@@ -115,6 +127,9 @@ export const updateLeadSchema = updateJobSchema.extend({
 
 export const updateJobParams = createSelectSchema(jobs, {}).omit({
   orgId: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
 });
 export const updateLeadParams = updateJobParams.extend({
   type: z.literal(LEAD),
