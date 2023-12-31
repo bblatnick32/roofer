@@ -6,7 +6,7 @@ import {
   jobIdSchema,
   jobs,
   LEAD,
-  Lead,
+  CompleteLead,
 } from "@/lib/db/schema/jobs";
 
 export const getJobs = async () => {
@@ -36,5 +36,5 @@ export const getLeads = async () => {
     .where(
       and(eq(jobs.orgId, session?.user.activeOrgId!), eq(jobs.type, LEAD))
     );
-  return { leads: j as Lead[] };
+  return { leads: j as CompleteLead[] };
 };

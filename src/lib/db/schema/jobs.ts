@@ -10,7 +10,7 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-import { getLeads, type getJobs } from "@/lib/api/jobs/queries";
+import { type getJobs } from "@/lib/api/jobs/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
@@ -93,13 +93,7 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
 }));
 
 // Schema for jobs/leads - used to validate API requests
-export const insertJobSchema = createInsertSchema(jobs, {}).omit({
-  id: true,
-  orgId: true,
-  createdAt: true,
-  updatedAt: true,
-  status: true,
-});
+export const insertJobSchema = createInsertSchema(jobs);
 export const insertLeadSchema = insertJobSchema.extend({
   type: z.literal(LEAD),
 });
@@ -117,9 +111,6 @@ export const insertLeadParams = insertJobParams.extend({
 
 export const updateJobSchema = createSelectSchema(jobs, {}).omit({
   orgId: true,
-  createdAt: true,
-  updatedAt: true,
-  status: true,
 });
 export const updateLeadSchema = updateJobSchema.extend({
   type: z.literal(LEAD),
@@ -129,7 +120,6 @@ export const updateJobParams = createSelectSchema(jobs, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
-  status: true,
 });
 export const updateLeadParams = updateJobParams.extend({
   type: z.literal(LEAD),
@@ -154,6 +144,6 @@ export type LeadId = z.infer<typeof jobIdSchema>["id"];
 
 // this type infers the return from getJobs() - meaning it will include any joins
 export type CompleteJob = Awaited<ReturnType<typeof getJobs>>["jobs"][number];
-export type CompleteLead = Awaited<
-  ReturnType<typeof getLeads>
->["leads"][number];
+export type CompleteLead = CompleteJob & {
+  type: typeof LEAD;
+};

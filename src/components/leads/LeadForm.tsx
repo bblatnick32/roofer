@@ -1,21 +1,26 @@
-import { z } from "zod";
+"use client";
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import {
+  LEAD,
+  Lead,
+  NewLeadParams,
+  insertLeadParams,
+} from "@/lib/db/schema/jobs";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/leads/useOptimisticLeads";
-
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { trpc } from "@/lib/trpc/client";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import NewCompanyModal from "@/components/companies/CompanyModal";
-import NewPropertyModal from "@/components/properties/PropertyModal";
-import NewContactModal from "@/components/contacts/ContactModal";
-
+import { z } from "zod";
 import {
   Select,
   SelectContent,
@@ -23,295 +28,243 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { type Lead, insertLeadParams } from "@/lib/db/schema/jobs";
-import {
-  createLeadAction,
-  deleteLeadAction,
-  updateLeadAction,
-} from "@/lib/actions/leads";
-import { type Company } from "@/lib/db/schema/companies";
-import { type Property } from "@/lib/db/schema/properties";
-import { type Contact } from "@/lib/db/schema/contacts";
-
-const EMPTY = -3;
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import NewCompanyModal from "@/components/companies/CompanyModal";
+import NewPropertyModal from "@/components/properties/PropertyModal";
+import NewContactModal from "@/components/contacts/ContactModal";
 
 const LeadForm = ({
-  companies,
-  properties,
-  contacts,
   lead,
-  openModal,
   closeModal,
-  addOptimistic,
-  postSuccess,
 }: {
-  lead?: Lead | null;
-  companies: Company[];
-  properties: Property[];
-  contacts: Contact[];
-  openModal?: (lead?: Lead) => void;
+  lead?: Lead;
   closeModal?: () => void;
-  addOptimistic?: TAddOptimistic;
-  postSuccess?: () => void;
 }) => {
-  const { errors, hasErrors, setErrors, handleChange } =
-    useValidatedForm<Lead>(insertLeadParams);
   const { toast } = useToast();
+  const { data: companies } = trpc.companies.getCompanies.useQuery();
+  const { data: properties } = trpc.properties.getProperties.useQuery();
+  const { data: contacts } = trpc.contacts.getContacts.useQuery();
   const editing = !!lead?.id;
 
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [pending, startMutation] = useTransition();
-
   const router = useRouter();
+  const utils = trpc.useUtils();
 
-  const onSuccess = (
-    action: Action,
-    data?: { error: string; values: Lead }
+  const form = useForm<z.infer<typeof insertLeadParams>>({
+    // latest Zod release has introduced a TS error with zodResolver
+    // open issue: https://github.com/colinhacks/zod/issues/2663
+    // errors locally but not in production
+    resolver: zodResolver(insertLeadParams),
+    defaultValues: lead ?? {
+      description: "",
+      companyId: null,
+      propertyId: null,
+      contactId: null,
+      type: LEAD,
+    },
+  });
+
+  const onSuccess = async (
+    action: "create" | "update" | "delete",
+    data?: { success?: boolean; error?: string }
   ) => {
-    const failed = Boolean(data?.error);
-    if (failed) {
-      openModal && openModal(data?.values);
-    } else {
-      router.refresh();
-      postSuccess && postSuccess();
-    }
-
-    toast({
-      title: failed ? `Failed to ${action}` : "Success",
-      description: failed ? data?.error ?? "Error" : `Lead ${action}d!`,
-      variant: failed ? "destructive" : "default",
-    });
-  };
-
-  const handleSubmit = async (data: FormData) => {
-    setErrors(null);
-
-    const payload = Object.fromEntries(data.entries()) as any;
-    payload.type = "Lead";
-
-    const leadParsed = await insertLeadParams.safeParseAsync(payload);
-    if (!leadParsed.success) {
-      setErrors(leadParsed?.error.flatten().fieldErrors);
+    if (data?.error) {
+      toast({
+        title: `${action
+          .slice(0, 1)
+          .toUpperCase()
+          .concat(action.slice(1))} Failed`,
+        description: data.error,
+        variant: "destructive",
+      });
       return;
     }
 
-    closeModal && closeModal();
-    const values = leadParsed.data;
-    try {
-      startMutation(async () => {
-        addOptimistic &&
-          addOptimistic({
-            data: {
-              ...values,
-              id: editing ? lead.id : EMPTY,
-            },
-            action: editing ? "update" : "create",
-          });
+    await utils.jobs.getLeads.invalidate();
+    router.refresh();
+    if (closeModal) closeModal();
+    toast({
+      title: "Success",
+      description: `Lead ${action}d!`,
+      variant: "default",
+    });
+  };
 
-        const error = editing
-          ? await updateLeadAction({ ...values, id: lead.id })
-          : await createLeadAction(values);
+  const { mutate: createLead, isLoading: isCreating } =
+    trpc.jobs.createLead.useMutation({
+      onSuccess: (res) => onSuccess("create", res),
+    });
 
-        const errorFormatted = {
-          error: error ?? "Error",
-          values: editing ? { ...lead, ...values } : { ...values, id: EMPTY },
-        };
-        onSuccess(
-          editing ? "update" : "create",
-          error ? errorFormatted : undefined
-        );
-      });
-    } catch (e) {
-      if (e instanceof z.ZodError) {
-        setErrors(e.flatten().fieldErrors);
-      }
+  const { mutate: updateLead, isLoading: isUpdating } =
+    trpc.jobs.updateLead.useMutation({
+      onSuccess: (res) => onSuccess("update", res),
+    });
+
+  const { mutate: deleteLead, isLoading: isDeleting } =
+    trpc.jobs.deleteLead.useMutation({
+      onSuccess: (res) => onSuccess("delete", res),
+    });
+
+  const handleSubmit = (values: NewLeadParams) => {
+    if (editing) {
+      updateLead({ ...values, id: lead.id, status: lead.status });
+    } else {
+      createLead(values);
     }
   };
 
-  return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
-      {/* Schema fields start */}
-      <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.description ? "text-destructive" : ""
-          )}
-        >
-          Description
-        </Label>
-        <Input
-          type="text"
-          name="description"
-          className={cn(errors?.description ? "ring ring-destructive" : "")}
-          defaultValue={lead?.description ?? ""}
-        />
-        {errors?.description ? (
-          <p className="text-xs text-destructive mt-2">
-            {errors.description[0]}
-          </p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
+  const onErrors = (errors: any) => {
+    console.error(errors);
+  };
 
-      <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.companyId ? "text-destructive" : ""
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        className={"space-y-8"}
+      >
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ""} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
           )}
-        >
-          Company
-        </Label>
-        <Select defaultValue={lead?.companyId?.toString()} name="companyId">
-          <SelectTrigger
-            className={cn(errors?.companyId ? "ring ring-destructive" : "")}
-          >
-            <SelectValue placeholder="Select a company" />
-          </SelectTrigger>
-          <SelectContent>
-            {companies?.map((company) => (
-              <SelectItem key={company.id} value={company.id.toString()}>
-                {company.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <div className="mt-4">
+        />
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="companyId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Id</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(parseInt(value));
+                    }}
+                    defaultValue={String(field.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies?.companies.map((company) => (
+                        <SelectItem
+                          key={company.id}
+                          value={company.id.toString()}
+                        >
+                          {company.name}{" "}
+                          {/* TODO: Replace with a field from the company model */}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <NewCompanyModal />
         </div>
-        {errors?.companyId ? (
-          <p className="text-xs text-destructive mt-2">{errors.companyId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="propertyId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Property Id</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={String(field.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a property" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {properties?.properties.map((property) => (
+                        <SelectItem
+                          key={property.id}
+                          value={property.id.toString()}
+                        >
+                          {property.name}{" "}
+                          {/* TODO: Replace with a field from the property model */}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
 
-      <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.propertyId ? "text-destructive" : ""
-          )}
-        >
-          Property
-        </Label>
-        <Select defaultValue={lead?.propertyId?.toString()} name="propertyId">
-          <SelectTrigger
-            className={cn(errors?.propertyId ? "ring ring-destructive" : "")}
-          >
-            <SelectValue placeholder="Select a property" />
-          </SelectTrigger>
-          <SelectContent>
-            {properties?.map((property) => (
-              <SelectItem key={property.id} value={property.id.toString()}>
-                {property.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <div className="mt-4">
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <NewPropertyModal />
         </div>
-        {errors?.propertyId ? (
-          <p className="text-xs text-destructive mt-2">
-            {errors.propertyId[0]}
-          </p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="contactId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact Id</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={String(field.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a contact" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {contacts?.contacts.map((contact) => (
+                        <SelectItem
+                          key={contact.id}
+                          value={contact.id.toString()}
+                        >
+                          {contact.name}{" "}
+                          {/* TODO: Replace with a field from the contact model */}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
 
-      <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.contactId ? "text-destructive" : ""
-          )}
-        >
-          Contact
-        </Label>
-        <Select defaultValue={lead?.contactId?.toString()} name="contactId">
-          <SelectTrigger
-            className={cn(errors?.contactId ? "ring ring-destructive" : "")}
-          >
-            <SelectValue placeholder="Select a contact" />
-          </SelectTrigger>
-          <SelectContent>
-            {contacts?.map((contact) => (
-              <SelectItem key={contact.id} value={contact.id.toString()}>
-                {contact.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <div className="mt-4">
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <NewContactModal />
         </div>
-        {errors?.contactId ? (
-          <p className="text-xs text-destructive mt-2">{errors.contactId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
-      {/* Schema fields end */}
-
-      {/* Save Button */}
-      <SaveButton errors={hasErrors} editing={editing} />
-
-      {/* Delete Button */}
-      {editing ? (
         <Button
-          type="button"
-          disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
-          onClick={() => {
-            setIsDeleting(true);
-            closeModal && closeModal();
-            startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: lead });
-              const error = await deleteLeadAction(lead.id);
-              setIsDeleting(false);
-              const errorFormatted = {
-                error: error ?? "Error",
-                values: lead,
-              };
-
-              onSuccess("delete", error ? errorFormatted : undefined);
-            });
-          }}
+          type="submit"
+          className="mr-1"
+          disabled={isCreating || isUpdating}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          {editing
+            ? `Sav${isUpdating ? "ing..." : "e"}`
+            : `Creat${isCreating ? "ing..." : "e"}`}
         </Button>
-      ) : null}
-    </form>
+        {editing ? (
+          <Button
+            type="button"
+            variant={"destructive"}
+            onClick={() => deleteLead({ id: lead.id })}
+          >
+            Delet{isDeleting ? "ing..." : "e"}
+          </Button>
+        ) : null}
+      </form>
+    </Form>
   );
 };
 
 export default LeadForm;
-
-const SaveButton = ({
-  editing,
-  errors,
-}: {
-  editing: Boolean;
-  errors: boolean;
-}) => {
-  const { pending } = useFormStatus();
-  const isCreating = pending && editing === false;
-  const isUpdating = pending && editing === true;
-  return (
-    <Button
-      type="submit"
-      className="mr-2"
-      disabled={isCreating || isUpdating || errors}
-      aria-disabled={isCreating || isUpdating || errors}
-    >
-      {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
-    </Button>
-  );
-};

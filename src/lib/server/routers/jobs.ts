@@ -1,4 +1,4 @@
-import { getJobById, getJobs } from "@/lib/api/jobs/queries";
+import { getJobById, getJobs, getLeads } from "@/lib/api/jobs/queries";
 import { privateProcedure, router } from "@/lib/server/trpc";
 import {
   jobIdSchema,
@@ -35,6 +35,9 @@ export const jobsRouter = router({
     }),
   deleteJob: privateProcedure.input(jobIdSchema).mutation(async ({ input }) => {
     return deleteJob(input.id);
+  }),
+  getLeads: privateProcedure.query(async () => {
+    return getLeads();
   }),
   createLead: privateProcedure
     .input(insertLeadParams)

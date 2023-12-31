@@ -1,116 +1,39 @@
 "use client";
+import { CompleteLead } from "@/lib/db/schema/jobs";
+import { trpc } from "@/lib/trpc/client";
+import LeadModal from "./LeadModal";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { type Lead, CompleteLead } from "@/lib/db/schema/jobs";
-import Modal from "@/components/shared/Modal";
-import { type Company } from "@/lib/db/schema/companies";
-import { type Property } from "@/lib/db/schema/properties";
-import { type Contact } from "@/lib/db/schema/contacts";
-import {
-  DELETE,
-  OPTIMISTIC,
-  useOptimisticLeads,
-} from "@/app/leads/useOptimisticLeads";
-import { Button } from "@/components/ui/button";
-import LeadForm from "./LeadForm";
-import { PlusIcon } from "lucide-react";
+export default function LeadList({ leads }: { leads: CompleteLead[] }) {
+  const { data: l } = trpc.jobs.getLeads.useQuery(undefined, {
+    initialData: { leads },
+    refetchOnMount: false,
+  });
 
-type TOpenModal = (lead?: Lead) => void;
-
-export default function LeadList({
-  leads,
-  companies,
-  properties,
-  contacts,
-}: {
-  leads: CompleteLead[];
-  companies: Company[];
-  properties: Property[];
-  contacts: Contact[];
-}) {
-  const { optimisticLeads, addOptimisticLead } = useOptimisticLeads(
-    leads,
-    companies,
-    properties,
-    contacts
-  );
-  const [open, setOpen] = useState(false);
-  const [activeLead, setActiveLead] = useState<Lead | null>(null);
-  const openModal = (lead?: Lead) => {
-    setOpen(true);
-    lead ? setActiveLead(lead) : setActiveLead(null);
-  };
-  const closeModal = () => setOpen(false);
+  if (l.leads.length === 0) {
+    return <EmptyState />;
+  }
 
   return (
-    <div>
-      <Modal
-        open={open}
-        setOpen={setOpen}
-        title={activeLead ? "Edit Lead" : "Create Lead"}
-      >
-        <LeadForm
-          lead={activeLead}
-          addOptimistic={addOptimisticLead}
-          openModal={openModal}
-          closeModal={closeModal}
-          companies={companies}
-          properties={properties}
-          contacts={contacts}
-        />
-      </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button variant={"outline"} onClick={() => openModal()}>
-          Create New Lead
-        </Button>
-      </div>
-      {optimisticLeads.length === 0 ? (
-        <EmptyState openModal={openModal} />
-      ) : (
-        <ul>
-          {optimisticLeads.map((lead) => (
-            <Lead lead={lead} key={lead.id} openModal={openModal} />
-          ))}
-        </ul>
-      )}
-    </div>
+    <ul>
+      {l.leads.map((lead) => (
+        <Lead lead={lead} key={lead.id} />
+      ))}
+    </ul>
   );
 }
 
-const Lead = ({
-  lead,
-  openModal,
-}: {
-  lead: CompleteLead;
-  openModal: TOpenModal;
-}) => {
-  const optimistic = lead.id === OPTIMISTIC;
-  const deleting = lead.id === DELETE;
-  const mutating = optimistic || deleting;
+const Lead = ({ lead }: { lead: CompleteLead }) => {
   return (
-    <li
-      className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : ""
-      )}
-    >
+    <li className="flex justify-between my-2">
       <div className="w-full">
         <div>{lead.description}</div>
       </div>
-      <Button
-        onClick={() => openModal(lead)}
-        disabled={mutating}
-        variant={"ghost"}
-      >
-        Edit
-      </Button>
+      <LeadModal lead={lead} />
     </li>
   );
 };
 
-const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
+const EmptyState = () => {
   return (
     <div className="text-center">
       <h3 className="mt-2 text-sm font-semibold text-secondary-foreground">
@@ -120,9 +43,7 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
         Get started by creating a new lead.
       </p>
       <div className="mt-6">
-        <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Lead
-        </Button>
+        <LeadModal emptyState={true} />
       </div>
     </div>
   );
