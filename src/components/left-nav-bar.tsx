@@ -13,10 +13,6 @@ const primaryItems = [
     href: "/leads",
     label: "Leads",
   },
-  {
-    href: "/opportunities",
-    label: "Opportunities",
-  },
 ];
 
 const secondaryItems = [
