@@ -1,37 +1,33 @@
 "use client";
 import { CompleteLead } from "@/lib/db/schema/jobs";
-import { trpc } from "@/lib/trpc/client";
 import LeadModal from "./LeadModal";
+import { DataTable } from "../ui/data-table";
+import getColumns from "./get-columns";
+import { Company, Property, Contact } from "@/lib/db";
 
-export default function LeadList({ leads }: { leads: CompleteLead[] }) {
-  const { data: l } = trpc.jobs.getLeads.useQuery(undefined, {
-    initialData: { leads },
-    refetchOnMount: false,
+export default function LeadList({
+  leads,
+  companies,
+  properties,
+  contacts,
+}: {
+  leads: CompleteLead[];
+  companies: Company[];
+  properties: Property[];
+  contacts: Contact[];
+}) {
+  const columns = getColumns({
+    companies,
+    properties,
+    contacts,
   });
 
-  if (l.leads.length === 0) {
+  if (leads.length === 0) {
     return <EmptyState />;
   }
 
-  return (
-    <ul>
-      {l.leads.map((lead) => (
-        <Lead lead={lead} key={lead.id} />
-      ))}
-    </ul>
-  );
+  return <DataTable columns={columns} data={leads} />;
 }
-
-const Lead = ({ lead }: { lead: CompleteLead }) => {
-  return (
-    <li className="flex justify-between my-2">
-      <div className="w-full">
-        <div>{lead.description}</div>
-      </div>
-      <LeadModal lead={lead} />
-    </li>
-  );
-};
 
 const EmptyState = () => {
   return (

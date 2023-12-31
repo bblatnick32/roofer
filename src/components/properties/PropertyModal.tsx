@@ -15,9 +15,11 @@ import { Property } from "@/lib/db/schema/properties";
 export default function PropertyModal({
   property,
   emptyState,
+  companyId,
 }: {
   property?: Property;
   emptyState?: boolean;
+  companyId?: number;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -55,7 +57,11 @@ export default function PropertyModal({
           <DialogTitle>{editing ? "Edit" : "Create"} Property</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <PropertyForm closeModal={closeModal} property={property} />
+          <PropertyForm
+            closeModal={closeModal}
+            property={property}
+            companyId={companyId}
+          />
         </div>
       </DialogContent>
     </Dialog>

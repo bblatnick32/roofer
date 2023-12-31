@@ -38,3 +38,19 @@ export const getLeads = async () => {
     );
   return { leads: j as CompleteLead[] };
 };
+
+export const getLeadById = async (id: JobId) => {
+  const { session } = await getUserAuth();
+  const { id: jobId } = jobIdSchema.parse({ id });
+  const [j] = await db
+    .select()
+    .from(jobs)
+    .where(
+      and(
+        eq(jobs.id, jobId),
+        eq(jobs.orgId, session?.user.activeOrgId!),
+        eq(jobs.type, LEAD)
+      )
+    );
+  return { lead: j as CompleteLead };
+};

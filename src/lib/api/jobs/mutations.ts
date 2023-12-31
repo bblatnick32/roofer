@@ -78,6 +78,7 @@ export const createLead = async (job: NewLeadParams) => {
     orgId: session?.user.activeOrgId!,
   });
   try {
+    console.log(newLead);
     await db.insert(jobs).values(newLead);
     return { success: true };
   } catch (err) {

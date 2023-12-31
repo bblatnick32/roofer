@@ -1,5 +1,4 @@
 "use client";
-
 import {
   LEAD,
   Lead,
@@ -17,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc/client";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -33,6 +31,7 @@ import { useToast } from "@/components/ui/use-toast";
 import NewCompanyModal from "@/components/companies/CompanyModal";
 import NewPropertyModal from "@/components/properties/PropertyModal";
 import NewContactModal from "@/components/contacts/ContactModal";
+import { Input } from "../ui/input";
 
 const LeadForm = ({
   lead,
@@ -56,9 +55,9 @@ const LeadForm = ({
     // errors locally but not in production
     resolver: zodResolver(insertLeadParams),
     defaultValues: lead ?? {
-      description: "",
-      companyId: null,
-      propertyId: null,
+      name: "",
+      companyId: undefined,
+      propertyId: undefined,
       contactId: null,
       type: LEAD,
     },
@@ -80,7 +79,6 @@ const LeadForm = ({
       return;
     }
 
-    await utils.jobs.getLeads.invalidate();
     router.refresh();
     if (closeModal) closeModal();
     toast({
@@ -125,10 +123,10 @@ const LeadForm = ({
       >
         <FormField
           control={form.control}
-          name="description"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value ?? ""} />
               </FormControl>
@@ -143,7 +141,7 @@ const LeadForm = ({
             name="companyId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Company Id</FormLabel>
+                <FormLabel>Company</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={(value) => {
@@ -161,7 +159,6 @@ const LeadForm = ({
                           value={company.id.toString()}
                         >
                           {company.name}{" "}
-                          {/* TODO: Replace with a field from the company model */}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -180,10 +177,12 @@ const LeadForm = ({
             name="propertyId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Property Id</FormLabel>
+                <FormLabel>Property</FormLabel>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(parseInt(value));
+                    }}
                     defaultValue={String(field.value)}
                   >
                     <SelectTrigger>
@@ -196,7 +195,6 @@ const LeadForm = ({
                           value={property.id.toString()}
                         >
                           {property.name}{" "}
-                          {/* TODO: Replace with a field from the property model */}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -207,7 +205,7 @@ const LeadForm = ({
               </FormItem>
             )}
           />
-          <NewPropertyModal />
+          <NewPropertyModal companyId={form.getValues("companyId")} />
         </div>
         <div className="space-y-4">
           <FormField
@@ -215,10 +213,12 @@ const LeadForm = ({
             name="contactId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Contact Id</FormLabel>
+                <FormLabel>Contact</FormLabel>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(parseInt(value));
+                    }}
                     defaultValue={String(field.value)}
                   >
                     <SelectTrigger>
@@ -231,7 +231,6 @@ const LeadForm = ({
                           value={contact.id.toString()}
                         >
                           {contact.name}{" "}
-                          {/* TODO: Replace with a field from the contact model */}
                         </SelectItem>
                       ))}
                     </SelectContent>

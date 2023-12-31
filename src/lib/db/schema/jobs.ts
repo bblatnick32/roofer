@@ -1,5 +1,4 @@
 import {
-  text,
   varchar,
   mysqlTable,
   serial,
@@ -24,23 +23,30 @@ export const NEW = "New Lead";
 export const DOCUMENTED = "Documented";
 export const INSPECTION_SCHEDULED = "Inspection Scheduled";
 export const INSPECTION_COMPLETED = "Inspection Completed";
+export const CONVERTED_TO_OPPORTUNITY = "Converted";
 export const QUOTED = "Quoted";
 export const PRESENTED = "Presented";
 export const LOST = "Lost";
 export const WON = "Won";
 export const PENDING = "Pending";
 
-export const JobStatuses = [
+export const LeadStatuses = [
   NEW,
   DOCUMENTED,
   INSPECTION_SCHEDULED,
   INSPECTION_COMPLETED,
+  CONVERTED_TO_OPPORTUNITY,
+] as const;
+
+export const OpportunityStatuses = [
   QUOTED,
   PRESENTED,
   LOST,
   WON,
   PENDING,
 ] as const;
+
+export const JobStatuses = [...LeadStatuses, ...OpportunityStatuses] as const;
 
 // types
 export const LEAD = "Lead";
@@ -51,17 +57,17 @@ export const JobTypes = [LEAD, OPPORTUNITY] as const;
 export const jobs = mysqlTable("jobs", {
   id: serial("id").primaryKey(),
   orgId: varchar("org_id", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  description: text("description"),
-  companyId: bigint("company_id", {
-    mode: "number",
-    unsigned: true,
-  }),
   propertyId: bigint("property_id", {
     mode: "number",
     unsigned: true,
-  }),
+  }).notNull(),
+  companyId: bigint("company_id", {
+    mode: "number",
+    unsigned: true,
+  }).notNull(),
   contactId: bigint("contact_id", {
     mode: "number",
     unsigned: true,
@@ -111,6 +117,8 @@ export const insertLeadParams = insertJobParams.extend({
 
 export const updateJobSchema = createSelectSchema(jobs, {}).omit({
   orgId: true,
+  createdAt: true,
+  updatedAt: true,
 });
 export const updateLeadSchema = updateJobSchema.extend({
   type: z.literal(LEAD),

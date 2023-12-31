@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Property,
   NewPropertyParams,
@@ -22,20 +21,30 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PropertyForm = ({
   property,
   closeModal,
+  companyId,
 }: {
   property?: Property;
   closeModal?: () => void;
+  companyId?: number;
 }) => {
   const { toast } = useToast();
+  const { data: companies } = trpc.companies.getCompanies.useQuery();
 
   const editing = !!property?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertPropertyParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -45,6 +54,7 @@ const PropertyForm = ({
     defaultValues: property ?? {
       name: "",
       address: "",
+      companyId,
     },
   });
 
@@ -97,9 +107,50 @@ const PropertyForm = ({
       createProperty(values);
     }
   };
+
+  const onErrors = (errors: any) => {
+    console.error(errors);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        className={"space-y-8"}
+      >
+        <FormField
+          control={form.control}
+          name="companyId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(parseInt(value));
+                  }}
+                  defaultValue={String(field.value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {companies?.companies.map((company) => (
+                      <SelectItem
+                        key={company.id}
+                        value={company.id.toString()}
+                      >
+                        {company.name}{" "}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="name"

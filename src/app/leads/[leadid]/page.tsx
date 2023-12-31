@@ -1,4 +1,7 @@
 import { checkAuth } from "@/lib/auth/utils";
+import { notFound } from "next/navigation";
+import LeadDetails from "./lead-details";
+import { getLeadById } from "@/lib/api/jobs/queries";
 
 interface PageProps {
   params: {
@@ -11,11 +14,10 @@ const Page = async ({ params }: PageProps) => {
   await checkAuth(`leads/${leadid}`);
 
   // make a call to get the lead
-  // const { lead } = await getLeadById(Number(leadid));
-  // if (!lead) notFound();
+  const { lead } = await getLeadById(Number(leadid));
+  if (!lead) notFound();
 
-  // return <LeadDetails lead={lead} />;
-  return null;
+  return <LeadDetails lead={lead} />;
 };
 
 export default Page;
