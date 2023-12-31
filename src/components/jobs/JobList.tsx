@@ -1,17 +1,17 @@
 "use client";
-import { CompleteLead } from "@/lib/db/schema/jobs";
-import LeadModal from "./LeadModal";
+import { CompleteJob } from "@/lib/db/schema/jobs";
+import JobModal from "./JobModal";
 import { DataTable } from "../ui/data-table";
 import getColumns from "./get-columns";
 import { Company, Property, Contact } from "@/lib/db";
 
-export default function LeadList({
-  leads,
+export default function JobList({
+  jobs,
   companies,
   properties,
   contacts,
 }: {
-  leads: CompleteLead[];
+  jobs: CompleteJob[];
   companies: Company[];
   properties: Property[];
   contacts: Contact[];
@@ -22,24 +22,24 @@ export default function LeadList({
     contacts,
   });
 
-  if (leads.length === 0) {
+  if (jobs.length === 0) {
     return <EmptyState />;
   }
 
-  return <DataTable columns={columns} data={leads} />;
+  return <DataTable columns={columns} data={jobs} />;
 }
 
 const EmptyState = () => {
   return (
     <div className="text-center">
       <h3 className="mt-2 text-sm font-semibold text-secondary-foreground">
-        No leads
+        No jobs
       </h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        Get started by creating a new lead.
+        Get started by creating a new job.
       </p>
       <div className="mt-6">
-        <LeadModal emptyState={true} />
+        <JobModal emptyState={true} />
       </div>
     </div>
   );

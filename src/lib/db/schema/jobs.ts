@@ -23,36 +23,23 @@ export const NEW = "New Lead";
 export const DOCUMENTED = "Documented";
 export const INSPECTION_SCHEDULED = "Inspection Scheduled";
 export const INSPECTION_COMPLETED = "Inspection Completed";
-export const CONVERTED_TO_OPPORTUNITY = "Converted";
 export const QUOTED = "Quoted";
 export const PRESENTED = "Presented";
 export const LOST = "Lost";
 export const WON = "Won";
 export const PENDING = "Pending";
 
-export const LeadStatuses = [
+export const JobStatuses = [
   NEW,
   DOCUMENTED,
   INSPECTION_SCHEDULED,
   INSPECTION_COMPLETED,
-  CONVERTED_TO_OPPORTUNITY,
-] as const;
-
-export const OpportunityStatuses = [
   QUOTED,
   PRESENTED,
   LOST,
   WON,
   PENDING,
 ] as const;
-
-export const JobStatuses = [...LeadStatuses, ...OpportunityStatuses] as const;
-
-// types
-export const LEAD = "Lead";
-export const OPPORTUNITY = "Opportunity";
-
-export const JobTypes = [LEAD, OPPORTUNITY] as const;
 
 export const jobs = mysqlTable("jobs", {
   id: serial("id").primaryKey(),
@@ -73,7 +60,6 @@ export const jobs = mysqlTable("jobs", {
     unsigned: true,
   }),
   status: mysqlEnum("status", JobStatuses).notNull().default(NEW),
-  type: mysqlEnum("type", JobTypes).notNull().default(LEAD),
 });
 
 // relations
@@ -100,9 +86,6 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
 
 // Schema for jobs/leads - used to validate API requests
 export const insertJobSchema = createInsertSchema(jobs);
-export const insertLeadSchema = insertJobSchema.extend({
-  type: z.literal(LEAD),
-});
 
 export const insertJobParams = createSelectSchema(jobs, {}).omit({
   id: true,
@@ -111,17 +94,11 @@ export const insertJobParams = createSelectSchema(jobs, {}).omit({
   updatedAt: true,
   status: true,
 });
-export const insertLeadParams = insertJobParams.extend({
-  type: z.literal(LEAD),
-});
 
 export const updateJobSchema = createSelectSchema(jobs, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
-});
-export const updateLeadSchema = updateJobSchema.extend({
-  type: z.literal(LEAD),
 });
 
 export const updateJobParams = createSelectSchema(jobs, {}).omit({
@@ -129,12 +106,8 @@ export const updateJobParams = createSelectSchema(jobs, {}).omit({
   createdAt: true,
   updatedAt: true,
 });
-export const updateLeadParams = updateJobParams.extend({
-  type: z.literal(LEAD),
-});
 
 export const jobIdSchema = updateJobSchema.pick({ id: true });
-export const leadIdSchema = jobIdSchema;
 
 // Types for jobs - used to type API request params and within Components
 export type Job = z.infer<typeof updateJobSchema>;
@@ -143,15 +116,5 @@ export type NewJobParams = z.infer<typeof insertJobParams>;
 export type UpdateJobParams = z.infer<typeof updateJobParams>;
 export type JobId = z.infer<typeof jobIdSchema>["id"];
 
-// Types for leads - used to type API request params and within Components
-export type Lead = z.infer<typeof updateLeadSchema>;
-export type NewLead = z.infer<typeof insertLeadSchema>;
-export type NewLeadParams = z.infer<typeof insertLeadParams>;
-export type UpdateLeadParams = z.infer<typeof updateLeadParams>;
-export type LeadId = z.infer<typeof jobIdSchema>["id"];
-
 // this type infers the return from getJobs() - meaning it will include any joins
 export type CompleteJob = Awaited<ReturnType<typeof getJobs>>["jobs"][number];
-export type CompleteLead = CompleteJob & {
-  type: typeof LEAD;
-};

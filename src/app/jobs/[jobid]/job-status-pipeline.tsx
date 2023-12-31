@@ -2,22 +2,17 @@
 
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "@/components/ui/use-toast";
-import {
-  CONVERTED_TO_OPPORTUNITY,
-  Lead,
-  LeadStatuses,
-  UpdateLeadParams,
-} from "@/lib/db";
+import { Job, JobStatuses, UpdateJobParams } from "@/lib/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StatusPipeline from "@/components/ui/status-pipeline";
-// import { ConvertLeadModal } from "@/components/leads/convert-lead-modal";
+// import { ConvertJobModal } from "@/components/jobs/convert-job-modal";
 
-const statuses = Array.from(LeadStatuses);
+const statuses = Array.from(JobStatuses);
 type Status = (typeof statuses)[number];
 
-const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
-  const [currentStatus, setCurrentStatus] = useState(lead.status as Status);
+const JobStatusPipeline = ({ job }: { job: Job }) => {
+  const [currentStatus, setCurrentStatus] = useState(job.status as Status);
   const router = useRouter();
   const utils = trpc.useUtils();
 
@@ -31,23 +26,23 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
     router.refresh();
     toast({
       title: "Success",
-      description: action === "update" ? "Lead updated!" : "Lead converted!",
+      description: action === "update" ? "Job updated!" : "Job converted!",
       variant: "default",
     });
   };
 
-  const { mutate: updateLead } = trpc.jobs.updateLead.useMutation({
+  const { mutate: updateJob } = trpc.jobs.updateJob.useMutation({
     onSuccess: async () => onSuccess("update"),
   });
 
   const handleOnClick = (status: Status) => {
-    if (status === CONVERTED_TO_OPPORTUNITY) {
-      setConvertModalOpen(true);
-      return;
-    }
+    // if (status === CONVERTED_TO_OPPORTUNITY) {
+    //   setConvertModalOpen(true);
+    //   return;
+    // }
 
     setCurrentStatus(status);
-    updateLead({ ...(lead as UpdateLeadParams), status });
+    updateJob({ ...(job as UpdateJobParams), status });
   };
 
   // const handleConvertModalOnOpenChange = (
@@ -57,7 +52,7 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   //   setConvertModalOpen(open);
   //   if (shouldConvert) {
   //     setCurrentStatus("Converted");
-  //     // convertLead({ ...(lead as UpdateLeadParams), status: "Converted" });
+  //     // convertJob({ ...(job as UpdateJobParams), status: "Converted" });
   //   }
   // };
 
@@ -68,7 +63,7 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
         currentStatus={currentStatus}
         onClick={handleOnClick}
       />
-      {/* <ConvertLeadModal
+      {/* <ConvertJobModal
         open={convertModalOpen}
         onOpenChange={handleConvertModalOnOpenChange}
       /> */}
@@ -76,4 +71,4 @@ const LeadStatusPipeline = ({ lead }: { lead: Lead }) => {
   );
 };
 
-export default LeadStatusPipeline;
+export default JobStatusPipeline;

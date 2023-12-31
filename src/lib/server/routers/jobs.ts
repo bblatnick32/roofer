@@ -1,25 +1,11 @@
-import {
-  getJobById,
-  getJobs,
-  getLeadById,
-  getLeads,
-} from "@/lib/api/jobs/queries";
+import { getJobById, getJobs } from "@/lib/api/jobs/queries";
 import { privateProcedure, router } from "@/lib/server/trpc";
 import {
   jobIdSchema,
   insertJobParams,
   updateJobParams,
-  insertLeadParams,
-  updateLeadParams,
 } from "@/lib/db/schema/jobs";
-import {
-  createJob,
-  createLead,
-  deleteJob,
-  deleteLead,
-  updateJob,
-  updateLead,
-} from "@/lib/api/jobs/mutations";
+import { createJob, deleteJob, updateJob } from "@/lib/api/jobs/mutations";
 
 export const jobsRouter = router({
   getJobs: privateProcedure.query(async () => {
@@ -41,25 +27,4 @@ export const jobsRouter = router({
   deleteJob: privateProcedure.input(jobIdSchema).mutation(async ({ input }) => {
     return deleteJob(input.id);
   }),
-  getLeads: privateProcedure.query(async () => {
-    return getLeads();
-  }),
-  getLeadById: privateProcedure.input(jobIdSchema).query(async ({ input }) => {
-    return getLeadById(input.id);
-  }),
-  createLead: privateProcedure
-    .input(insertLeadParams)
-    .mutation(async ({ input }) => {
-      return createLead(input);
-    }),
-  updateLead: privateProcedure
-    .input(updateLeadParams)
-    .mutation(async ({ input }) => {
-      return updateLead(input.id, input);
-    }),
-  deleteLead: privateProcedure
-    .input(jobIdSchema)
-    .mutation(async ({ input }) => {
-      return deleteLead(input.id);
-    }),
 });

@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import LeadModal from "./LeadModal";
+import JobModal from "./JobModal";
 
-import { Company, Property, Lead, Contact } from "@/lib/db";
+import { Company, Property, Job, Contact } from "@/lib/db";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -13,14 +13,14 @@ export default function getColumns({
   companies?: Company[];
   properties?: Property[];
   contacts?: Contact[];
-}): ColumnDef<Lead>[] {
+}): ColumnDef<Job>[] {
   return [
     {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => {
         return (
-          <Link href={`/leads/${row.original.id}`}>
+          <Link href={`/jobs/${row.original.id}`}>
             <Button variant="link">{row.getValue("name")}</Button>
           </Link>
         );
@@ -30,8 +30,8 @@ export default function getColumns({
       accessorKey: "companyId",
       header: "Company",
       cell: ({ row }) => {
-        const lead = row.original;
-        const company = companies?.find((c) => c.id === lead.companyId);
+        const job = row.original;
+        const company = companies?.find((c) => c.id === job.companyId);
         return company?.name;
       },
     },
@@ -39,8 +39,8 @@ export default function getColumns({
       accessorKey: "propertyId",
       header: "Property",
       cell: ({ row }) => {
-        const lead = row.original;
-        const property = properties?.find((p) => p.id === lead.propertyId);
+        const job = row.original;
+        const property = properties?.find((p) => p.id === job.propertyId);
         return property?.name;
       },
     },
@@ -48,8 +48,8 @@ export default function getColumns({
       accessorKey: "contactId",
       header: "Contact",
       cell: ({ row }) => {
-        const lead = row.original;
-        const contact = contacts?.find((c) => c.id === lead.contactId);
+        const job = row.original;
+        const contact = contacts?.find((c) => c.id === job.contactId);
         return contact?.name;
       },
     },
@@ -60,8 +60,8 @@ export default function getColumns({
     {
       id: "actions",
       cell: ({ row }) => {
-        const lead = row.original;
-        return <LeadModal lead={lead} />;
+        const job = row.original;
+        return <JobModal job={job} />;
       },
     },
   ];

@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 
 const primaryItems = [
   {
-    href: "/leads",
-    label: "Leads",
+    href: "/jobs",
+    label: "Jobs",
   },
 ];
 

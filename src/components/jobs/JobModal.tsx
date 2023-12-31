@@ -9,19 +9,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import LeadForm from "./LeadForm";
-import { Lead } from "@/lib/db/schema/jobs";
+import JobForm from "./JobForm";
+import { Job } from "@/lib/db/schema/jobs";
 
-export default function LeadModal({
-  lead,
+export default function JobModal({
+  job,
   emptyState,
 }: {
-  lead?: Lead;
+  job?: Job;
   emptyState?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  const editing = !!lead?.id;
+  const editing = !!job?.id;
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
@@ -42,20 +42,20 @@ export default function LeadModal({
               <path d="M5 12h14" />
               <path d="M12 5v14" />
             </svg>
-            New Lead
+            New Job
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "outline"} size="sm">
-            {editing ? "Edit" : "Create New Lead"}
+            {editing ? "Edit" : "Create New Job"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Lead</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Job</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <LeadForm closeModal={closeModal} lead={lead} />
+          <JobForm closeModal={closeModal} job={job} />
         </div>
       </DialogContent>
     </Dialog>
