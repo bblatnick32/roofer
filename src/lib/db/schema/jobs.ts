@@ -18,28 +18,33 @@ import { companies } from "./companies";
 import { properties } from "./properties";
 import { contacts } from "./contacts";
 
-// statuses
-export const NEW = "New Lead";
-export const DOCUMENTED = "Documented";
-export const INSPECTION_SCHEDULED = "Inspection Scheduled";
-export const INSPECTION_COMPLETED = "Inspection Completed";
-export const QUOTED = "Quoted";
-export const PRESENTED = "Presented";
-export const LOST = "Lost";
-export const WON = "Won";
-export const PENDING = "Pending";
+export const JobStages = {
+  LEAD: "Lead",
+  INSPECTION: "Inspection",
+  PROPOSAL: "Proposal",
+  PROPOSAL_REVIEW: "Proposal Review",
+} as const;
 
-export const JobStatuses = [
-  NEW,
-  DOCUMENTED,
-  INSPECTION_SCHEDULED,
-  INSPECTION_COMPLETED,
-  QUOTED,
-  PRESENTED,
-  LOST,
-  WON,
-  PENDING,
-] as const;
+export const JobStatuses = {
+  [JobStages.LEAD]: {
+    NEW: "New",
+    DOCUMENTED: "Documented",
+  } as const,
+  [JobStages.INSPECTION]: {
+    INSPECTION_SCHEDULED: "Scheduled",
+    INSPECTION_COMPLETED: "Completed",
+    INSPECTION_DELIVERED: "Delivered",
+  } as const,
+  [JobStages.PROPOSAL]: {
+    GENERATED: "Generated",
+    SENT: "Sent",
+  } as const,
+  [JobStages.PROPOSAL_REVIEW]: {
+    PENDING: "Pending",
+    WON: "Accepted",
+    LOST: "Rejected",
+  } as const,
+} as const;
 
 export const jobs = mysqlTable("jobs", {
   id: serial("id").primaryKey(),
@@ -59,7 +64,17 @@ export const jobs = mysqlTable("jobs", {
     mode: "number",
     unsigned: true,
   }),
-  status: mysqlEnum("status", JobStatuses).notNull().default(NEW),
+  stage: mysqlEnum("stage", Object.values(JobStages) as [string, ...string[]])
+    .notNull()
+    .default(JobStages.LEAD),
+  status: mysqlEnum("status", [
+    ...Object.values(JobStatuses[JobStages.LEAD]),
+    ...Object.values(JobStatuses[JobStages.INSPECTION]),
+    ...Object.values(JobStatuses[JobStages.PROPOSAL]),
+    ...Object.values(JobStatuses[JobStages.PROPOSAL_REVIEW]),
+  ] as [string, ...string[]])
+    .notNull()
+    .default(JobStatuses[JobStages.LEAD].NEW),
 });
 
 // relations
@@ -92,6 +107,7 @@ export const insertJobParams = createSelectSchema(jobs, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
+  stage: true,
   status: true,
 });
 

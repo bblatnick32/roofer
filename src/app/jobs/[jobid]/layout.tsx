@@ -1,15 +1,16 @@
 import { checkAuth } from "@/lib/auth/utils";
 import { notFound } from "next/navigation";
-import JobDetails from "./job-details";
 import { getJobById } from "@/lib/api/jobs/queries";
+import JobWrapper from "./job-wrapper";
 
-interface PageProps {
+interface JobLayoutProps {
   params: {
     jobid: string;
   };
+  children: React.ReactNode;
 }
 
-const Page = async ({ params }: PageProps) => {
+const JobLayout = async ({ params, children }: JobLayoutProps) => {
   const { jobid } = params;
   await checkAuth(`jobs/${jobid}`);
 
@@ -17,7 +18,7 @@ const Page = async ({ params }: PageProps) => {
   const { job } = await getJobById(Number(jobid));
   if (!job) notFound();
 
-  return <JobDetails job={job} />;
+  return <JobWrapper job={job}>{children}</JobWrapper>;
 };
 
-export default Page;
+export default JobLayout;

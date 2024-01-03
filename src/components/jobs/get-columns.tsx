@@ -20,7 +20,7 @@ export default function getColumns({
       header: "Name",
       cell: ({ row }) => {
         return (
-          <Link href={`/jobs/${row.original.id}`}>
+          <Link href={`/jobs/${row.original.id}/detail`}>
             <Button variant="link">{row.getValue("name")}</Button>
           </Link>
         );
