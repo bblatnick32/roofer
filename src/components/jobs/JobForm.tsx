@@ -99,7 +99,12 @@ const JobForm = ({
 
   const handleSubmit = (values: NewJobParams) => {
     if (editing) {
-      updateJob({ ...values, id: job.id, status: job.status });
+      updateJob({
+        ...values,
+        id: job.id,
+        status: job.status,
+        stage: job.stage,
+      });
     } else {
       createJob(values);
     }

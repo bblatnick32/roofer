@@ -9,7 +9,7 @@ const JobStatusToolbar = ({ job }: { job: Job }) => {
   const status = job.status;
 
   return (
-    <div className="mt-4 flex gap-2">
+    <div className="flex gap-2">
       {stage === JobStages.LEAD && <LeadStatusButtons />}
       {stage === JobStages.INSPECTION && <InspectionStatusButtons />}
       {stage === JobStages.PROPOSAL && <ProposalStatusButtons />}
