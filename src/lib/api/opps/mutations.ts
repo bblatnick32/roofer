@@ -1,24 +1,24 @@
 import { db } from "@/lib/db/client";
 import { and, eq } from "drizzle-orm";
 import {
-  JobId,
-  NewJobParams,
-  UpdateJobParams,
-  updateJobSchema,
-  insertJobSchema,
-  jobs,
-  jobIdSchema,
-} from "@/lib/db/schema/jobs";
+  OppId,
+  NewOppParams,
+  UpdateOppParams,
+  updateOppSchema,
+  insertOppSchema,
+  opps,
+  oppIdSchema,
+} from "@/lib/db/schema/opps";
 import { getUserAuth } from "@/lib/auth/utils";
 
-export const createJob = async (job: NewJobParams) => {
+export const createOpp = async (opp: NewOppParams) => {
   const { session } = await getUserAuth();
-  const newJob = insertJobSchema.parse({
-    ...job,
+  const newOpp = insertOppSchema.parse({
+    ...opp,
     orgId: session?.user.activeOrgId!,
   });
   try {
-    await db.insert(jobs).values(newJob);
+    await db.insert(opps).values(newOpp);
     return { success: true };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
@@ -27,19 +27,19 @@ export const createJob = async (job: NewJobParams) => {
   }
 };
 
-export const updateJob = async (id: JobId, job: UpdateJobParams) => {
+export const updateOpp = async (id: OppId, opp: UpdateOppParams) => {
   const { session } = await getUserAuth();
-  const { id: jobId } = jobIdSchema.parse({ id });
-  const newJob = updateJobSchema.parse({
-    ...job,
+  const { id: oppId } = oppIdSchema.parse({ id });
+  const newOpp = updateOppSchema.parse({
+    ...opp,
     orgId: session?.user.activeOrgId!,
   });
   try {
     await db
-      .update(jobs)
-      .set(newJob)
+      .update(opps)
+      .set(newOpp)
       .where(
-        and(eq(jobs.id, jobId!), eq(jobs.orgId, session?.user.activeOrgId!))
+        and(eq(opps.id, oppId!), eq(opps.orgId, session?.user.activeOrgId!))
       );
     return { success: true };
   } catch (err) {
@@ -49,14 +49,14 @@ export const updateJob = async (id: JobId, job: UpdateJobParams) => {
   }
 };
 
-export const deleteJob = async (id: JobId) => {
+export const deleteOpp = async (id: OppId) => {
   const { session } = await getUserAuth();
-  const { id: jobId } = jobIdSchema.parse({ id });
+  const { id: oppId } = oppIdSchema.parse({ id });
   try {
     await db
-      .delete(jobs)
+      .delete(opps)
       .where(
-        and(eq(jobs.id, jobId!), eq(jobs.orgId, session?.user.activeOrgId!))
+        and(eq(opps.id, oppId!), eq(opps.orgId, session?.user.activeOrgId!))
       );
     return { success: true };
   } catch (err) {

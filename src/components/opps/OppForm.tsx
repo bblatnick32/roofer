@@ -1,5 +1,5 @@
 "use client";
-import { Job, NewJobParams, insertJobParams } from "@/lib/db/schema/jobs";
+import { Opp, NewOppParams, insertOppParams } from "@/lib/db/schema/opps";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,28 +28,28 @@ import NewPropertyModal from "@/components/properties/PropertyModal";
 import NewContactModal from "@/components/contacts/ContactModal";
 import { Input } from "../ui/input";
 
-const JobForm = ({
-  job,
+const OppForm = ({
+  opp,
   closeModal,
 }: {
-  job?: Job;
+  opp?: Opp;
   closeModal?: () => void;
 }) => {
   const { toast } = useToast();
   const { data: companies } = trpc.companies.getCompanies.useQuery();
   const { data: properties } = trpc.properties.getProperties.useQuery();
   const { data: contacts } = trpc.contacts.getContacts.useQuery();
-  const editing = !!job?.id;
+  const editing = !!opp?.id;
 
   const router = useRouter();
   const utils = trpc.useUtils();
 
-  const form = useForm<z.infer<typeof insertJobParams>>({
+  const form = useForm<z.infer<typeof insertOppParams>>({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
-    resolver: zodResolver(insertJobParams),
-    defaultValues: job ?? {
+    resolver: zodResolver(insertOppParams),
+    defaultValues: opp ?? {
       name: "",
       companyId: undefined,
       propertyId: undefined,
@@ -77,36 +77,36 @@ const JobForm = ({
     if (closeModal) closeModal();
     toast({
       title: "Success",
-      description: `Job ${action}d!`,
+      description: `Opportunity ${action}d!`,
       variant: "default",
     });
   };
 
-  const { mutate: createJob, isLoading: isCreating } =
-    trpc.jobs.createJob.useMutation({
+  const { mutate: createOpp, isLoading: isCreating } =
+    trpc.opps.createOpp.useMutation({
       onSuccess: (res) => onSuccess("create", res),
     });
 
-  const { mutate: updateJob, isLoading: isUpdating } =
-    trpc.jobs.updateJob.useMutation({
+  const { mutate: updateOpp, isLoading: isUpdating } =
+    trpc.opps.updateOpp.useMutation({
       onSuccess: (res) => onSuccess("update", res),
     });
 
-  const { mutate: deleteJob, isLoading: isDeleting } =
-    trpc.jobs.deleteJob.useMutation({
+  const { mutate: deleteOpp, isLoading: isDeleting } =
+    trpc.opps.deleteOpp.useMutation({
       onSuccess: (res) => onSuccess("delete", res),
     });
 
-  const handleSubmit = (values: NewJobParams) => {
+  const handleSubmit = (values: NewOppParams) => {
     if (editing) {
-      updateJob({
+      updateOpp({
         ...values,
-        id: job.id,
-        status: job.status,
-        stage: job.stage,
+        id: opp.id,
+        status: opp.status,
+        stage: opp.stage,
       });
     } else {
-      createJob(values);
+      createOpp(values);
     }
   };
 
@@ -255,7 +255,7 @@ const JobForm = ({
           <Button
             type="button"
             variant={"destructive"}
-            onClick={() => deleteJob({ id: job.id })}
+            onClick={() => deleteOpp({ id: opp.id })}
           >
             Delet{isDeleting ? "ing..." : "e"}
           </Button>
@@ -265,4 +265,4 @@ const JobForm = ({
   );
 };
 
-export default JobForm;
+export default OppForm;

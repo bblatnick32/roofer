@@ -2,7 +2,7 @@ export * from "./schema/companies";
 export * from "./schema/contacts";
 export * from "./schema/issues";
 export * from "./schema/issueTemplates";
-export * from "./schema/jobs";
+export * from "./schema/opps";
 export * from "./schema/orgs";
 export * from "./schema/photos";
 export * from "./schema/properties";

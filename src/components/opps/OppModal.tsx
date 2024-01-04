@@ -9,19 +9,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import JobForm from "./JobForm";
-import { Job } from "@/lib/db/schema/jobs";
+import OppForm from "./OppForm";
+import { Opp } from "@/lib/db/schema/opps";
 
-export default function JobModal({
-  job,
+export default function OppModal({
+  opp,
   emptyState,
 }: {
-  job?: Job;
+  opp?: Opp;
   emptyState?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  const editing = !!job?.id;
+  const editing = !!opp?.id;
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
@@ -42,20 +42,20 @@ export default function JobModal({
               <path d="M5 12h14" />
               <path d="M12 5v14" />
             </svg>
-            New Job
+            New Opportunity
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "outline"} size="sm">
-            {editing ? "Edit" : "Create New Job"}
+            {editing ? "Edit" : "Create New Opportunity"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Job</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Opportunity</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <JobForm closeModal={closeModal} job={job} />
+          <OppForm closeModal={closeModal} opp={opp} />
         </div>
       </DialogContent>
     </Dialog>

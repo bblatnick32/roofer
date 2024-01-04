@@ -2,35 +2,35 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Job, JobStages } from "@/lib/db";
+import { Opp, OppStages } from "@/lib/db";
 import { usePathname } from "next/navigation";
 
-export default function JobNav({
+export default function OppNav({
   className,
-  job,
+  opp,
 }: {
   className?: string;
-  job: Job;
+  opp: Opp;
 }) {
   const pathname = usePathname();
   const tabs = [
     {
       name: "Detail",
-      href: `/jobs/${job.id}/detail`,
+      href: `/opps/${opp.id}/detail`,
     },
   ];
 
-  if (job.stage !== JobStages.LEAD) {
+  if (opp.stage !== OppStages.LEAD) {
     tabs.push({
       name: "Inspection",
-      href: `/jobs/${job.id}/inspection`,
+      href: `/opps/${opp.id}/inspection`,
     });
   }
 
-  if (job.stage !== JobStages.LEAD && job.stage !== JobStages.INSPECTION) {
+  if (opp.stage !== OppStages.LEAD && opp.stage !== OppStages.INSPECTION) {
     tabs.push({
       name: "Proposal",
-      href: `/jobs/${job.id}/proposal`,
+      href: `/opps/${opp.id}/proposal`,
     });
   }
 

@@ -1,34 +1,35 @@
 "use client";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "@/components/ui/use-toast";
-import { Job, UpdateJobParams, JobStages } from "@/lib/db";
+import { Opp, UpdateOppParams, OppStages } from "@/lib/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StagePipeline from "@/components/ui/stage-pipeline";
 
-const stages = Object.values(JobStages);
+const stages = Object.values(OppStages);
 type Stage = (typeof stages)[number];
 
-const JobStagePipeline = ({ job }: { job: Job }) => {
-  const [currentStage, setCurrentStage] = useState(job.stage as Stage);
+const OppStagePipeline = ({ opp }: { opp: Opp }) => {
+  const [currentStage, setCurrentStage] = useState(opp.stage as Stage);
   const router = useRouter();
 
   const onSuccess = async (action: "update" | "convert") => {
     router.refresh();
     toast({
       title: "Success",
-      description: action === "update" ? "Job updated!" : "Job converted!",
+      description:
+        action === "update" ? "Opportunity updated!" : "Opportunity converted!",
       variant: "default",
     });
   };
 
-  const { mutate: updateJob } = trpc.jobs.updateJob.useMutation({
+  const { mutate: updateOpp } = trpc.opps.updateOpp.useMutation({
     onSuccess: async () => onSuccess("update"),
   });
 
   const handleOnClick = (stage: Stage) => {
     setCurrentStage(stage);
-    updateJob({ ...(job as UpdateJobParams), stage });
+    updateOpp({ ...(opp as UpdateOppParams), stage });
   };
 
   return (
@@ -42,4 +43,4 @@ const JobStagePipeline = ({ job }: { job: Job }) => {
   );
 };
 
-export default JobStagePipeline;
+export default OppStagePipeline;

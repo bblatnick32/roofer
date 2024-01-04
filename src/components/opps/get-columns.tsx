@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import JobModal from "./JobModal";
+import OppModal from "./OppModal";
 
-import { Company, Property, Job, Contact } from "@/lib/db";
+import { Company, Property, Opp, Contact } from "@/lib/db";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -13,14 +13,14 @@ export default function getColumns({
   companies?: Company[];
   properties?: Property[];
   contacts?: Contact[];
-}): ColumnDef<Job>[] {
+}): ColumnDef<Opp>[] {
   return [
     {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => {
         return (
-          <Link href={`/jobs/${row.original.id}/detail`}>
+          <Link href={`/opps/${row.original.id}/detail`}>
             <Button variant="link">{row.getValue("name")}</Button>
           </Link>
         );
@@ -30,8 +30,8 @@ export default function getColumns({
       accessorKey: "companyId",
       header: "Company",
       cell: ({ row }) => {
-        const job = row.original;
-        const company = companies?.find((c) => c.id === job.companyId);
+        const opp = row.original;
+        const company = companies?.find((c) => c.id === opp.companyId);
         return company?.name;
       },
     },
@@ -39,8 +39,8 @@ export default function getColumns({
       accessorKey: "propertyId",
       header: "Property",
       cell: ({ row }) => {
-        const job = row.original;
-        const property = properties?.find((p) => p.id === job.propertyId);
+        const opp = row.original;
+        const property = properties?.find((p) => p.id === opp.propertyId);
         return property?.name;
       },
     },
@@ -48,8 +48,8 @@ export default function getColumns({
       accessorKey: "contactId",
       header: "Contact",
       cell: ({ row }) => {
-        const job = row.original;
-        const contact = contacts?.find((c) => c.id === job.contactId);
+        const opp = row.original;
+        const contact = contacts?.find((c) => c.id === opp.contactId);
         return contact?.name;
       },
     },
@@ -60,8 +60,8 @@ export default function getColumns({
     {
       id: "actions",
       cell: ({ row }) => {
-        const job = row.original;
-        return <JobModal job={job} />;
+        const opp = row.original;
+        return <OppModal opp={opp} />;
       },
     },
   ];

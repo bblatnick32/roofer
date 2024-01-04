@@ -7,7 +7,7 @@ import { repairTemplatesRouter } from "./repairTemplates";
 import { contactsRouter } from "./contacts";
 import { companiesRouter } from "./companies";
 import { propertiesRouter } from "./properties";
-import { jobsRouter } from "./jobs";
+import { oppsRouter } from "./opps";
 
 export const appRouter = router({
   auth: authRouter,
@@ -18,7 +18,7 @@ export const appRouter = router({
   contacts: contactsRouter,
   companies: companiesRouter,
   properties: propertiesRouter,
-  jobs: jobsRouter,
+  opps: oppsRouter,
 });
 
 export type AppRouter = typeof appRouter;

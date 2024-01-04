@@ -9,7 +9,7 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-import { type getJobs } from "@/lib/api/jobs/queries";
+import { type getOpps } from "@/lib/api/opps/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
 import { photos } from "./photos";
@@ -18,35 +18,35 @@ import { companies } from "./companies";
 import { properties } from "./properties";
 import { contacts } from "./contacts";
 
-export const JobStages = {
+export const OppStages = {
   LEAD: "Lead",
   INSPECTION: "Inspection",
   PROPOSAL: "Proposal",
   PROPOSAL_REVIEW: "Proposal Review",
 } as const;
 
-export const JobStatuses = {
-  [JobStages.LEAD]: {
+export const OppStatuses = {
+  [OppStages.LEAD]: {
     NEW: "New",
     DOCUMENTED: "Documented",
   } as const,
-  [JobStages.INSPECTION]: {
+  [OppStages.INSPECTION]: {
     INSPECTION_SCHEDULED: "Scheduled",
     INSPECTION_COMPLETED: "Completed",
     INSPECTION_DELIVERED: "Delivered",
   } as const,
-  [JobStages.PROPOSAL]: {
+  [OppStages.PROPOSAL]: {
     GENERATED: "Generated",
     SENT: "Sent",
   } as const,
-  [JobStages.PROPOSAL_REVIEW]: {
+  [OppStages.PROPOSAL_REVIEW]: {
     PENDING: "Pending",
     WON: "Accepted",
     LOST: "Rejected",
   } as const,
 } as const;
 
-export const jobs = mysqlTable("jobs", {
+export const opps = mysqlTable("opps", {
   id: serial("id").primaryKey(),
   orgId: varchar("org_id", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }).notNull(),
@@ -64,45 +64,45 @@ export const jobs = mysqlTable("jobs", {
     mode: "number",
     unsigned: true,
   }),
-  stage: mysqlEnum("stage", Object.values(JobStages) as [string, ...string[]])
+  stage: mysqlEnum("stage", Object.values(OppStages) as [string, ...string[]])
     .notNull()
-    .default(JobStages.LEAD),
+    .default(OppStages.LEAD),
   status: mysqlEnum("status", [
-    ...Object.values(JobStatuses[JobStages.LEAD]),
-    ...Object.values(JobStatuses[JobStages.INSPECTION]),
-    ...Object.values(JobStatuses[JobStages.PROPOSAL]),
-    ...Object.values(JobStatuses[JobStages.PROPOSAL_REVIEW]),
+    ...Object.values(OppStatuses[OppStages.LEAD]),
+    ...Object.values(OppStatuses[OppStages.INSPECTION]),
+    ...Object.values(OppStatuses[OppStages.PROPOSAL]),
+    ...Object.values(OppStatuses[OppStages.PROPOSAL_REVIEW]),
   ] as [string, ...string[]])
     .notNull()
-    .default(JobStatuses[JobStages.LEAD].NEW),
+    .default(OppStatuses[OppStages.LEAD].NEW),
 });
 
 // relations
-export const jobsRelations = relations(jobs, ({ one, many }) => ({
+export const oppsRelations = relations(opps, ({ one, many }) => ({
   org: one(orgs, {
-    fields: [jobs.orgId],
+    fields: [opps.orgId],
     references: [orgs.id],
   }),
   company: one(companies, {
-    fields: [jobs.companyId],
+    fields: [opps.companyId],
     references: [companies.id],
   }),
   property: one(properties, {
-    fields: [jobs.propertyId],
+    fields: [opps.propertyId],
     references: [properties.id],
   }),
   contact: one(contacts, {
-    fields: [jobs.contactId],
+    fields: [opps.contactId],
     references: [contacts.id],
   }),
   photos: many(photos),
   issues: many(issues),
 }));
 
-// Schema for jobs/leads - used to validate API requests
-export const insertJobSchema = createInsertSchema(jobs);
+// Schema for opps/leads - used to validate API requests
+export const insertOppSchema = createInsertSchema(opps);
 
-export const insertJobParams = createSelectSchema(jobs, {}).omit({
+export const insertOppParams = createSelectSchema(opps, {}).omit({
   id: true,
   orgId: true,
   createdAt: true,
@@ -111,26 +111,26 @@ export const insertJobParams = createSelectSchema(jobs, {}).omit({
   status: true,
 });
 
-export const updateJobSchema = createSelectSchema(jobs, {}).omit({
+export const updateOppSchema = createSelectSchema(opps, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const updateJobParams = createSelectSchema(jobs, {}).omit({
+export const updateOppParams = createSelectSchema(opps, {}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const jobIdSchema = updateJobSchema.pick({ id: true });
+export const oppIdSchema = updateOppSchema.pick({ id: true });
 
-// Types for jobs - used to type API request params and within Components
-export type Job = z.infer<typeof updateJobSchema>;
-export type NewJob = z.infer<typeof insertJobSchema>;
-export type NewJobParams = z.infer<typeof insertJobParams>;
-export type UpdateJobParams = z.infer<typeof updateJobParams>;
-export type JobId = z.infer<typeof jobIdSchema>["id"];
+// Types for opps - used to type API request params and within Components
+export type Opp = z.infer<typeof updateOppSchema>;
+export type NewOpp = z.infer<typeof insertOppSchema>;
+export type NewOppParams = z.infer<typeof insertOppParams>;
+export type UpdateOppParams = z.infer<typeof updateOppParams>;
+export type OppId = z.infer<typeof oppIdSchema>["id"];
 
-// this type infers the return from getJobs() - meaning it will include any joins
-export type CompleteJob = Awaited<ReturnType<typeof getJobs>>["jobs"][number];
+// this type infers the return from getOpps() - meaning it will include any joins
+export type CompleteOpp = Awaited<ReturnType<typeof getOpps>>["opps"][number];
