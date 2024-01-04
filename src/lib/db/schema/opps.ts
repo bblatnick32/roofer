@@ -55,11 +55,11 @@ export const opps = mysqlTable("opps", {
   propertyId: bigint("property_id", {
     mode: "number",
     unsigned: true,
-  }).notNull(),
+  }),
   companyId: bigint("company_id", {
     mode: "number",
     unsigned: true,
-  }).notNull(),
+  }),
   contactId: bigint("contact_id", {
     mode: "number",
     unsigned: true,

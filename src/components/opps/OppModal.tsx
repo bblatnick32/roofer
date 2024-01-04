@@ -11,6 +11,7 @@ import {
 } from "../ui/dialog";
 import OppForm from "./OppForm";
 import { Opp } from "@/lib/db/schema/opps";
+import NewOppForm from "./NewOppForm";
 
 export default function OppModal({
   opp,
@@ -55,7 +56,11 @@ export default function OppModal({
           <DialogTitle>{editing ? "Edit" : "Create"} Opportunity</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <OppForm closeModal={closeModal} opp={opp} />
+          {editing ? (
+            <OppForm closeModal={closeModal} opp={opp} />
+          ) : (
+            <NewOppForm closeModal={closeModal} opp={opp} />
+          )}
         </div>
       </DialogContent>
     </Dialog>
