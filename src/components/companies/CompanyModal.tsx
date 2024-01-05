@@ -45,7 +45,7 @@ export default function CompanyModal({
             New Company
           </Button>
         ) : (
-          <Button variant={editing ? "ghost" : "outline"} size="sm">
+          <Button variant={editing ? "ghost" : "default"} size="sm">
             {editing ? "Edit" : "Create New Company"}
           </Button>
         )}

@@ -45,7 +45,7 @@ export default function ContactModal({
             New Contact
           </Button>
         ) : (
-          <Button variant={editing ? "ghost" : "outline"} size="sm">
+          <Button variant={editing ? "ghost" : "default"} size="sm">
             {editing ? "Edit" : "Create New Contact"}
           </Button>
         )}

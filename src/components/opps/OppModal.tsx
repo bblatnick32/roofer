@@ -46,7 +46,7 @@ export default function OppModal({
             New Opportunity
           </Button>
         ) : (
-          <Button variant={editing ? "ghost" : "outline"} size="sm">
+          <Button variant={editing ? "ghost" : "default"} size="sm">
             {editing ? "Edit" : "Create New Opportunity"}
           </Button>
         )}

@@ -2,8 +2,8 @@
 import { CompleteOpp } from "@/lib/db/schema/opps";
 import OppModal from "./OppModal";
 import { DataTable } from "../ui/data-table";
-import getColumns from "./get-columns";
 import { Company, Property, Contact } from "@/lib/db";
+import useColumns from "./use-columns";
 
 export default function OppList({
   opps,
@@ -16,7 +16,7 @@ export default function OppList({
   properties: Property[];
   contacts: Contact[];
 }) {
-  const columns = getColumns({
+  const columns = useColumns({
     companies,
     properties,
     contacts,

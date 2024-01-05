@@ -42,7 +42,6 @@ const OppForm = ({
   const editing = !!opp?.id;
 
   const router = useRouter();
-  const utils = trpc.useUtils();
 
   const form = useForm<z.infer<typeof insertOppParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -51,8 +50,8 @@ const OppForm = ({
     resolver: zodResolver(insertOppParams),
     defaultValues: opp ?? {
       name: "",
-      companyId: undefined,
-      propertyId: undefined,
+      companyId: null,
+      propertyId: null,
       contactId: null,
     },
   });
@@ -204,7 +203,9 @@ const OppForm = ({
               </FormItem>
             )}
           />
-          <NewPropertyModal companyId={form.getValues("companyId")} />
+          <NewPropertyModal
+            companyId={form.getValues("companyId") ?? undefined}
+          />
         </div>
         <div className="space-y-4">
           <FormField
