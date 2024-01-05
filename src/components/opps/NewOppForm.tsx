@@ -47,7 +47,7 @@ const OppForm = ({
 
   const onSuccess = async (
     action: "create" | "update" | "delete",
-    data?: { success?: boolean; error?: string }
+    data?: { success?: boolean; error?: string; id?: string }
   ) => {
     if (data?.error) {
       toast({
@@ -61,7 +61,9 @@ const OppForm = ({
       return;
     }
 
+    if (data?.id) router.push(`/opps/${data?.id}/detail`);
     router.refresh();
+
     if (closeModal) closeModal();
     toast({
       title: "Success",
