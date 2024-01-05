@@ -1,4 +1,3 @@
-import OppForm from "@/components/opps/OppForm";
 import { getOppById } from "@/lib/api/opps/queries";
 import { checkAuth } from "@/lib/auth/utils";
 import { notFound } from "next/navigation";
@@ -17,7 +16,7 @@ const OppDetailPage = async ({ params }: OppLayoutProps) => {
   const { opp } = await getOppById(Number(oppid));
   if (!opp) notFound();
 
-  return <OppForm opp={opp} />;
+  return <div />;
 };
 
 export default OppDetailPage;

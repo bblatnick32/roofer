@@ -15,8 +15,8 @@ const OppWrapper = ({
     <MainPageWrapper className="flex flex-col gap-3">
       <div className="flex items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-0">
         <div className="mr-4">
-          <h1 className="text-md text-gray-500">Opportunity</h1>
-          <h1 className="font-bold text-5xl text-gray-900">{opp.name}</h1>
+          <h1 className="text-sm text-gray-500">Opportunity</h1>
+          <h1 className="font-bold text-2xl text-gray-900">{opp.name}</h1>
         </div>
         <OppStagePipeline opp={opp} />
       </div>
