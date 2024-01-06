@@ -43,7 +43,7 @@
     "@uploadthing/react": "^6.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "date-fns": "^3.0.6",
+    "date-fns": "^3.1.0",
     "drizzle-orm": "^0.29.3",
     "drizzle-zod": "^0.5.1",
     "lucide-react": "^0.303.0",
