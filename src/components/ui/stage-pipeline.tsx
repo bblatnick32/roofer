@@ -15,7 +15,7 @@ const StagePipeline = <Stage extends string>({
   return (
     <ul
       role="list"
-      className="rounded-md flex items-start overflow-hidden w-full mt-7"
+      className="rounded-md flex items-start overflow-hidden w-full mt-5"
     >
       {stages.map((stage, stageIdx) => {
         if (stage === currentStage) found = true;
