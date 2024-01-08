@@ -12,7 +12,7 @@ const Navbar = async ({ children }: PropsWithChildren) => {
 
   if (session?.user?.id)
     return (
-      <div className="flex">
+      <div className="h-screen flex">
         <LeftNavBar />
         {children}
       </div>

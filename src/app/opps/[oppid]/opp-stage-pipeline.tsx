@@ -4,7 +4,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Opp, UpdateOppParams, OppStages } from "@/lib/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import StagePipeline from "@/components/ui/stage-pipeline";
+import StagePipeline from "@/components/stage-pipeline";
 
 const stages = Object.values(OppStages);
 type Stage = (typeof stages)[number];

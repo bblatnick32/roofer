@@ -5,6 +5,7 @@ import {
   timestamp,
   bigint,
   mysqlEnum,
+  text,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -22,7 +23,6 @@ export const OppStages = {
   LEAD: "Lead",
   INSPECTION: "Inspection",
   PROPOSAL: "Proposal",
-  PROPOSAL_REVIEW: "Proposal Review",
 } as const;
 
 export const OppStatuses = {
@@ -32,14 +32,10 @@ export const OppStatuses = {
   } as const,
   [OppStages.INSPECTION]: {
     INSPECTION_SCHEDULED: "Scheduled",
-    INSPECTION_COMPLETED: "Completed",
-    INSPECTION_DELIVERED: "Delivered",
+    INSPECTION_ATTACHED: "Attached",
   } as const,
   [OppStages.PROPOSAL]: {
-    GENERATED: "Generated",
-    SENT: "Sent",
-  } as const,
-  [OppStages.PROPOSAL_REVIEW]: {
+    ATTACHED: "Attached",
     PENDING: "Pending",
     WON: "Accepted",
     LOST: "Rejected",
@@ -71,10 +67,10 @@ export const opps = mysqlTable("opps", {
     ...Object.values(OppStatuses[OppStages.LEAD]),
     ...Object.values(OppStatuses[OppStages.INSPECTION]),
     ...Object.values(OppStatuses[OppStages.PROPOSAL]),
-    ...Object.values(OppStatuses[OppStages.PROPOSAL_REVIEW]),
   ] as [string, ...string[]])
     .notNull()
     .default(OppStatuses[OppStages.LEAD].NEW),
+  description: text("description"),
 });
 
 // relations

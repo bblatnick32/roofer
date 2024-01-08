@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "../ui/input";
 
-const OppForm = ({
+const NewOppForm = ({
   opp,
   closeModal,
 }: {
@@ -42,6 +42,7 @@ const OppForm = ({
       companyId: null,
       propertyId: null,
       contactId: null,
+      description: "",
     },
   });
 
@@ -61,7 +62,7 @@ const OppForm = ({
       return;
     }
 
-    if (data?.id) router.push(`/opps/${data?.id}/detail`);
+    if (data?.id) router.push(`/opps/${data?.id}`);
     router.refresh();
 
     if (closeModal) closeModal();
@@ -133,4 +134,4 @@ const OppForm = ({
   );
 };
 
-export default OppForm;
+export default NewOppForm;

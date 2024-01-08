@@ -1,22 +1,24 @@
-import { getOppById } from "@/lib/api/opps/queries";
 import { checkAuth } from "@/lib/auth/utils";
 import { notFound } from "next/navigation";
+import { getOppById } from "@/lib/api/opps/queries";
+import OppWrapper from "./opp-main";
 
 interface OppLayoutProps {
   params: {
     oppid: string;
   };
+  children: React.ReactNode;
 }
 
-const OppDetailPage = async ({ params }: OppLayoutProps) => {
+const OppLayout = async ({ params }: OppLayoutProps) => {
   const { oppid } = params;
-  await checkAuth(`opps/${oppid}/detail`);
+  await checkAuth(`opps/${oppid}`);
 
   // make a call to get the opp
   const { opp } = await getOppById(Number(oppid));
   if (!opp) notFound();
 
-  return <div />;
+  return <OppWrapper opp={opp} />;
 };
 
-export default OppDetailPage;
+export default OppLayout;

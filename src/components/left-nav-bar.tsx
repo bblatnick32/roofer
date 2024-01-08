@@ -41,7 +41,7 @@ export function LeftNavBar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-screen w-42 bg-gray-800 text-white">
+    <div className="h-full w-42 bg-gray-800 text-white">
       <nav className="mt-10 px-4 space-y-2">
         {primaryItems.map((item) => (
           <Link

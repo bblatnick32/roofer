@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Opp, OppStages } from "@/lib/db";
+import { Opp } from "@/lib/db";
 import { usePathname } from "next/navigation";
 
 export default function OppNav({
@@ -15,24 +15,10 @@ export default function OppNav({
   const pathname = usePathname();
   const tabs = [
     {
-      name: "Detail",
-      href: `/opps/${opp.id}/detail`,
+      name: "Overview",
+      href: `/opps/${opp.id}`,
     },
   ];
-
-  if (opp.stage !== OppStages.LEAD) {
-    tabs.push({
-      name: "Inspection",
-      href: `/opps/${opp.id}/inspection`,
-    });
-  }
-
-  if (opp.stage !== OppStages.LEAD && opp.stage !== OppStages.INSPECTION) {
-    tabs.push({
-      name: "Proposal",
-      href: `/opps/${opp.id}/proposal`,
-    });
-  }
 
   return (
     <nav className={cn("flex items-center", className)}>

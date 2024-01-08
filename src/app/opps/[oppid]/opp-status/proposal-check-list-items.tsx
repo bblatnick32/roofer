@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 
-const ProposalStatusButtons = () => {
+const ProposalCheckListItems = () => {
   return <Button>Generate Proposal</Button>;
 };
 
-export default ProposalStatusButtons;
+export default ProposalCheckListItems;

@@ -64,7 +64,7 @@ export default function useColumns({
         header: "Name",
         cell: ({ row }) => {
           return (
-            <Link href={`/opps/${row.original.id}/detail`}>
+            <Link href={`/opps/${row.original.id}`}>
               <Button variant="link">{row.getValue("name")}</Button>
             </Link>
           );
@@ -115,7 +115,7 @@ export default function useColumns({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Link href={`/opps/${row.original.id}/detail`}>
+                <Link href={`/opps/${row.original.id}`}>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem onClick={() => deleteOpp({ id: opp.id })}>
