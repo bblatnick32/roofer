@@ -99,9 +99,17 @@ const ContactForm = ({
       createContact(values);
     }
   };
+
+  const onErrors = (errors: any) => {
+    console.error(errors);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        className={"space-y-8"}
+      >
         <FormField
           control={form.control}
           name="name"

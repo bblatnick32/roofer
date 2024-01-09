@@ -48,13 +48,13 @@ export default function PropertyModal({
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "default"} size="sm">
-            {editing ? "Edit" : "Create New Property"}
+            {editing ? "Edit" : "New Property"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Property</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "New"} Property</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
           <PropertyForm

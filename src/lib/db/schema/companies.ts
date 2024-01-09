@@ -32,9 +32,7 @@ export const companiesRelations = relations(companies, ({ many, one }) => ({
 // Schema for companies - used to validate API requests
 export const insertCompanySchema = createInsertSchema(companies);
 
-export const insertCompanyParams = createSelectSchema(companies, {
-  name: z.string().min(1, "Name cannot be empty."),
-}).omit({
+export const insertCompanyParams = createSelectSchema(companies).omit({
   id: true,
   orgId: true,
   createdAt: true,

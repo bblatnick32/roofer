@@ -46,13 +46,13 @@ export default function CompanyModal({
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "default"} size="sm">
-            {editing ? "Edit" : "Create New Company"}
+            {editing ? "Edit" : "New Company"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Company</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "New"} Company</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
           <CompanyForm closeModal={closeModal} company={company} />

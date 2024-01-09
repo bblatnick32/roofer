@@ -46,13 +46,13 @@ export default function ContactModal({
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "default"} size="sm">
-            {editing ? "Edit" : "Create New Contact"}
+            {editing ? "Edit" : "New Contact"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Contact</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "New"} Contact</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
           <ContactForm closeModal={closeModal} contact={contact} />

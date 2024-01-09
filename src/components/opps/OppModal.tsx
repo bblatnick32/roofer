@@ -47,13 +47,13 @@ export default function OppModal({
           </Button>
         ) : (
           <Button variant={editing ? "ghost" : "default"} size="sm">
-            {editing ? "Edit" : "Create New Opportunity"}
+            {editing ? "Edit" : "New Opportunity"}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Opportunity</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "New"} Opportunity</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
           {editing ? (

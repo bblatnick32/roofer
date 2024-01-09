@@ -1,5 +1,11 @@
 "use client";
-import { Opp, NewOppParams, insertOppParams } from "@/lib/db/schema/opps";
+import {
+  Opp,
+  NewOppParams,
+  updateOppParams,
+  insertOppParams,
+  UpdateOppParams,
+} from "@/lib/db/schema/opps";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -27,6 +33,7 @@ import NewCompanyModal from "@/components/companies/CompanyModal";
 import NewPropertyModal from "@/components/properties/PropertyModal";
 import NewContactModal from "@/components/contacts/ContactModal";
 import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const OppForm = ({
   opp,
@@ -47,13 +54,8 @@ const OppForm = ({
     // latest Zod release has introduced a TS error with zodResolver
     // open issue: https://github.com/colinhacks/zod/issues/2663
     // errors locally but not in production
-    resolver: zodResolver(insertOppParams),
-    defaultValues: opp ?? {
-      name: "",
-      companyId: null,
-      propertyId: null,
-      contactId: null,
-    },
+    resolver: zodResolver(updateOppParams),
+    defaultValues: opp,
   });
 
   const onSuccess = async (
@@ -91,21 +93,13 @@ const OppForm = ({
       onSuccess: (res) => onSuccess("update", res),
     });
 
-  const { mutate: deleteOpp, isLoading: isDeleting } =
-    trpc.opps.deleteOpp.useMutation({
-      onSuccess: (res) => onSuccess("delete", res),
-    });
-
-  const handleSubmit = (values: NewOppParams) => {
+  const handleSubmit = (values: NewOppParams | UpdateOppParams) => {
     if (editing) {
       updateOpp({
-        ...values,
-        id: opp.id,
-        status: opp.status,
-        stage: opp.stage,
+        ...(values as UpdateOppParams),
       });
     } else {
-      createOpp(values);
+      createOpp(values as NewOppParams);
     }
   };
 
@@ -133,14 +127,14 @@ const OppForm = ({
             </FormItem>
           )}
         />
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="companyId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company</FormLabel>
-                <FormControl>
+        <FormField
+          control={form.control}
+          name="companyId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company</FormLabel>
+              <FormControl>
+                <div className="flex gap-4">
                   <Select
                     onValueChange={(value) => {
                       field.onChange(parseInt(value));
@@ -161,22 +155,22 @@ const OppForm = ({
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
+                  <NewCompanyModal />
+                </div>
+              </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <NewCompanyModal />
-        </div>
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="propertyId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Property</FormLabel>
-                <FormControl>
+              <FormMessage errorMessage="Company cannot be empty." />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="propertyId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Property</FormLabel>
+              <FormControl>
+                <div className="flex gap-4">
                   <Select
                     onValueChange={(value) => {
                       field.onChange(parseInt(value));
@@ -197,24 +191,22 @@ const OppForm = ({
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
+                  <NewPropertyModal />
+                </div>
+              </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <NewPropertyModal
-            companyId={form.getValues("companyId") ?? undefined}
-          />
-        </div>
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="contactId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contact</FormLabel>
-                <FormControl>
+              <FormMessage errorMessage="Property cannot be empty." />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="contactId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contact</FormLabel>
+              <FormControl>
+                <div className="flex gap-4">
                   <Select
                     onValueChange={(value) => {
                       field.onChange(parseInt(value));
@@ -235,14 +227,27 @@ const OppForm = ({
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
+                  <NewContactModal />
+                </div>
+              </FormControl>
+              <FormMessage errorMessage="Contact cannot be empty." />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} value={field.value ?? ""} />
+              </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <NewContactModal />
-        </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button
           type="submit"
           className="mr-1"
@@ -252,15 +257,6 @@ const OppForm = ({
             ? `Sav${isUpdating ? "ing..." : "e"}`
             : `Creat${isCreating ? "ing..." : "e"}`}
         </Button>
-        {editing ? (
-          <Button
-            type="button"
-            variant={"destructive"}
-            onClick={() => deleteOpp({ id: opp.id })}
-          >
-            Delet{isDeleting ? "ing..." : "e"}
-          </Button>
-        ) : null}
       </form>
     </Form>
   );

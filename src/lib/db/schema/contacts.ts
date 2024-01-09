@@ -42,9 +42,7 @@ export const contactsRelations = relations(contacts, ({ many, one }) => ({
 // Schema for contacts - used to validate API requests
 export const insertContactSchema = createInsertSchema(contacts);
 
-export const insertContactParams = createSelectSchema(contacts, {
-  name: z.string().min(1, "Name cannot be empty."),
-}).omit({
+export const insertContactParams = createSelectSchema(contacts).omit({
   id: true,
   orgId: true,
   createdAt: true,

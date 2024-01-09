@@ -17,11 +17,7 @@ export function CheckListItems({
   return (
     <div className="flex flex-col space-y-2">
       {items.map((item) => (
-        <div
-          className="flex items-center space-x-2 cursor-pointer"
-          key={item.value}
-          onClick={(e) => onClick(e, item.value)}
-        >
+        <div className="flex items-center space-x-2" key={item.value}>
           <Checkbox
             id={item.value}
             checked={item.completed}
@@ -33,6 +29,7 @@ export function CheckListItems({
               "cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
               item.completed && "line-through"
             )}
+            onClick={(e) => onClick(e, item.value)}
           >
             {item.label}
           </label>

@@ -27,18 +27,18 @@ export const OppStages = {
 
 export const OppStatuses = {
   [OppStages.LEAD]: {
-    NEW: "New",
-    DOCUMENTED: "Documented",
+    NEW: "New Lead",
+    DOCUMENTED: "Lead Documented",
   } as const,
   [OppStages.INSPECTION]: {
-    INSPECTION_SCHEDULED: "Scheduled",
-    INSPECTION_ATTACHED: "Attached",
+    SCHEDULED: "Inspection Scheduled",
+    ATTACHED: "Inspection Attached",
   } as const,
   [OppStages.PROPOSAL]: {
-    ATTACHED: "Attached",
-    PENDING: "Pending",
-    WON: "Accepted",
-    LOST: "Rejected",
+    ATTACHED: "Proposal Attached",
+    PENDING: "Proposal Pending",
+    WON: "Proposal Accepted",
+    LOST: "Proposal Rejected",
   } as const,
 } as const;
 
@@ -113,11 +113,21 @@ export const updateOppSchema = createSelectSchema(opps, {}).omit({
   updatedAt: true,
 });
 
-export const updateOppParams = createSelectSchema(opps, {}).omit({
-  orgId: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const updateOppParams = createSelectSchema(opps)
+  .extend({
+    companyId: z
+      .number()
+      .int({ message: "poop" })
+      .positive({ message: "poop" }),
+    propertyId: z.number().int().positive(),
+    contactId: z.number().int().positive(),
+    description: z.string().min(1, "Description cannot be empty."),
+  })
+  .omit({
+    orgId: true,
+    createdAt: true,
+    updatedAt: true,
+  });
 
 export const oppIdSchema = updateOppSchema.pick({ id: true });
 
