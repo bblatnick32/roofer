@@ -1,21 +1,21 @@
 import { cn } from "@/lib/utils";
 import { Checkbox } from "./ui/checkbox";
 
-type CheckListItem = {
+export type CheckListItem<ItemType> = {
   label: string;
-  value: string;
+  value: ItemType;
   completed: boolean;
 };
 
-export function CheckListItems({
+export function CheckListItems<ItemType extends string>({
   items,
   onClick,
 }: {
-  items: CheckListItem[];
-  onClick: (e: React.MouseEvent, value: string) => void;
+  items: CheckListItem<ItemType>[];
+  onClick: (e: React.MouseEvent, value: ItemType) => void;
 }) {
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-4">
       {items.map((item) => (
         <div className="flex items-center space-x-2" key={item.value}>
           <Checkbox

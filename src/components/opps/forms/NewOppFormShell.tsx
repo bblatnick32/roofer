@@ -1,50 +1,31 @@
 "use client";
-import { Opp, NewOppParams, insertOppParams } from "@/lib/db/schema/opps";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { NewOppParams, insertOppParams } from "@/lib/db/schema/opps";
+import { UseFormReturn } from "react-hook-form";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { trpc } from "@/lib/trpc/client";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { Input } from "../ui/input";
+import { ReactElement } from "react";
 
-const NewOppForm = ({
-  opp,
+const NewOppFormShell = ({
+  form,
   closeModal,
+  children,
 }: {
-  opp?: Opp;
+  form: UseFormReturn<z.infer<typeof insertOppParams>>;
   closeModal?: () => void;
+  children:
+    | ReactElement<typeof FormField, any>
+    | ReactElement<typeof FormField, any>[];
 }) => {
   const { toast } = useToast();
 
-  const editing = !!opp?.id;
+  const editing = false;
 
   const router = useRouter();
-  const utils = trpc.useUtils();
-
-  const form = useForm<z.infer<typeof insertOppParams>>({
-    // latest Zod release has introduced a TS error with zodResolver
-    // open issue: https://github.com/colinhacks/zod/issues/2663
-    // errors locally but not in production
-    resolver: zodResolver(insertOppParams),
-    defaultValues: opp ?? {
-      name: "",
-      companyId: null,
-      propertyId: null,
-      contactId: null,
-      description: "",
-    },
-  });
 
   const onSuccess = async (
     action: "create" | "update" | "delete",
@@ -84,16 +65,7 @@ const NewOppForm = ({
     });
 
   const handleSubmit = (values: NewOppParams) => {
-    if (editing) {
-      updateOpp({
-        ...values,
-        id: opp.id,
-        status: opp.status,
-        stage: opp.stage,
-      });
-    } else {
-      createOpp(values);
-    }
+    createOpp(values);
   };
 
   const onErrors = (errors: any) => {
@@ -106,20 +78,7 @@ const NewOppForm = ({
         onSubmit={form.handleSubmit(handleSubmit, onErrors)}
         className={"space-y-8"}
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {children}
         <Button
           type="submit"
           className="mr-1"
@@ -134,4 +93,4 @@ const NewOppForm = ({
   );
 };
 
-export default NewOppForm;
+export default NewOppFormShell;

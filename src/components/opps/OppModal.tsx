@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import OppForm from "./OppForm";
 import { Opp } from "@/lib/db/schema/opps";
-import NewOppForm from "./NewOppForm";
+import { NameFormField } from "./forms/FormFields";
+import NewOppFormShell from "./forms/NewOppFormShell";
+import OppFormShell from "./forms/OppFormShell";
+import { useNewOppForm, useOppForm } from "./forms/hooks";
+import { insertOppParams, updateOppParams } from "@/lib/db";
 
 export default function OppModal({
   opp,
@@ -59,10 +61,28 @@ export default function OppModal({
           {editing ? (
             <OppForm closeModal={closeModal} opp={opp} />
           ) : (
-            <NewOppForm closeModal={closeModal} opp={opp} />
+            <NewOppForm closeModal={closeModal} />
           )}
         </div>
       </DialogContent>
     </Dialog>
   );
 }
+
+const NewOppForm = ({ closeModal }: { closeModal: () => void }) => {
+  const form = useNewOppForm();
+  return (
+    <NewOppFormShell form={form} closeModal={closeModal}>
+      <NameFormField<typeof insertOppParams> form={form} />
+    </NewOppFormShell>
+  );
+};
+
+const OppForm = ({ opp, closeModal }: { opp: Opp; closeModal: () => void }) => {
+  const form = useOppForm(opp);
+  return (
+    <OppFormShell opp={opp} form={form} closeModal={closeModal}>
+      <NameFormField<typeof updateOppParams> form={form} />
+    </OppFormShell>
+  );
+};

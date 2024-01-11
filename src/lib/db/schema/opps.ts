@@ -113,21 +113,11 @@ export const updateOppSchema = createSelectSchema(opps, {}).omit({
   updatedAt: true,
 });
 
-export const updateOppParams = createSelectSchema(opps)
-  .extend({
-    companyId: z
-      .number()
-      .int({ message: "poop" })
-      .positive({ message: "poop" }),
-    propertyId: z.number().int().positive(),
-    contactId: z.number().int().positive(),
-    description: z.string().min(1, "Description cannot be empty."),
-  })
-  .omit({
-    orgId: true,
-    createdAt: true,
-    updatedAt: true,
-  });
+export const updateOppParams = createSelectSchema(opps).omit({
+  orgId: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
 export const oppIdSchema = updateOppSchema.pick({ id: true });
 
