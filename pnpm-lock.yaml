@@ -51,8 +51,8 @@ dependencies:
     specifier: ^1.1.5
     version: 1.1.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
   '@react-pdf/renderer':
-    specifier: ^3.1.14
-    version: 3.1.14(encoding@0.1.13)(react@18.2.0)
+    specifier: ^3.1.15
+    version: 3.1.15(encoding@0.1.13)(react@18.2.0)
   '@t3-oss/env-nextjs':
     specifier: ^0.7.1
     version: 0.7.1(typescript@5.3.3)(zod@3.22.4)
@@ -2053,13 +2053,13 @@ packages:
       - encoding
     dev: false
 
-  /@react-pdf/layout@3.6.3(encoding@0.1.13):
-    resolution: {integrity: sha512-w6ACZ9o18Q5wbzsY9a4KW2Gqn6Drt3AN/kb/I6SBz/L7PAJ9rPQBIDq/s5qZJ+/WwWy33rcC8WC1givtDhjCHQ==}
+  /@react-pdf/layout@3.6.4(encoding@0.1.13):
+    resolution: {integrity: sha512-lyJcMUJoF3/fPavxOvVWyOK5EYH6Rf1S9xRlOSnFGyD9zLbfOreeG8cEyVC3JEZA9/ZfWXa/fye+mVsHoaD6wA==}
     dependencies:
       '@babel/runtime': 7.23.5
       '@react-pdf/fns': 2.0.1
       '@react-pdf/image': 2.2.2(encoding@0.1.13)
-      '@react-pdf/pdfkit': 3.0.2
+      '@react-pdf/pdfkit': 3.0.3
       '@react-pdf/primitives': 3.0.1
       '@react-pdf/stylesheet': 4.1.8
       '@react-pdf/textkit': 4.2.0
@@ -2072,8 +2072,8 @@ packages:
       - encoding
     dev: false
 
-  /@react-pdf/pdfkit@3.0.2:
-    resolution: {integrity: sha512-+m5rwNCwyEH6lmnZWpsQJvdqb6YaCCR0nMWrc/KKDwznuPMrGmGWyNxqCja+bQPORcHZyl6Cd/iFL0glyB3QGw==}
+  /@react-pdf/pdfkit@3.0.3:
+    resolution: {integrity: sha512-il4VCkLduCSYv51y3r7/Sp3TUCATi34BsI8qo+/Btb51UN1Wat3A4xuEJkNlKFY2XZvgwS9jYyq2pBHiBLaEcA==}
     dependencies:
       '@babel/runtime': 7.23.5
       '@react-pdf/png-js': 2.2.0
@@ -2108,15 +2108,15 @@ packages:
       svg-arc-to-cubic-bezier: 3.2.0
     dev: false
 
-  /@react-pdf/renderer@3.1.14(encoding@0.1.13)(react@18.2.0):
-    resolution: {integrity: sha512-Qk29uTamH6q+drK/YmiFbuQQ+yutesfIe+wyrsXFoUJUutIiDIaibO6zByMkhWb3M6CMt6NvG3NLHio1OF8U6Q==}
+  /@react-pdf/renderer@3.1.15(encoding@0.1.13)(react@18.2.0):
+    resolution: {integrity: sha512-j/MXTxhgBqvHoTo2MmJEYg9Jv3vlqerTNvVicSvNj6wagZnKjgByBl/FrTgNfbOyJs4QV6anKSOg9je1EJTOLw==}
     peerDependencies:
       react: ^16.8.6 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@react-pdf/font': 2.3.7(encoding@0.1.13)
-      '@react-pdf/layout': 3.6.3(encoding@0.1.13)
-      '@react-pdf/pdfkit': 3.0.2
+      '@react-pdf/layout': 3.6.4(encoding@0.1.13)
+      '@react-pdf/pdfkit': 3.0.3
       '@react-pdf/primitives': 3.0.1
       '@react-pdf/render': 3.2.7
       '@react-pdf/types': 2.3.4
