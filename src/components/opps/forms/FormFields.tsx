@@ -13,7 +13,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@radix-ui/react-select";
+} from "@/components/ui/select";
 import { Path, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import NewCompanyModal from "@/components/companies/CompanyModal";
@@ -51,7 +51,7 @@ export const CompanyFormField = ({
   companies,
 }: {
   form: UseFormReturn<z.infer<typeof updateOppParams>>;
-  companies: Company[];
+  companies: Company[] | undefined;
 }) => {
   return (
     <FormField
@@ -72,7 +72,7 @@ export const CompanyFormField = ({
                   <SelectValue placeholder="Select a company" />
                 </SelectTrigger>
                 <SelectContent>
-                  {companies.map((company) => (
+                  {companies?.map((company) => (
                     <SelectItem key={company.id} value={company.id.toString()}>
                       {company.name}{" "}
                     </SelectItem>
@@ -95,7 +95,7 @@ export const PropertyFormField = ({
   properties,
 }: {
   form: UseFormReturn<z.infer<typeof updateOppParams>>;
-  properties: Property[];
+  properties: Property[] | undefined;
 }) => {
   return (
     <FormField
@@ -116,7 +116,7 @@ export const PropertyFormField = ({
                   <SelectValue placeholder="Select a property" />
                 </SelectTrigger>
                 <SelectContent>
-                  {properties.map((property) => (
+                  {properties?.map((property) => (
                     <SelectItem
                       key={property.id}
                       value={property.id.toString()}
@@ -142,7 +142,7 @@ export const ContactFormField = ({
   contacts,
 }: {
   form: UseFormReturn<z.infer<typeof updateOppParams>>;
-  contacts: Contact[];
+  contacts: Contact[] | undefined;
 }) => {
   return (
     <FormField
@@ -163,7 +163,7 @@ export const ContactFormField = ({
                   <SelectValue placeholder="Select a contact" />
                 </SelectTrigger>
                 <SelectContent>
-                  {contacts.map((contact) => (
+                  {contacts?.map((contact) => (
                     <SelectItem key={contact.id} value={contact.id.toString()}>
                       {contact.name}{" "}
                     </SelectItem>

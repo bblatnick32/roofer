@@ -24,7 +24,6 @@ const OppFormShell = ({
     | ReactElement<typeof FormField, any>[];
 }) => {
   const { toast } = useToast();
-  // const { data: companies } = trpc.companies.getCompanies.useQuery();
   // const { data: properties } = trpc.properties.getProperties.useQuery();
   // const { data: contacts } = trpc.contacts.getContacts.useQuery();
   const editing = !!opp?.id;

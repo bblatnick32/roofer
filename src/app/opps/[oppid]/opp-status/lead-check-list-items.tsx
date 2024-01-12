@@ -8,6 +8,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useOppForm } from "@/components/opps/forms/hooks";
+import OppFormShell from "@/components/opps/forms/OppFormShell";
+import {
+  CompanyFormField,
+  ContactFormField,
+  DescriptionFormField,
+  PropertyFormField,
+} from "@/components/opps/forms/FormFields";
+import { trpc } from "@/lib/trpc/client";
 
 type OpenType =
   | "document-company"
@@ -59,11 +68,17 @@ const LeadCheckListItems = ({ opp }: { opp: Opp }) => {
     <>
       <CheckListItems<OpenType> items={items} onClick={handleClick} />
       <Dialog onOpenChange={setOpen} open={open}>
-        {openType === "document-company" && <DocumentCompanyDialogContent />}
-        {openType === "document-property" && <DocumentPropertyDialogContent />}
-        {openType === "document-contact" && <DocumentContactDialogContent />}
+        {openType === "document-company" && (
+          <DocumentCompanyDialogContent opp={opp} closeModal={closeModal} />
+        )}
+        {openType === "document-property" && (
+          <DocumentPropertyDialogContent opp={opp} closeModal={closeModal} />
+        )}
+        {openType === "document-contact" && (
+          <DocumentContactDialogContent opp={opp} closeModal={closeModal} />
+        )}
         {openType === "document-description" && (
-          <DocumentDescriptionDialogContent />
+          <DocumentDescriptionDialogContent opp={opp} closeModal={closeModal} />
         )}
       </Dialog>
     </>
@@ -89,34 +104,77 @@ const LeadCheckListItemDialogContent = ({
   );
 };
 
-const DocumentCompanyDialogContent = () => {
+const DocumentCompanyDialogContent = ({
+  opp,
+  closeModal,
+}: {
+  opp: Opp;
+  closeModal: () => void;
+}) => {
+  const form = useOppForm(opp);
+  const { data } = trpc.companies.getCompanies.useQuery();
+
   return (
     <LeadCheckListItemDialogContent title="Edit Opportunity Company">
-      <div>Company</div>
+      <OppFormShell opp={opp} form={form} closeModal={closeModal}>
+        <CompanyFormField form={form} companies={data?.companies} />
+      </OppFormShell>
     </LeadCheckListItemDialogContent>
   );
 };
 
-const DocumentPropertyDialogContent = () => {
+const DocumentPropertyDialogContent = ({
+  opp,
+  closeModal,
+}: {
+  opp: Opp;
+  closeModal: () => void;
+}) => {
+  const form = useOppForm(opp);
+  const { data } = trpc.properties.getProperties.useQuery();
+
   return (
     <LeadCheckListItemDialogContent title="Edit Opportunity Property">
-      <div>Property</div>
+      <OppFormShell opp={opp} form={form} closeModal={closeModal}>
+        <PropertyFormField form={form} properties={data?.properties} />
+      </OppFormShell>
     </LeadCheckListItemDialogContent>
   );
 };
 
-const DocumentContactDialogContent = () => {
+const DocumentContactDialogContent = ({
+  opp,
+  closeModal,
+}: {
+  opp: Opp;
+  closeModal: () => void;
+}) => {
+  const form = useOppForm(opp);
+  const { data } = trpc.contacts.getContacts.useQuery();
+
   return (
     <LeadCheckListItemDialogContent title="Edit Opportunity Contact">
-      <div>Contact</div>
+      <OppFormShell opp={opp} form={form} closeModal={closeModal}>
+        <ContactFormField form={form} contacts={data?.contacts} />
+      </OppFormShell>
     </LeadCheckListItemDialogContent>
   );
 };
 
-const DocumentDescriptionDialogContent = () => {
+const DocumentDescriptionDialogContent = ({
+  opp,
+  closeModal,
+}: {
+  opp: Opp;
+  closeModal: () => void;
+}) => {
+  const form = useOppForm(opp);
+
   return (
     <LeadCheckListItemDialogContent title="Edit Opportunity Description">
-      <div>Description</div>
+      <OppFormShell opp={opp} form={form} closeModal={closeModal}>
+        <DescriptionFormField form={form} />
+      </OppFormShell>
     </LeadCheckListItemDialogContent>
   );
 };
