@@ -19,7 +19,7 @@ export const properties = mysqlTable("properties", {
   name: varchar("name", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  address: varchar("address", { length: 256 }),
+  address: varchar("address", { length: 256 }).notNull(),
   orgId: varchar("org_id", { length: 256 }).notNull(),
   companyId: bigint("company_id", { mode: "number", unsigned: true }).notNull(),
 });

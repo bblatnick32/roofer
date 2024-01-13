@@ -21,7 +21,6 @@ export const contacts = mysqlTable("contacts", {
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 256 }),
-  address: varchar("address", { length: 256 }),
   orgId: varchar("org_id", { length: 256 }).notNull(),
   companyId: bigint("company_id", { mode: "number", unsigned: true }).notNull(),
 });
