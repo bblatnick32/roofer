@@ -1,7 +1,7 @@
 import { checkAuth } from "@/lib/auth/utils";
 import { notFound } from "next/navigation";
 import { getOppById } from "@/lib/api/opps/queries";
-import OppWrapper from "./opp-main";
+import OppMain from "./opp-main";
 
 interface OppLayoutProps {
   params: {
@@ -18,7 +18,7 @@ const OppLayout = async ({ params }: OppLayoutProps) => {
   const { opp } = await getOppById(Number(oppid));
   if (!opp) notFound();
 
-  return <OppWrapper opp={opp} />;
+  return <OppMain opp={opp} />;
 };
 
 export default OppLayout;

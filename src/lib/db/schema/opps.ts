@@ -13,8 +13,6 @@ import { z } from "zod";
 import { type getOpps } from "@/lib/api/opps/queries";
 import { relations } from "drizzle-orm";
 import { orgs } from "./orgs";
-import { photos } from "./photos";
-import { issues } from "./issues";
 import { companies } from "./companies";
 import { properties } from "./properties";
 import { contacts } from "./contacts";
@@ -91,8 +89,6 @@ export const oppsRelations = relations(opps, ({ one, many }) => ({
     fields: [opps.contactId],
     references: [contacts.id],
   }),
-  photos: many(photos),
-  issues: many(issues),
 }));
 
 // Schema for opps/leads - used to validate API requests

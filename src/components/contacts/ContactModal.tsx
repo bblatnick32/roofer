@@ -10,14 +10,16 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import ContactForm from "./ContactForm";
-import { Contact } from "@/lib/db/schema/contacts";
+import { Contact, ContactId } from "@/lib/db/schema/contacts";
 
 export default function ContactModal({
   contact,
   emptyState,
+  onCreate,
 }: {
   contact?: Contact;
   emptyState?: boolean;
+  onCreate?: (id: ContactId) => void;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -55,7 +57,11 @@ export default function ContactModal({
           <DialogTitle>{editing ? "Edit" : "New"} Contact</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <ContactForm closeModal={closeModal} contact={contact} />
+          <ContactForm
+            closeModal={closeModal}
+            contact={contact}
+            onCreate={onCreate}
+          />
         </div>
       </DialogContent>
     </Dialog>

@@ -2,6 +2,7 @@
 
 import {
   Contact,
+  ContactId,
   NewContactParams,
   insertContactParams,
 } from "@/lib/db/schema/contacts";
@@ -26,9 +27,11 @@ import { useToast } from "@/components/ui/use-toast";
 const ContactForm = ({
   contact,
   closeModal,
+  onCreate,
 }: {
   contact?: Contact;
   closeModal?: () => void;
+  onCreate?: (id: ContactId) => void;
 }) => {
   const { toast } = useToast();
 
@@ -52,7 +55,7 @@ const ContactForm = ({
 
   const onSuccess = async (
     action: "create" | "update" | "delete",
-    data?: { error?: string }
+    data?: { error?: string; id?: string }
   ) => {
     if (data?.error) {
       toast({
@@ -68,8 +71,12 @@ const ContactForm = ({
 
     await utils.contacts.getContacts.invalidate();
     utils.contacts.getContacts.prefetch();
+
     router.refresh();
+
+    if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
+
     toast({
       title: "Success",
       description: `Contact ${action}d!`,

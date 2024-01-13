@@ -18,8 +18,8 @@ export const createContact = async (contact: NewContactParams) => {
     orgId: session?.user.activeOrgId!,
   });
   try {
-    await db.insert(contacts).values(newContact);
-    return { success: true };
+    const insertResult = await db.insert(contacts).values(newContact);
+    return { success: true, id: insertResult.insertId };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);

@@ -75,7 +75,9 @@ const OppFormShell = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        onSubmit={(e) => {
+          form.handleSubmit(handleSubmit, onErrors)();
+        }}
         className={"space-y-8"}
       >
         {children}

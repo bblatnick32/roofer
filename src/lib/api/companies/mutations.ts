@@ -18,8 +18,8 @@ export const createCompany = async (company: NewCompanyParams) => {
     orgId: session?.user.activeOrgId!,
   });
   try {
-    await db.insert(companies).values(newCompany);
-    return { success: true };
+    const insertResult = await db.insert(companies).values(newCompany);
+    return { success: true, id: insertResult.insertId };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);

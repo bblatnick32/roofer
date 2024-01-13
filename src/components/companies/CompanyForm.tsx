@@ -2,6 +2,7 @@
 
 import {
   Company,
+  CompanyId,
   NewCompanyParams,
   insertCompanyParams,
 } from "@/lib/db/schema/companies";
@@ -26,9 +27,11 @@ import { useToast } from "@/components/ui/use-toast";
 const CompanyForm = ({
   company,
   closeModal,
+  onCreate,
 }: {
   company?: Company;
   closeModal?: () => void;
+  onCreate?: (id: CompanyId) => void;
 }) => {
   const { toast } = useToast();
 
@@ -50,7 +53,7 @@ const CompanyForm = ({
 
   const onSuccess = async (
     action: "create" | "update" | "delete",
-    data?: { error?: string }
+    data?: { error?: string; id?: string }
   ) => {
     if (data?.error) {
       toast({
@@ -67,7 +70,10 @@ const CompanyForm = ({
     await utils.companies.getCompanies.invalidate();
     utils.companies.getCompanies.prefetch();
     router.refresh();
+
+    if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
+
     toast({
       title: "Success",
       description: `Company ${action}d!`,
@@ -97,9 +103,17 @@ const CompanyForm = ({
       createCompany(values);
     }
   };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form
+        onSubmit={(e) => {
+          form.handleSubmit(handleSubmit)();
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        className={"space-y-8"}
+      >
         <FormField
           control={form.control}
           name="name"

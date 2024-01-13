@@ -10,16 +10,18 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import PropertyForm from "./PropertyForm";
-import { Property } from "@/lib/db/schema/properties";
+import { Property, PropertyId } from "@/lib/db/schema/properties";
 
 export default function PropertyModal({
   property,
   emptyState,
   companyId,
+  onCreate,
 }: {
   property?: Property;
   emptyState?: boolean;
   companyId?: number;
+  onCreate?: (id: PropertyId) => void;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -61,6 +63,7 @@ export default function PropertyModal({
             closeModal={closeModal}
             property={property}
             companyId={companyId}
+            onCreate={onCreate}
           />
         </div>
       </DialogContent>

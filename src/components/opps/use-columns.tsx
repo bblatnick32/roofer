@@ -98,8 +98,8 @@ export default function useColumns({
         },
       },
       {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "stage",
+        header: "Stage",
       },
       {
         id: "actions",

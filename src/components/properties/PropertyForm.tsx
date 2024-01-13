@@ -3,6 +3,7 @@ import {
   Property,
   NewPropertyParams,
   insertPropertyParams,
+  PropertyId,
 } from "@/lib/db/schema/properties";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,10 +34,12 @@ const PropertyForm = ({
   property,
   closeModal,
   companyId,
+  onCreate,
 }: {
   property?: Property;
   closeModal?: () => void;
   companyId?: number;
+  onCreate?: (id: PropertyId) => void;
 }) => {
   const { toast } = useToast();
   const { data: companies } = trpc.companies.getCompanies.useQuery();
@@ -60,7 +63,7 @@ const PropertyForm = ({
 
   const onSuccess = async (
     action: "create" | "update" | "delete",
-    data?: { error?: string }
+    data?: { error?: string; id?: string }
   ) => {
     if (data?.error) {
       toast({
@@ -77,7 +80,10 @@ const PropertyForm = ({
     await utils.properties.getProperties.invalidate();
     utils.properties.getProperties.prefetch();
     router.refresh();
+
+    if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
+
     toast({
       title: "Success",
       description: `Property ${action}d!`,

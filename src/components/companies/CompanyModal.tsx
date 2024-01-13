@@ -10,14 +10,16 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import CompanyForm from "./CompanyForm";
-import { Company } from "@/lib/db/schema/companies";
+import { Company, CompanyId } from "@/lib/db/schema/companies";
 
 export default function CompanyModal({
   company,
   emptyState,
+  onCreate,
 }: {
   company?: Company;
   emptyState?: boolean;
+  onCreate?: (id: CompanyId) => void;
 }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -55,7 +57,11 @@ export default function CompanyModal({
           <DialogTitle>{editing ? "Edit" : "New"} Company</DialogTitle>
         </DialogHeader>
         <div className="px-5 pb-5">
-          <CompanyForm closeModal={closeModal} company={company} />
+          <CompanyForm
+            closeModal={closeModal}
+            company={company}
+            onCreate={onCreate}
+          />
         </div>
       </DialogContent>
     </Dialog>

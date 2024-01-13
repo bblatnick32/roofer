@@ -18,8 +18,8 @@ export const createProperty = async (property: NewPropertyParams) => {
     orgId: session?.user.activeOrgId!,
   });
   try {
-    await db.insert(properties).values(newProperty);
-    return { success: true };
+    const insertResult = await db.insert(properties).values(newProperty);
+    return { success: true, id: insertResult.insertId };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
     console.error(message);
