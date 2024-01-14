@@ -69,7 +69,8 @@ const CompanyForm = ({
 
     await utils.companies.getCompanies.invalidate();
     utils.companies.getCompanies.prefetch();
-    // router.refresh();
+
+    router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();

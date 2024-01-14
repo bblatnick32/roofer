@@ -1,10 +1,8 @@
 import { useToast } from "@/components/ui/use-toast";
-import { trpc } from "@/lib/trpc/client";
 import { useRouter } from "next/navigation";
 
 const useOppOnSuccess = (closeModal?: () => void) => {
   const { toast } = useToast();
-  const utils = trpc.useUtils();
   const router = useRouter();
 
   const onSuccess = async (
@@ -23,10 +21,7 @@ const useOppOnSuccess = (closeModal?: () => void) => {
       return;
     }
 
-    await utils.opps.getOpps.invalidate();
-    utils.opps.getOpps.prefetch();
-    await utils.opps.getOppById.invalidate();
-    // utils.opps.getOppById.prefetch();
+    router.refresh();
 
     if (closeModal) closeModal();
     toast({

@@ -79,7 +79,8 @@ const PropertyForm = ({
 
     await utils.properties.getProperties.invalidate();
     utils.properties.getProperties.prefetch();
-    // router.refresh();
+
+    router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();

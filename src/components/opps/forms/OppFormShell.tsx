@@ -1,4 +1,5 @@
 "use client";
+
 import { Opp, UpdateOppParams, updateOppParams } from "@/lib/db/schema/opps";
 import { UseFormReturn } from "react-hook-form";
 
@@ -49,15 +50,9 @@ const OppFormShell = ({
 
   return (
     <Form {...form}>
-      <form
-        // onSubmit={(e) => {
-        //   form.handleSubmit(handleSubmit, onErrors)();
-        // }}
-        className={"space-y-8"}
-      >
+      <form className={"space-y-8"}>
         {children}
         <Button
-          // type="submit"
           onClick={() => {
             form.handleSubmit(handleSubmit, onErrors)();
           }}

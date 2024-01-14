@@ -81,7 +81,7 @@ const ContactForm = ({
     await utils.contacts.getContacts.invalidate();
     utils.contacts.getContacts.prefetch();
 
-    // router.refresh();
+    router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
