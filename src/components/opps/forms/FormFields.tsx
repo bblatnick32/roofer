@@ -5,7 +5,13 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Company, Contact, Property, updateOppParams } from "@/lib/db";
+import {
+  Company,
+  CompanyId,
+  Contact,
+  Property,
+  updateOppParams,
+} from "@/lib/db";
 import {
   Select,
   SelectTrigger,
@@ -42,6 +48,7 @@ export const CompanyFormField = ({
     control: form.control,
     name: "companyId",
   });
+
   const [value, setValue] = useState(field.value);
   return (
     <FormItem>
@@ -86,9 +93,11 @@ export const CompanyFormField = ({
 export const PropertyFormField = ({
   form,
   properties,
+  companyId,
 }: {
   form: UseFormReturn<z.infer<typeof updateOppParams>>;
   properties: Property[] | undefined;
+  companyId: CompanyId;
 }) => {
   const { field } = useController({
     control: form.control,
@@ -122,6 +131,7 @@ export const PropertyFormField = ({
             </SelectContent>
           </Select>
           <NewPropertyModal
+            companyId={companyId}
             onCreate={(id) => {
               setValue(id);
               field.onChange(id);
@@ -138,9 +148,11 @@ export const PropertyFormField = ({
 export const ContactFormField = ({
   form,
   contacts,
+  companyId,
 }: {
   form: UseFormReturn<z.infer<typeof updateOppParams>>;
   contacts: Contact[] | undefined;
+  companyId: CompanyId;
 }) => {
   const { field } = useController({
     control: form.control,
@@ -174,6 +186,7 @@ export const ContactFormField = ({
             </SelectContent>
           </Select>
           <NewContactModal
+            companyId={companyId}
             onCreate={(id) => {
               setValue(id);
               field.onChange(id);

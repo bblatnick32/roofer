@@ -10,6 +10,7 @@ export default function CompanyList({
 }) {
   const { data: c } = trpc.companies.getCompanies.useQuery(undefined, {
     initialData: { companies },
+    refetchOnMount: false,
   });
 
   if (c.companies.length === 0) {

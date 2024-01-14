@@ -69,7 +69,7 @@ const CompanyForm = ({
 
     await utils.companies.getCompanies.invalidate();
     utils.companies.getCompanies.prefetch();
-    router.refresh();
+    // router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
@@ -104,11 +104,15 @@ const CompanyForm = ({
     }
   };
 
+  const onErrors = (errors: any) => {
+    console.error(errors);
+  };
+
   return (
     <Form {...form}>
       <form
         onSubmit={(e) => {
-          form.handleSubmit(handleSubmit)();
+          form.handleSubmit(handleSubmit, onErrors)();
           e.stopPropagation();
           e.preventDefault();
         }}

@@ -6,9 +6,8 @@ import { Form, FormField } from "@/components/ui/form";
 import { trpc } from "@/lib/trpc/client";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import { ReactElement } from "react";
+import { useOppOnSuccess } from "../hooks/use-opp-on-success";
 
 const OppFormShell = ({
   opp,
@@ -23,41 +22,15 @@ const OppFormShell = ({
     | ReactElement<typeof FormField, any>
     | ReactElement<typeof FormField, any>[];
 }) => {
-  const { toast } = useToast();
-  // const { data: properties } = trpc.properties.getProperties.useQuery();
-  // const { data: contacts } = trpc.contacts.getContacts.useQuery();
   const editing = !!opp?.id;
 
-  const router = useRouter();
-
-  const onSuccess = async (
-    action: "create" | "update" | "delete",
-    data?: { success?: boolean; error?: string }
-  ) => {
-    if (data?.error) {
-      toast({
-        title: `${action
-          .slice(0, 1)
-          .toUpperCase()
-          .concat(action.slice(1))} Failed`,
-        description: data.error,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    router.refresh();
-    if (closeModal) closeModal();
-    toast({
-      title: "Success",
-      description: `Opportunity ${action}d!`,
-      variant: "default",
-    });
-  };
+  const onSuccess = useOppOnSuccess(closeModal);
 
   const { mutate: updateOpp, isLoading: isUpdating } =
     trpc.opps.updateOpp.useMutation({
-      onSuccess: (res) => onSuccess("update", res),
+      onSuccess: (res) => {
+        onSuccess("update", res);
+      },
     });
 
   const handleSubmit = (values: UpdateOppParams) => {
@@ -72,16 +45,25 @@ const OppFormShell = ({
     console.error(errors);
   };
 
+  const noUpdates = Object.keys(form.formState.dirtyFields).length === 0;
+
   return (
     <Form {...form}>
       <form
-        onSubmit={(e) => {
-          form.handleSubmit(handleSubmit, onErrors)();
-        }}
+        // onSubmit={(e) => {
+        //   form.handleSubmit(handleSubmit, onErrors)();
+        // }}
         className={"space-y-8"}
       >
         {children}
-        <Button type="submit" className="mr-1" disabled={isUpdating}>
+        <Button
+          // type="submit"
+          onClick={() => {
+            form.handleSubmit(handleSubmit, onErrors)();
+          }}
+          className="mr-1"
+          disabled={isUpdating || noUpdates}
+        >
           {`Sav${isUpdating ? "ing..." : "e"}`}
         </Button>
       </form>

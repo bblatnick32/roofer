@@ -10,6 +10,7 @@ export default function ContactList({
 }) {
   const { data: c } = trpc.contacts.getContacts.useQuery(undefined, {
     initialData: { contacts },
+    refetchOnMount: false,
   });
 
   if (c.contacts.length === 0) {

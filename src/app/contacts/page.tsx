@@ -1,12 +1,12 @@
 import ContactList from "@/components/contacts/ContactList";
 import NewContactModal from "@/components/contacts/ContactModal";
 import { MainPageWrapper } from "@/components/main-page";
+import { getContacts } from "@/lib/api/contacts/queries";
 import { checkAuth } from "@/lib/auth/utils";
-import { api } from "@/lib/trpc/api";
 
 export default async function Contacts() {
   await checkAuth("contacts");
-  const { contacts } = await api.contacts.getContacts.query();
+  const { contacts } = await getContacts();
 
   return (
     <MainPageWrapper>

@@ -13,8 +13,7 @@ import {
 import { trpc } from "@/lib/trpc/client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { useOppOnSuccess } from "./use-opp-on-success";
 
 export default function useColumns({
   companies,
@@ -25,32 +24,7 @@ export default function useColumns({
   properties?: Property[];
   contacts?: Contact[];
 }): ColumnDef<Opp>[] {
-  const { toast } = useToast();
-  const router = useRouter();
-
-  const onSuccess = async (
-    action: "create" | "update" | "delete",
-    data?: { success?: boolean; error?: string }
-  ) => {
-    if (data?.error) {
-      toast({
-        title: `${action
-          .slice(0, 1)
-          .toUpperCase()
-          .concat(action.slice(1))} Failed`,
-        description: data.error,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    router.refresh();
-    toast({
-      title: "Success",
-      description: `Opportunity ${action}d!`,
-      variant: "default",
-    });
-  };
+  const onSuccess = useOppOnSuccess();
 
   const { mutate: deleteOpp, isLoading: isDeleting } =
     trpc.opps.deleteOpp.useMutation({

@@ -12,7 +12,7 @@ import { Opp } from "@/lib/db/schema/opps";
 import { NameFormField } from "./forms/FormFields";
 import NewOppFormShell from "./forms/NewOppFormShell";
 import OppFormShell from "./forms/OppFormShell";
-import { useNewOppForm, useOppForm } from "./forms/hooks";
+import { useNewOppForm, useOppForm } from "./hooks/use-opp-form";
 import { insertOppParams, updateOppParams } from "@/lib/db";
 
 export default function OppModal({

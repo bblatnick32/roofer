@@ -10,6 +10,7 @@ export default function PropertyList({
 }) {
   const { data: p } = trpc.properties.getProperties.useQuery(undefined, {
     initialData: { properties },
+    refetchOnMount: false,
   });
 
   if (p.properties.length === 0) {

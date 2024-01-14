@@ -79,7 +79,7 @@ const PropertyForm = ({
 
     await utils.properties.getProperties.invalidate();
     utils.properties.getProperties.prefetch();
-    router.refresh();
+    // router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
@@ -121,42 +121,48 @@ const PropertyForm = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        onSubmit={(e) => {
+          form.handleSubmit(handleSubmit, onErrors)();
+          e.stopPropagation();
+          e.preventDefault();
+        }}
         className={"space-y-8"}
       >
-        <FormField
-          control={form.control}
-          name="companyId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Company</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(parseInt(value));
-                  }}
-                  defaultValue={String(field.value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a company" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {companies?.companies.map((company) => (
-                      <SelectItem
-                        key={company.id}
-                        value={company.id.toString()}
-                      >
-                        {company.name}{" "}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+        {!companyId && (
+          <FormField
+            control={form.control}
+            name="companyId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(parseInt(value));
+                    }}
+                    defaultValue={String(field.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies?.companies.map((company) => (
+                        <SelectItem
+                          key={company.id}
+                          value={company.id.toString()}
+                        >
+                          {company.name}{" "}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="name"

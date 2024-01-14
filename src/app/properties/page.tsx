@@ -1,12 +1,12 @@
 import PropertyList from "@/components/properties/PropertyList";
 import NewPropertyModal from "@/components/properties/PropertyModal";
-import { api } from "@/lib/trpc/api";
 import { checkAuth } from "@/lib/auth/utils";
 import { MainPageWrapper } from "@/components/main-page";
+import { getProperties } from "@/lib/api/properties/queries";
 
 export default async function Properties() {
   await checkAuth();
-  const { properties } = await api.properties.getProperties.query();
+  const { properties } = await getProperties();
 
   return (
     <MainPageWrapper>

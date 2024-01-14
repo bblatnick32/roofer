@@ -15,10 +15,12 @@ import { Contact, ContactId } from "@/lib/db/schema/contacts";
 export default function ContactModal({
   contact,
   emptyState,
+  companyId,
   onCreate,
 }: {
   contact?: Contact;
   emptyState?: boolean;
+  companyId?: number;
   onCreate?: (id: ContactId) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -60,6 +62,7 @@ export default function ContactModal({
           <ContactForm
             closeModal={closeModal}
             contact={contact}
+            companyId={companyId}
             onCreate={onCreate}
           />
         </div>

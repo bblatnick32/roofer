@@ -5,6 +5,7 @@ export type CheckListItem<ItemType> = {
   label: string;
   value: ItemType;
   completed: boolean;
+  disabled: boolean;
 };
 
 export function CheckListItems<ItemType extends string>({
@@ -22,6 +23,7 @@ export function CheckListItems<ItemType extends string>({
             id={item.value}
             checked={item.completed}
             onClick={(e) => onClick(e, item.value)}
+            disabled={item.disabled}
           />
           <label
             htmlFor={item.value}
@@ -29,7 +31,7 @@ export function CheckListItems<ItemType extends string>({
               "cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
               item.completed && "line-through"
             )}
-            onClick={(e) => onClick(e, item.value)}
+            onClick={(e) => (!item.disabled ? onClick(e, item.value) : null)}
           >
             {item.label}
           </label>

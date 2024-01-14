@@ -3,7 +3,8 @@ import { CompleteOpp } from "@/lib/db/schema/opps";
 import OppModal from "./OppModal";
 import { DataTable } from "../ui/data-table";
 import { Company, Property, Contact } from "@/lib/db";
-import useColumns from "./use-columns";
+import useColumns from "./hooks/use-columns";
+import { trpc } from "@/lib/trpc/client";
 
 export default function OppList({
   opps,
@@ -16,17 +17,22 @@ export default function OppList({
   properties: Property[];
   contacts: Contact[];
 }) {
+  const { data: o } = trpc.opps.getOpps.useQuery(undefined, {
+    initialData: { opps },
+    refetchOnMount: false,
+  });
+
   const columns = useColumns({
     companies,
     properties,
     contacts,
   });
 
-  if (opps.length === 0) {
+  if (o.opps.length === 0) {
     return <EmptyState />;
   }
 
-  return <DataTable columns={columns} data={opps} />;
+  return <DataTable columns={columns} data={o.opps} />;
 }
 
 const EmptyState = () => {

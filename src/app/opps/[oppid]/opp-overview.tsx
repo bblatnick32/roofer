@@ -1,26 +1,64 @@
-import { Opp } from "@/lib/db";
+"use client";
+import {
+  CompleteCompany,
+  CompleteContact,
+  CompleteProperty,
+  Opp,
+} from "@/lib/db";
 import { Label } from "@/components/ui/label";
-import { getCompanyById } from "@/lib/api/companies/queries";
-import { getPropertyById } from "@/lib/api/properties/queries";
-import { getContactById } from "@/lib/api/contacts/queries";
+import { trpc } from "@/lib/trpc/client";
 
-const OppOverview = async ({ opp }: { opp: Opp }) => {
+const OppOverview = ({
+  opp,
+  company,
+  property,
+  contact,
+}: {
+  opp: Opp;
+  company?: CompleteCompany;
+  property?: CompleteProperty;
+  contact?: CompleteContact;
+}) => {
   let companyName = "";
   if (opp.companyId) {
-    const { company } = await getCompanyById(opp.companyId);
-    companyName = company ? company.name : "";
+    const { data: c } = trpc.companies.getCompanyById.useQuery(
+      {
+        id: opp.companyId,
+      },
+      {
+        initialData: { company },
+        refetchOnMount: false,
+      }
+    );
+    companyName = c.company ? c.company.name : "";
   }
 
   let propertyName = "";
   if (opp.propertyId) {
-    const { property } = await getPropertyById(opp.propertyId);
-    propertyName = property ? property.name : "";
+    const { data: p } = trpc.properties.getPropertyById.useQuery(
+      {
+        id: opp.propertyId,
+      },
+      {
+        initialData: { property },
+        refetchOnMount: false,
+      }
+    );
+    propertyName = p.property ? p.property.name : "";
   }
 
   let contactName = "";
   if (opp.contactId) {
-    const { contact } = await getContactById(opp.contactId);
-    contactName = contact ? contact.name : "";
+    const { data: c } = trpc.contacts.getContactById.useQuery(
+      {
+        id: opp.contactId,
+      },
+      {
+        initialData: { contact },
+        refetchOnMount: false,
+      }
+    );
+    contactName = c.contact ? c.contact.name : "";
   }
 
   return (

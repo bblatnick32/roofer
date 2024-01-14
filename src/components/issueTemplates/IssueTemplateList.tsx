@@ -12,6 +12,7 @@ export default function IssueTemplateList({
     undefined,
     {
       initialData: { issueTemplates },
+      refetchOnMount: false,
     }
   );
 

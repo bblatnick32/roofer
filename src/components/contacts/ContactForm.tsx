@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Contact,
   ContactId,
@@ -23,17 +22,27 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const ContactForm = ({
   contact,
   closeModal,
+  companyId,
   onCreate,
 }: {
   contact?: Contact;
   closeModal?: () => void;
+  companyId?: number;
   onCreate?: (id: ContactId) => void;
 }) => {
   const { toast } = useToast();
+  const { data: companies } = trpc.companies.getCompanies.useQuery();
 
   const editing = !!contact?.id;
 
@@ -49,7 +58,7 @@ const ContactForm = ({
       name: "",
       email: "",
       phone: "",
-      address: "",
+      companyId,
     },
   });
 
@@ -72,7 +81,7 @@ const ContactForm = ({
     await utils.contacts.getContacts.invalidate();
     utils.contacts.getContacts.prefetch();
 
-    router.refresh();
+    // router.refresh();
 
     if (onCreate && action === "create") onCreate(parseInt(data!.id!));
     if (closeModal) closeModal();
@@ -114,9 +123,48 @@ const ContactForm = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit, onErrors)}
+        onSubmit={(e) => {
+          form.handleSubmit(handleSubmit, onErrors)();
+          e.stopPropagation();
+          e.preventDefault();
+        }}
         className={"space-y-8"}
       >
+        {!companyId && (
+          <FormField
+            control={form.control}
+            name="companyId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(parseInt(value));
+                    }}
+                    defaultValue={String(field.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies?.companies.map((company) => (
+                        <SelectItem
+                          key={company.id}
+                          value={company.id.toString()}
+                        >
+                          {company.name}{" "}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="name"
@@ -151,20 +199,6 @@ const ContactForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value ?? ""} />
               </FormControl>

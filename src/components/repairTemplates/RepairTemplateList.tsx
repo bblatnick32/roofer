@@ -12,6 +12,7 @@ export default function RepairTemplateList({
     undefined,
     {
       initialData: { repairTemplates },
+      refetchOnMount: false,
     }
   );
 
