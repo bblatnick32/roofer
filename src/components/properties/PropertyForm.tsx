@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AddressAutocomplete from "../ui/address-autocomplete";
 
 const PropertyForm = ({
   property,
@@ -185,7 +186,7 @@ const PropertyForm = ({
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <Input {...field} value={field.value ?? ""} />
+                <AddressAutocomplete {...field} value={field.value ?? ""} />
               </FormControl>
 
               <FormMessage />

@@ -40,7 +40,10 @@ export const propertiesRelations = relations(properties, ({ many, one }) => ({
 // Schema for properties - used to validate API requests
 export const insertPropertySchema = createInsertSchema(properties);
 
-export const insertPropertyParams = createSelectSchema(properties).omit({
+export const insertPropertyParams = createSelectSchema(properties, {
+  name: z.string().min(1, "Name cannot be empty."),
+  address: z.string().min(1, "Address cannot be empty."),
+}).omit({
   id: true,
   orgId: true,
   createdAt: true,
@@ -52,7 +55,10 @@ export const updatePropertySchema = createSelectSchema(properties, {}).omit({
   updatedAt: true,
 });
 
-export const updatePropertyParams = createSelectSchema(properties).omit({
+export const updatePropertyParams = createSelectSchema(properties, {
+  name: z.string().min(1, "Name cannot be empty."),
+  address: z.string().min(1, "Address cannot be empty."),
+}).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,
