@@ -186,7 +186,14 @@ const PropertyForm = ({
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <AddressAutocomplete {...field} value={field.value ?? ""} />
+                <AddressAutocomplete
+                  {...field}
+                  value={field.value ?? ""}
+                  onValueChange={(value) => {
+                    console.log(value);
+                    field.onChange(value);
+                  }}
+                />
               </FormControl>
 
               <FormMessage />
