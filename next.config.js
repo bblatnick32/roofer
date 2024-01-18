@@ -1,7 +1,12 @@
-/** @type {import('next').NextConfig} */
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
 const nextConfig = {
   experimental: {
     optimizePackageImports: ["db"],
+    typedRoutes: true,
   },
   images: {
     remotePatterns: [

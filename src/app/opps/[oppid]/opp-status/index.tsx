@@ -7,8 +7,8 @@ const OppStatusToolbar = ({ opp }: { opp: Opp }) => {
   return (
     <>
       {stage === OppStages.LEAD && <LeadCheckListItems opp={opp} />}
-      {/* {stage === OppStages.INSPECTION && <InspectionCheckListItems opp={opp} />}
-      {stage === OppStages.PROPOSAL && <ProposalCheckListItems opp={opp} />} */}
+      {stage === OppStages.INSPECTION && <></>}
+      {stage === OppStages.PROPOSAL && <></>}
     </>
   );
 };

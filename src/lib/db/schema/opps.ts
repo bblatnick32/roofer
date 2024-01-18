@@ -23,6 +23,8 @@ export const OppStages = {
   PROPOSAL: "Proposal",
 } as const;
 
+type OppStages = (typeof OppStages)[keyof typeof OppStages];
+
 export const OppStatuses = {
   [OppStages.LEAD]: {
     NEW: "New Lead",
@@ -58,7 +60,10 @@ export const opps = mysqlTable("opps", {
     mode: "number",
     unsigned: true,
   }),
-  stage: mysqlEnum("stage", Object.values(OppStages) as [string, ...string[]])
+  stage: mysqlEnum(
+    "stage",
+    Object.values(OppStages) as [OppStages, ...OppStages[]]
+  )
     .notNull()
     .default(OppStages.LEAD),
   status: mysqlEnum("status", [
@@ -103,7 +108,7 @@ export const insertOppParams = createSelectSchema(opps, {}).omit({
   status: true,
 });
 
-export const updateOppSchema = createSelectSchema(opps, {}).omit({
+export const updateOppSchema = createSelectSchema(opps).omit({
   orgId: true,
   createdAt: true,
   updatedAt: true,

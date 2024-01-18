@@ -1,8 +1,7 @@
 "use client";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "@/components/ui/use-toast";
-import { Opp, UpdateOppParams, OppStages } from "@/lib/db";
-import { useState } from "react";
+import { Opp, OppStages } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import StagePipeline from "@/components/stage-pipeline";
 
@@ -10,7 +9,6 @@ const stages = Object.values(OppStages);
 type Stage = (typeof stages)[number];
 
 const OppStagePipeline = ({ opp }: { opp: Opp }) => {
-  const [currentStage, setCurrentStage] = useState(opp.stage as Stage);
   const router = useRouter();
 
   const onSuccess = async (action: "update" | "convert") => {
@@ -28,15 +26,15 @@ const OppStagePipeline = ({ opp }: { opp: Opp }) => {
   });
 
   const handleOnClick = (stage: Stage) => {
-    setCurrentStage(stage);
-    updateOpp({ ...(opp as UpdateOppParams), stage });
+    // setCurrentStage(stage);
+    // updateOpp({ ...(opp as UpdateOppParams), stage });
   };
 
   return (
     <>
       <StagePipeline<Stage>
         stages={stages}
-        currentStage={currentStage}
+        currentStage={opp.stage}
         onClick={handleOnClick}
       />
     </>

@@ -31,6 +31,7 @@ const OppFormShell = ({
     trpc.opps.updateOpp.useMutation({
       onSuccess: (res) => {
         onSuccess("update", res);
+        form.reset({}, { keepValues: true });
       },
     });
 
