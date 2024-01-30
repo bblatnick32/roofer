@@ -90,8 +90,8 @@ dependencies:
     specifier: ^2.1.0
     version: 2.1.0
   cmdk:
-    specifier: ^0.2.0
-    version: 0.2.0(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.2.1
+    version: 0.2.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
   date-fns:
     specifier: ^3.3.0
     version: 3.3.0
@@ -3470,14 +3470,13 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /cmdk@0.2.0(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-JQpKvEOb86SnvMZbYaFKYhvzFntWBeSZdyii0rZPhKJj9uwJBxu4DaVYDrRN7r3mPop56oPhRw+JYWTKs66TYw==}
+  /cmdk@0.2.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-U6//9lQ6JvT47+6OF6Gi8BvkxYQ8SCRRSKIJkthIMsFsLZRG0cKvTtuTaefyIKMQb8rvvXy0wGdpTNq/jPtm+g==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
       '@radix-ui/react-dialog': 1.0.0(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      command-score: 0.1.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
@@ -3514,10 +3513,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
-    dev: false
-
-  /command-score@0.1.2:
-    resolution: {integrity: sha512-VtDvQpIJBvBatnONUsPzXYFVKQQAhuf3XTNOAsdBxCNO/QCtUUd8LSgjn0GVarBkCad6aJCZfXgrjYbl/KRr7w==}
     dev: false
 
   /commander@4.1.1:
