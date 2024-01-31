@@ -155,8 +155,8 @@ devDependencies:
     specifier: ^0.5.1
     version: 0.5.1
   '@types/google.maps':
-    specifier: ^3.54.10
-    version: 3.54.10
+    specifier: ^3.55.1
+    version: 3.55.1
   '@types/node':
     specifier: ^20.11.10
     version: 20.11.10
@@ -2605,8 +2605,8 @@ packages:
     resolution: {integrity: sha512-HoRq4Te8J6krH7hj+TfdYepqegoKZCj3kkaK5gf+ySFSHLvyqYkDvkrtbcVJXQ6QBphQ0h1TF7p4J6sOh4r/zg==}
     dev: false
 
-  /@types/google.maps@3.54.10:
-    resolution: {integrity: sha512-N6gwM01mKhooXaw+IKbUH7wJcIJCn8U60VoaVvom5EiQjmfgevhQ+0+/r17beXW5j8ad2x+WPr0iyOUodCw4/w==}
+  /@types/google.maps@3.55.1:
+    resolution: {integrity: sha512-4JQjfA+vyAIDgjZIEO+pa12wgZXa1JyGg5eggZ4GullIUF+vVTlvgQrhAdVuNKCGVMdsWopMxLBctRmdl5bMJg==}
     dev: true
 
   /@types/hoist-non-react-statics@3.3.5:
