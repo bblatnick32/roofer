@@ -62,7 +62,7 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^6.2.0",
+    "uploadthing": "^6.3.1",
     "use-places-autocomplete": "^4.0.1",
     "zod": "3.22.4"
   },
