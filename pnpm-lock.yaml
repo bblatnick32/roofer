@@ -54,8 +54,8 @@ dependencies:
     specifier: ^2.19.2
     version: 2.19.2(react-dom@18.2.0)(react@18.2.0)
   '@react-pdf/renderer':
-    specifier: ^3.3.4
-    version: 3.3.4(encoding@0.1.13)(react@18.2.0)
+    specifier: ^3.3.5
+    version: 3.3.5(encoding@0.1.13)(react@18.2.0)
   '@t3-oss/env-nextjs':
     specifier: ^0.8.0
     version: 0.8.0(typescript@5.3.3)(zod@3.22.4)
@@ -1297,7 +1297,7 @@ packages:
   /@radix-ui/number@1.0.1:
     resolution: {integrity: sha512-T5gIdVO2mmPW3NNhjNgEP3cqMXjXL9UbO0BzWcXfvdBs+BohbQxvd/K5hSVKmn9/lbTdsQVKbUcP5WLCwvUbBg==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
     dev: false
 
   /@radix-ui/primitive@1.0.0:
@@ -1309,7 +1309,7 @@ packages:
   /@radix-ui/primitive@1.0.1:
     resolution: {integrity: sha512-yQ8oGX2GVsEYMWGxcovu1uGWPCxV5BFfeeYxqPmuAzUyLT9qmaMXSAhXpb0WrspIeqYzdJpkh2vHModJPgRIaw==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
     dev: false
 
   /@radix-ui/react-arrow@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
@@ -1325,7 +1325,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.51
       '@types/react-dom': 18.2.18
@@ -1398,7 +1398,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@radix-ui/react-context': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
@@ -1427,7 +1427,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -1450,7 +1450,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -1461,7 +1461,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/primitive': 1.0.0
       '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
       '@radix-ui/react-context': 1.0.0(react@18.2.0)
@@ -1525,7 +1525,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -1559,7 +1559,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
@@ -1616,7 +1616,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -1648,7 +1648,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.2.51)(react@18.2.0)
@@ -1677,7 +1677,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
       react: 18.2.0
@@ -1717,7 +1717,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-collection': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
@@ -1790,7 +1790,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@floating-ui/react-dom': 2.0.2(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-arrow': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
@@ -1832,7 +1832,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.51
       '@types/react-dom': 18.2.18
@@ -1866,7 +1866,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
@@ -1900,7 +1900,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
       '@types/react-dom': 18.2.18
@@ -1943,7 +1943,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-collection': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.51)(react@18.2.0)
@@ -2103,7 +2103,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -2127,7 +2127,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
       react: 18.2.0
@@ -2152,7 +2152,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
       react: 18.2.0
@@ -2176,7 +2176,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -2190,7 +2190,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/react': 18.2.51
       react: 18.2.0
     dev: false
@@ -2204,7 +2204,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/rect': 1.0.1
       '@types/react': 18.2.51
       react: 18.2.0
@@ -2219,7 +2219,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.51)(react@18.2.0)
       '@types/react': 18.2.51
       react: 18.2.0
@@ -2238,7 +2238,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.51
       '@types/react-dom': 18.2.18
@@ -2249,7 +2249,7 @@ packages:
   /@radix-ui/rect@1.0.1:
     resolution: {integrity: sha512-fyrgCaedtvMg9NK3en0pnOYJdtfwxUcNolezkNPUsoX57X8oQk+NkqcvzHXD2uKNij6GXmWU9NDru2IWjrO4BQ==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
     dev: false
 
   /@react-google-maps/api@2.19.2(react-dom@18.2.0)(react@18.2.0):
@@ -2279,13 +2279,13 @@ packages:
   /@react-pdf/fns@2.1.0:
     resolution: {integrity: sha512-EZAvv96Ec0zxwvpL5jyVHY22FlzTQcrQn7WFzknx1BsaeF5P74m1SV2UnIfyFxrottw0H4f3n5XJjMgrR5yTYg==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
     dev: false
 
   /@react-pdf/font@2.4.2(encoding@0.1.13):
     resolution: {integrity: sha512-p4bDluB99/Rdhy8ynPND4k335RT2bhCuV6jzwqqZkKOKZ2lG2VjE7/DJyKdFMLE+dbPuM5MDX5dDp0FQbtQT/w==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/types': 2.4.0
       cross-fetch: 3.1.8(encoding@0.1.13)
       fontkit: 2.0.2
@@ -2294,24 +2294,24 @@ packages:
       - encoding
     dev: false
 
-  /@react-pdf/image@2.3.1(encoding@0.1.13):
-    resolution: {integrity: sha512-wfnbw0AGFRHIyx6I/LbHfYwD/OW8JM1ItR2H6pdY80SclgiM+jS2tOu7LOwoqCbXr9X6ReyhqqZPBLUa+hSLmA==}
+  /@react-pdf/image@2.3.2(encoding@0.1.13):
+    resolution: {integrity: sha512-k8aR5swX4sJX7t5O2glPoojbCfnY+OujSDxA2x4+ewr7hJ6B3SMxWJJ7czvskzMTCGg0MJHrdVx3SlAho1LJHA==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/png-js': 2.3.0
       cross-fetch: 3.1.8(encoding@0.1.13)
-      jpeg-exif: 1.1.4
+      jay-peg: 1.0.0
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /@react-pdf/layout@3.10.3(encoding@0.1.13):
-    resolution: {integrity: sha512-JT6wfbBh5an7YmD0VIG8A/PLmj2kMzjnS874kxK+5WOaEQOx8oEw+OEMqk67jK413JIPYLR4+BdjplI7iwOsUQ==}
+  /@react-pdf/layout@3.10.4(encoding@0.1.13):
+    resolution: {integrity: sha512-D/HM2BUxGXvqRvXxJHMVOdJXlEEaPM4osCqLRIAiyhRm1DjWLhZ9MBSRg9rSzs1RX/kGrj5LUVp8y7boOu2fcg==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/fns': 2.1.0
-      '@react-pdf/image': 2.3.1(encoding@0.1.13)
-      '@react-pdf/pdfkit': 3.1.2
+      '@react-pdf/image': 2.3.2(encoding@0.1.13)
+      '@react-pdf/pdfkit': 3.1.3
       '@react-pdf/primitives': 3.1.1
       '@react-pdf/stylesheet': 4.2.2
       '@react-pdf/textkit': 4.3.0
@@ -2324,15 +2324,15 @@ packages:
       - encoding
     dev: false
 
-  /@react-pdf/pdfkit@3.1.2:
-    resolution: {integrity: sha512-/u8uT/LE7C67maMQHQdV20wwwD1jG0yLfSJ0PJEJG/bn2GvIWy5aaNLlHTMdHXLzkr2NdgEZcevI/2WEfQxUjQ==}
+  /@react-pdf/pdfkit@3.1.3:
+    resolution: {integrity: sha512-50hlyGkqLRTmxNqPa8PvNRIwwIsWbBf28WrLoz/QRkKAaQ3CXhU4gOhT0NtvSAC1YFNUehyZVb9s3mwpajz9cw==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/png-js': 2.3.0
       browserify-zlib: 0.2.0
       crypto-js: 4.2.0
       fontkit: 2.0.2
-      jpeg-exif: 1.1.4
+      jay-peg: 1.0.0
       vite-compatible-readable-stream: 3.6.1
     dev: false
 
@@ -2349,7 +2349,7 @@ packages:
   /@react-pdf/render@3.4.1:
     resolution: {integrity: sha512-wLs9L20OWv6Dz0QTWeTtX+ZyxGHYWD1VFWcbvOC3vYq9caA81QisMn5T4Tfzn5HaxRz5VBFy+pQ8dFR54n86Wg==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/fns': 2.1.0
       '@react-pdf/primitives': 3.1.1
       '@react-pdf/textkit': 4.3.0
@@ -2361,15 +2361,15 @@ packages:
       svg-arc-to-cubic-bezier: 3.2.0
     dev: false
 
-  /@react-pdf/renderer@3.3.4(encoding@0.1.13)(react@18.2.0):
-    resolution: {integrity: sha512-Y8tOGOeSZ/alYlvmngK90EbYJItcsE0D2yY2E9Nt+6K7oLPwgw8CY6D2zaPYNHvzyJWRGbIuML8noK/CY2zRug==}
+  /@react-pdf/renderer@3.3.5(encoding@0.1.13)(react@18.2.0):
+    resolution: {integrity: sha512-bI4Zch/zZnVNAm4QY8x2h4XtEgGy25TeUJZlHEdpWpv9u07BscflQYcrR5BolBmlVdJtxh1WgmVjO7IQtDMZLg==}
     peerDependencies:
-      react: ^16.8.6 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/font': 2.4.2(encoding@0.1.13)
-      '@react-pdf/layout': 3.10.3(encoding@0.1.13)
-      '@react-pdf/pdfkit': 3.1.2
+      '@react-pdf/layout': 3.10.4(encoding@0.1.13)
+      '@react-pdf/pdfkit': 3.1.3
       '@react-pdf/primitives': 3.1.1
       '@react-pdf/render': 3.4.1
       '@react-pdf/types': 2.4.0
@@ -2386,7 +2386,7 @@ packages:
   /@react-pdf/stylesheet@4.2.2:
     resolution: {integrity: sha512-2VRjp2oIXrSqYZebEMfIiFfbHeuVag8hrY2APAfCsQptvSpc6JHv/2OK1o07zxS6AkUDSyjlH6MUbEcIkwhdIA==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/fns': 2.1.0
       '@react-pdf/types': 2.4.0
       color-string: 1.9.1
@@ -2398,7 +2398,7 @@ packages:
   /@react-pdf/textkit@4.3.0:
     resolution: {integrity: sha512-A0bbHFxLYOh2lEFKbtgefmxlJEVbCX5dRhaI5ORwgHJNpbFOCTQyowq3h9gWXO9sSWl5GQdTTYAO35wp4oS2NQ==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@react-pdf/fns': 2.1.0
       hyphen: 1.9.1
       unicode-properties: 1.4.1
@@ -5394,6 +5394,12 @@ packages:
       '@pkgjs/parseargs': 0.11.0
     dev: true
 
+  /jay-peg@1.0.0:
+    resolution: {integrity: sha512-rCKRgTXsU/ZhKpmrKSXEodSoVG0EQjpBhxS+jYB8AnI31o0uKLsqR4LNR3seo1+vMARsa0ceXqWe8iq4GR6pIw==}
+    dependencies:
+      restructure: 3.0.0
+    dev: false
+
   /jiti@1.20.0:
     resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
     hasBin: true
@@ -5401,10 +5407,6 @@ packages:
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: true
-
-  /jpeg-exif@1.1.4:
-    resolution: {integrity: sha512-a+bKEcCjtuW5WTdgeXFzswSrdqi0jk4XlEtZlx5A94wCoBpFjfFTbo/Tra5SpNCl/YFZPvcV1dJc+TAYeg6ROQ==}
-    dev: false
 
   /js-cookie@3.0.1:
     resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
@@ -6347,7 +6349,7 @@ packages:
       redux:
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
       '@types/hoist-non-react-statics': 3.3.5
       '@types/react': 18.2.51
       '@types/react-dom': 18.2.18
@@ -6471,7 +6473,7 @@ packages:
   /redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
     dependencies:
-      '@babel/runtime': 7.23.5
+      '@babel/runtime': 7.23.8
     dev: false
 
   /reflect.getprototypeof@1.0.4:
