@@ -24,7 +24,7 @@ const Stage = ({
       variant={variant}
       className={cn(
         className,
-        "w-full relative h-8 shadow-none cursor-default",
+        "w-full relative h-8 shadow-none",
         !isFirst &&
           "rounded-l-none before:border-l-white before:absolute before:left-[-16px] before:top-1/2 before:border-t-[16px] before:border-t-transparent before:border-b-[16px] before:border-b-transparent before:border-l-[16px] before:translate-x-full before:-translate-y-1/2 before:z-9 before:transition-colors",
         !isLast &&
