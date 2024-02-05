@@ -20,7 +20,7 @@
     "@clerk/nextjs": "^4.29.2",
     "@hello-pangea/dnd": "^16.5.0",
     "@hookform/resolvers": "^3.3.4",
-    "@planetscale/database": "^1.14.0",
+    "@planetscale/database": "^1.15.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
