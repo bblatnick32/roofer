@@ -34,7 +34,7 @@ const StagePipeline = <Stage extends string>({
           >
             {found === false ? (
               <Stage
-                className="bg-green-600 hover:bg-green-500 before:bg-green-600 after:border-l-green-600 hover:after:border-l-green-500 hover:before:bg-green-500"
+                className="bg-green-600 hover:bg-green-600 before:bg-green-600 after:border-l-green-600 hover:after:border-l-green-600 hover:before:bg-green-600"
                 isLast={isLast}
                 isFirst={isFirst}
                 onClick={() => onClick(stage)}
@@ -52,7 +52,7 @@ const StagePipeline = <Stage extends string>({
               </Stage>
             ) : (
               <Stage
-                className="before:bg-secondary after:border-l-secondary hover:after:border-l-gray-300 hover:before:bg-gray-300"
+                className="before:bg-secondary after:border-l-secondary hover:after:border-l-secondary hover:before:bg-secondary hover:bg-secondary"
                 variant="secondary"
                 isLast={isLast}
                 isFirst={isFirst}
