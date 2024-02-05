@@ -16,7 +16,7 @@ export function CheckListItems<ItemType extends string>({
   onClick: (e: React.MouseEvent, value: ItemType) => void;
 }) {
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="grid grid-rows-3 grid-flow-col gap-4">
       {items.map((item) => (
         <div className="flex items-center space-x-2" key={item.value}>
           <Checkbox
