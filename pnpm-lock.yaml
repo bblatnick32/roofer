@@ -15,8 +15,8 @@ dependencies:
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.50.0)
   '@planetscale/database':
-    specifier: ^1.14.0
-    version: 1.14.0
+    specifier: ^1.15.0
+    version: 1.15.0
   '@radix-ui/react-avatar':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.53)(react-dom@18.2.0)(react@18.2.0)
@@ -97,7 +97,7 @@ dependencies:
     version: 3.3.1
   drizzle-orm:
     specifier: ^0.29.3
-    version: 0.29.3(@planetscale/database@1.14.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0)
+    version: 0.29.3(@planetscale/database@1.15.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0)
   drizzle-zod:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.29.3)(zod@3.22.4)
@@ -1289,8 +1289,8 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@planetscale/database@1.14.0:
-    resolution: {integrity: sha512-7BB+iH6EH4YJuDeVeEbxpo60BFz3wIXJNXCmBGl40eC4HStRMGZ1COxKfiuPcINWwwrJhAhI9AEI97AOZYT7JQ==}
+  /@planetscale/database@1.15.0:
+    resolution: {integrity: sha512-X4GmGGKE3o6tj/FM+ElDdyVb9BI8Y2OSSeOtyW/gCmVS0XLs4tTppg0cVLL89CS+awEhIIYXFDwqT3a7pbYROg==}
     engines: {node: '>=16'}
     dev: false
 
@@ -3797,7 +3797,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.29.3(@planetscale/database@1.14.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0):
+  /drizzle-orm@0.29.3(@planetscale/database@1.15.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0):
     resolution: {integrity: sha512-uSE027csliGSGYD0pqtM+SAQATMREb3eSM/U8s6r+Y0RFwTKwftnwwSkqx3oS65UBgqDOM0gMTl5UGNpt6lW0A==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -3868,7 +3868,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@planetscale/database': 1.14.0
+      '@planetscale/database': 1.15.0
       '@types/react': 18.2.53
       mysql2: 3.9.1
       react: 18.2.0
@@ -3880,7 +3880,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.29.3(@planetscale/database@1.14.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0)
+      drizzle-orm: 0.29.3(@planetscale/database@1.15.0)(@types/react@18.2.53)(mysql2@3.9.1)(react@18.2.0)
       zod: 3.22.4
     dev: false
 
