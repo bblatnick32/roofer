@@ -18,7 +18,7 @@ const Page = async () => {
     <MainPageWrapper>
       <MainPageHeader>Templates</MainPageHeader>
       <Tabs className="w-full" defaultValue="issue">
-        <TabsList className="flex gap-4 border-b pb-2">
+        <TabsList className="flex gap-4 border-b">
           <TabsTrigger value="issue">Issue Templates</TabsTrigger>
           <TabsTrigger value="repair">Repair Templates</TabsTrigger>
         </TabsList>

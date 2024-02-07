@@ -16,7 +16,7 @@ const OppMain = ({ opp }: { opp: CompleteOpp }) => {
   return (
     <MainPageWrapper className="flex flex-col gap-8">
       <div className="flex w-full gap-4">
-        <div>
+        <div className="basis-1/3">
           <h1 className="text-sm text-gray-500">Opportunity</h1>
           <h1 className="font-bold text-2xl text-gray-900">{opp.name}</h1>
         </div>
