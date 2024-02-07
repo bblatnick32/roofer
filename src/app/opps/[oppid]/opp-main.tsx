@@ -2,7 +2,6 @@ import { CompleteOpp } from "@/lib/db";
 import { MainPageWrapper } from "@/components/main-page";
 import OppStagePipeline from "./opp-stage-pipeline";
 import OppStageChecklist from "./opp-status";
-import PageSection from "@/components/ui/page-section";
 import OppOverview from "./opp-overview";
 import DeleteOppMenuItem from "@/components/opps/delete-opp-menu-item";
 import ThreeDotsButton from "@/components/ui/three-dots-button";
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
+import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 
 const OppMain = ({ opp }: { opp: CompleteOpp }) => {
   return (
@@ -31,9 +31,16 @@ const OppMain = ({ opp }: { opp: CompleteOpp }) => {
         </DropdownMenu>
       </div>
       <OppStageChecklist opp={opp} />
-      <PageSection>
-        <OppOverview opp={opp} />
-      </PageSection>
+      <Tabs className="w-full" defaultValue="overview">
+        <TabsList className="flex gap-4 border-b mb-5">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="inspection">Inspection</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <OppOverview opp={opp} />
+        </TabsContent>
+        <TabsContent value="inspection"></TabsContent>
+      </Tabs>
     </MainPageWrapper>
   );
 };
