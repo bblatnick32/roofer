@@ -81,8 +81,8 @@ dependencies:
     specifier: ^10.45.1
     version: 10.45.1
   '@uploadthing/react':
-    specifier: ^6.2.2
-    version: 6.2.2(next@14.1.0)(react@18.2.0)(uploadthing@6.3.3)
+    specifier: ^6.8.0
+    version: 6.8.0(next@14.1.0)(react@18.2.0)(uploadthing@6.3.3)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -3053,48 +3053,56 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@uploadthing/dropzone@0.1.1:
-    resolution: {integrity: sha512-ohlnFQfNr/UmImfipVo4uiBj1HQL7dp/sWBD96iAajc6RaQuYnHATGaSaISpCjZTeoLkksuu4/LR8vU9nSzpvQ==}
+  /@uploadthing/dropzone@0.4.1(react@18.2.0):
+    resolution: {integrity: sha512-RHSpo/2kg/mrRSYQA4EKlyvkOCYWOeE2+QQYW9YiUvWCuawnTfD7DQvk8RN/nYXi1Sw7/v0NegmQpiVELVGtnA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      solid-js: ^1.7.11
+      svelte: ^4.2.12
+      vue: ^3.4.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      solid-js:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
     dependencies:
-      attr-accept: 2.2.2
       file-selector: 0.6.0
+      react: 18.2.0
+    dev: false
+
+  /@uploadthing/mime-types@0.2.10:
+    resolution: {integrity: sha512-kz3F0oEgAyts25NAGXlUBCWh3mXonbSOQJFGFMawHuIgbUbnzXbe4w5WI+0XdneCbjNmikfWrdWrs8m/7HATfQ==}
     dev: false
 
   /@uploadthing/mime-types@0.2.2:
     resolution: {integrity: sha512-ZUo1JHOPPMZDsUw1mOhhVDIvJGlsjj6T0xJ/YJtulyJwL43S9B5pxg1cHcRuTEgjaxj7B55jiqQ6r9mDrrjH9A==}
     dev: false
 
-  /@uploadthing/react@6.2.2(next@14.1.0)(react@18.2.0)(uploadthing@6.3.3):
-    resolution: {integrity: sha512-fDfVooLTbC5/FM1o/chPDf5i8DRxCOeRSuRl0R6yh/jIHTdDO2kwXeM5DTaBazJmaEabh5GB+I9Rwg8nU0QdVA==}
+  /@uploadthing/react@6.8.0(next@14.1.0)(react@18.2.0)(uploadthing@6.3.3):
+    resolution: {integrity: sha512-4GCYww4M2d8X8TQnNIW3mZYrCv9ichSMRLZa9KyH+PYuiBP74edyBJaCUFVK3jiWPXBUJFN0+If2Aviq7pY2VQ==}
     peerDependencies:
       next: '*'
       react: ^17.0.2 || ^18.0.0
-      uploadthing: ^6.0.0
+      uploadthing: 6.13.3
     peerDependenciesMeta:
       next:
         optional: true
     dependencies:
-      '@uploadthing/dropzone': 0.1.1
-      '@uploadthing/shared': 6.2.0
-      attr-accept: 2.2.2
+      '@uploadthing/dropzone': 0.4.1(react@18.2.0)
+      '@uploadthing/shared': 6.7.9
       file-selector: 0.6.0
       next: 14.1.0(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      tailwind-merge: 1.14.0
+      tailwind-merge: 2.2.1
       uploadthing: 6.3.3
     transitivePeerDependencies:
-      - '@uploadthing/mime-types'
-    dev: false
-
-  /@uploadthing/shared@6.2.0:
-    resolution: {integrity: sha512-GMC1gwZa9X48RZwuY7gGse7E8TXYMAMUNaYWEQL2ctVhMZv7viCPyMyZ0yMqBsQmOeGfbmycPnUeNE9IuesJGg==}
-    peerDependencies:
-      '@uploadthing/mime-types': ^0.2.2
-    peerDependenciesMeta:
-      '@uploadthing/mime-types':
-        optional: true
-    dependencies:
-      std-env: 3.7.0
+      - solid-js
+      - svelte
+      - vue
     dev: false
 
   /@uploadthing/shared@6.2.1(@uploadthing/mime-types@0.2.2):
@@ -3106,6 +3114,14 @@ packages:
         optional: true
     dependencies:
       '@uploadthing/mime-types': 0.2.2
+      std-env: 3.7.0
+    dev: false
+
+  /@uploadthing/shared@6.7.9:
+    resolution: {integrity: sha512-EsHkD31HLBHYB59ZbUVQg1pADtMNf+qjlKwniq+gxXsOOe5heD/zunJStjYWLhwB+C8+SaCPXvM7LiDmv5s/Vw==}
+    dependencies:
+      '@uploadthing/mime-types': 0.2.10
+      effect: 3.4.8
       std-env: 3.7.0
     dev: false
 
@@ -4026,6 +4042,10 @@ packages:
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
+
+  /effect@3.4.8:
+    resolution: {integrity: sha512-qOQNrSSN3ITuAtARtN2Ldq6E5f42splY9VV18LqpKOXMwQCCEWkXdns4by3D2CJnDXQD2KCE0iGcRR2KowiQIA==}
+    dev: false
 
   /electron-to-chromium@1.4.636:
     resolution: {integrity: sha512-NLE0GIy1OL9wRiKL20h9TkctBEYZuc99tquSS9MVdTahnuHputoETHeqDzgqGqyOY9NUH0g9wjfEuw5OD+wRcQ==}
@@ -7239,10 +7259,6 @@ packages:
       '@pkgr/utils': 2.4.2
       tslib: 2.6.2
     dev: true
-
-  /tailwind-merge@1.14.0:
-    resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
-    dev: false
 
   /tailwind-merge@2.2.1:
     resolution: {integrity: sha512-o+2GTLkthfa5YUt4JxPfzMIpQzZ3adD1vLVkvKE1Twl9UAhGsEbIZhHHZVRttyW177S8PDJI3bTQNaebyofK3Q==}
