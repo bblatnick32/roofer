@@ -75,7 +75,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "@vercel/style-guide": "^5.2.0",
-    "autoprefixer": "^10.4.17",
+    "autoprefixer": "^10.6.2",
     "dotenv": "^16.4.4",
     "drizzle-kit": "^0.20.14",
     "encoding": "^0.1.13",
